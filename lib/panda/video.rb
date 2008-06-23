@@ -4,50 +4,51 @@ require 'yaml'
 
 module Panda
   class << self
-    attr_accessor :account_key, :api_domain, :api_port, :upload_api_domain
-  
-    def api_domain
-      @api_domain ||= "hq.pandastream.com"
-      @api_domain
-    end
+    attr_accessor :account_key, :api_domain, :api_port
   
     def api_port
       @api_port ||= 80
       @api_port
     end
-  
-    def upload_api_domain
-      @upload_api_domain ||= "uplaod.pandastream.com"
-      @upload_api_domain
-    end
   end
   
   class Video
-    attr_accessor :id, :resolution, :duration, :format, :status, :encodings
-
-    def initialize(opts={})
-      opts.each do |k,v|
-        send("#{k}=", v) if [:id, :resolution, :duration, :format, :status, :encodings].include?(k)
+    attr_accessor :vals
+    
+    def self.new_with_attrs(vals)
+      video = new
+      video.vals = {}
+      vals.each do |k,v|
+        video.vals[k] = v
+        class_eval "def video.#{k}; @vals[:#{k}]; end"
       end
+      
+      # If this is a parent video, turn the encodings into Panda::Video objects
+      if vals[:status] == "original"
+        vals[:encodings].map! do |e|
+          self.new_with_attrs(e[:video])
+        end
+      end
+      
+      return video
     end
-  
+    
     class << self
       def find(token)
         response = request(:get, "/videos/#{token}")
-        p = self.new(response[:video])
+        p = self.new_with_attrs(response[:video])
         return p
       end
   
       def create
-        p = self.new
         response = request(:post, "/videos")
-        p.id = response[:video][:id]
+        p = self.new_with_attrs(response[:video])
         return p
       end
   
       def videos
         response = request(:get, "/videos")
-        response[:videos].map {|v| self.new(v[:video]) }
+        return response[:videos].map {|v| self.new_with_attrs(v[:video]) }
       end
   
       # Makes request to remote service.
