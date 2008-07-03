@@ -15,6 +15,12 @@ module Panda
   class Video
     attr_accessor :vals
     
+    def find_encoding(profile_title)
+      self.encodings.find { |e| 
+          e.profile_title == profile_title and e.status == 'success'
+        }
+    end
+    
     def self.new_with_attrs(vals)
       video = new
       video.vals = {}
@@ -33,60 +39,58 @@ module Panda
       return video
     end
     
-    class << self
-      def find(token)
-        response = request(:get, "/videos/#{token}")
-        p = self.new_with_attrs(response[:video])
-        return p
+    def self.find(token)
+      response = request(:get, "/videos/#{token}")
+      p = self.new_with_attrs(response[:video])
+      return p
+    end
+
+    def self.create
+      response = request(:post, "/videos")
+      p = self.new_with_attrs(response[:video])
+      return p
+    end
+
+    def self.videos
+      response = request(:get, "/videos")
+      return response[:videos].map {|v| self.new_with_attrs(v[:video]) }
+    end
+
+    # Makes request to remote service.
+    def self.request(method, path, params={})
+      raise Panda::AccountKeyNotSet if Panda.account_key.nil?
+      params[:account_key] = Panda.account_key
+      path += ".yaml"
+      http = Net::HTTP.new(Panda.api_domain, Panda.api_port)
+  
+      case method
+      when :get
+        response = http.request_get("#{path}?account_key=#{Panda.account_key}")
+      when :post
+        req = Net::HTTP::Post.new(path)
+        req.form_data = params
+        response = http.request(req)
       end
   
-      def create
-        response = request(:post, "/videos")
-        p = self.new_with_attrs(response[:video])
-        return p
-      end
-  
-      def videos
-        response = request(:get, "/videos")
-        return response[:videos].map {|v| self.new_with_attrs(v[:video]) }
-      end
-  
-      # Makes request to remote service.
-      def request(method, path, params={})
-        raise Panda::AccountKeyNotSet if Panda.account_key.nil?
-        params[:account_key] = Panda.account_key
-        path += ".yaml"
-        http = Net::HTTP.new(Panda.api_domain, Panda.api_port)
-    
-        case method
-        when :get
-          response = http.request_get("#{path}?account_key=#{Panda.account_key}")
-        when :post
-          req = Net::HTTP::Post.new(path)
-          req.form_data = params
-          response = http.request(req)
-        end
-    
-        puts "--> #{response.code} #{response.message} (#{response.body.length})"
-        puts response.body
-        handle_response(response)
-      end
-  
-      # Handles response and error codes from remote service.
-  
-      def handle_response(response)
-        case response.code.to_i
-          when 200...400
-            YAML.load(response.body)
-          when 401
-            raise(Panda::UnauthorizedAccess.new(response))
-          when 404
-            raise(Panda::ResourceNotFound.new(response))
-          when 500...600
-            raise(Panda::ServerError.new(response))
-          else
-            raise(Panda::PandaError.new(response, "Unknown response code: #{response.code}"))
-        end
+      puts "--> #{response.code} #{response.message} (#{response.body.length})"
+      puts response.body
+      handle_response(response)
+    end
+
+    # Handles response and error codes from remote service.
+
+    def self.handle_response(response)
+      case response.code.to_i
+        when 200...400
+          YAML.load(response.body)
+        when 401
+          raise(Panda::UnauthorizedAccess.new(response))
+        when 404
+          raise(Panda::ResourceNotFound.new(response))
+        when 500...600
+          raise(Panda::ServerError.new(response))
+        else
+          raise(Panda::PandaError.new(response, "Unknown response code: #{response.code}"))
       end
     end
   end
