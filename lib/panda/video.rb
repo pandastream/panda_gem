@@ -4,7 +4,7 @@ require 'yaml'
 
 module Panda
   class << self
-    attr_accessor :account_key, :api_domain, :api_port
+    attr_accessor :account_key, :api_domain, :api_port, :default_encoding_profile
   
     def api_port
       @api_port ||= 80
@@ -15,9 +15,16 @@ module Panda
   class Video
     attr_accessor :vals
     
+    # Deprecated. Use encoding_for_profile instead and check for status == 'success' manually.
     def find_encoding(profile_title)
       self.encodings.find { |e| 
           e.profile_title == profile_title and e.status == 'success'
+        }
+    end
+    
+    def encoding_for_profile(profile_title)
+      self.encodings.find { |e| 
+          e.profile_title == profile_title
         }
     end
     
