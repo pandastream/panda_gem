@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'restclient'
+require 'rest_client'
 require 'api_authentication'
 
 module Panda
