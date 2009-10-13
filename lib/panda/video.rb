@@ -26,8 +26,8 @@ module Panda
     # NOTE: get params, MUST be given as the params hash, not as part of the url string
     def get(request_uri, params={})
       params = authenticate("GET", request_uri, params)
-      puts add_params_to_request_uri(request_uri, params)
-      RestClient::Resource.new(concat_urls(api_url, add_params_to_request_uri(request_uri, params))).get
+      puts ApiAuthentication.add_params_to_request_uri(request_uri, params)
+      RestClient::Resource.new(concat_urls(api_url, ApiAuthentication.add_params_to_request_uri(request_uri, params))).get
     end
 
     def post(request_uri, params)
@@ -42,8 +42,8 @@ module Panda
 
     def delete(request_uri, params={})
       params = authenticate("DELETE", request_uri, params)
-      puts add_params_to_request_uri(request_uri, params)
-      RestClient::Resource.new(concat_urls(api_url, add_params_to_request_uri(request_uri, params))).delete
+      puts ApiAuthentication.add_params_to_request_uri(request_uri, params)
+      RestClient::Resource.new(concat_urls(api_url, ApiAuthentication.add_params_to_request_uri(request_uri, params))).delete
     end
     
     # From rest-client/lib/restclient/resource.rb
@@ -65,27 +65,7 @@ module Panda
       params['timestamp'] = Time.now.iso8601
       params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params)
       return params
-    end
-
-    def add_params_to_request_uri(request_uri, params)
-      request_uri + '?' + hash_to_query(params)
-    end
-    # Insist on specific method of URL encoding, RFC3986. 
-    def url_encode(string)
-      # It's kinda like CGI.escape, except CGI.escape is encoding a tilde when
-      # it ought not to be, so we turn it back. Also space NEEDS to be %20 not +.
-      return CGI.escape(string).gsub("%7E", "~").gsub("+", "%20")
-    end
-
-    # Turns a hash into a query string, returns the query string.
-    # url-encodes everything to Amazon's specifications. 
-    def hash_to_query(hash)
-      hash.collect do |key, value|
-
-        url_encode(key) + "=" + url_encode(value)
-
-      end.join("&")
-    end
+  end
 
   end
   
