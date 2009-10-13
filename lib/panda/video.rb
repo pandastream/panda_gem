@@ -50,6 +50,10 @@ module Panda
       RestClient::Resource.new(concat_urls(api_url, add_params_to_request_uri(request_uri, params))).delete
     end
     
+    def authenticate(verb, request_uri, params)
+      ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge({:access_key => @access_key}))
+    end
+    
     # From rest-client/lib/restclient/resource.rb
     
     def concat_urls(url, suburl)   # :nodoc:
@@ -67,51 +71,6 @@ module Panda
     def add_params_to_request_uri(request_uri, params)
       request_uri + '?' + canonical_querystring(params)
     end
-
-    def authenticate(verb, request_uri, params={})
-      # supply timestamp and access key if not already provided
-      params["timestamp"] ||= Time.now.iso8601
-      params["access_key"] ||= @access_key
-      # Existing "Signature"? That's gotta go before we generate a new
-      # signature and add it. 
-      params.delete("signature")
-
-      query_string = canonical_querystring(params)
-      
-      string_to_sign = verb + "\n" + 
-          @api_host.downcase + "\n" +
-          request_uri + "\n" +
-          query_string
-      puts string_to_sign
-      hmac = HMAC::SHA256.new( @secret_key )
-      hmac.update( string_to_sign )
-      # chomp is important!  the base64 encoded version will have a newline at the end
-      signature = Base64.encode64(hmac.digest).chomp 
-
-      params["signature"] = signature
-
-      #order doesn't matter for the actual request, we return the hash
-      #and let client turn it into a url.
-      puts params.inspect
-      return params
-		end
-		
-    # Insist on specific method of URL encoding, RFC3986. 
-    def url_encode(string)
-      # It's kinda like CGI.escape, except CGI.escape is encoding a tilde when
-      # it ought not to be, so we turn it back. Also space NEEDS to be %20 not +.
-      return CGI.escape(string).gsub("%7E", "~").gsub("+", "%20")
-    end
-
-    # param keys should be strings, not symbols please. return a string joined
-    # by & in canonical order. 
-    def canonical_querystring(params)
-      # I hope this built-in sort sorts by byte order, that's what's required. 
-      values = params.keys.sort.collect {|key|  [url_encode(key), url_encode(params[key].to_s)].join("=") }
-
-      return values.join("&")
-    end
-
   end
   
   # class AccountKeyNotSet < PandaError; end
