@@ -8,6 +8,7 @@ config/requirements.rb
 lib/panda.rb
 lib/panda/version.rb
 lib/panda/video.rb
+lib/panda/api_authentication.rb
 log/debug.log
 script/destroy
 script/generate
