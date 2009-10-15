@@ -8,6 +8,7 @@ module Panda
     attr_reader :connection
     
     def connect!(access_key, secret_key, api_host='api.pandastream.com', api_port=80)
+      @api_version = 2
       @access_key = access_key
       @secret_key = secret_key
       @api_host = api_host
@@ -20,7 +21,7 @@ module Panda
     end
     
     def api_url
-      "http://#{@api_host}:#{@api_port}"
+      "http://#{@api_host}:#{@api_port}/v#{@api_version}"
     end
     
     # NOTE: get params, MUST be given as the params hash, not as part of the url string
