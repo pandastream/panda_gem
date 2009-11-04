@@ -11,6 +11,8 @@ begin
     gem.homepage = "http://github.com/newbamboo/panda_gem"
     gem.authors = ["New Bamboo"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "fakeweb"
+    gem.add_development_dependency "fakeweb-matcher"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.add_dependency "ruby-hmac", ">= 0.3.2" 
     gem.add_dependency "rest-client", ">= 1.0.3"

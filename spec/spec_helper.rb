@@ -4,6 +4,9 @@ require 'panda'
 require 'spec'
 require 'spec/autorun'
 
+require 'fakeweb'
+require 'fakeweb_matcher'
+
 Spec::Runner.configure do |config|
   
 end

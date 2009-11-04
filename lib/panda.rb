@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'hmac'
+require 'restclient'
 
-$:.unshift File.dirname(__FILE__) + '/panda'
-
-require 'api_authentication'
-require 'video'
+require 'panda/api_authentication'
+require 'panda/panda'
