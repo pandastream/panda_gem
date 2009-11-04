@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "panda"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Panda Client}
+    gem.description = %Q{Panda Client}
     gem.email = "bambinos@new-bamboo.co.uk"
     gem.homepage = "http://github.com/newbamboo/panda_gem"
     gem.authors = ["New Bamboo"]
