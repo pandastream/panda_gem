@@ -3,7 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Panda do
   before(:each) do
     FakeWeb.allow_net_connect = false
-    Panda.connect!("my_access_key", "my_secret_key", "myapihost", 85)
+    Panda.connect!({:access_key => "my_access_key", :secret_key => "my_secret_key", :api_host => "myapihost", :api_port => 85 })
+    # Panda.connect!("my_access_key", "my_secret_key", "myapihost", 85)
     Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
   end
   

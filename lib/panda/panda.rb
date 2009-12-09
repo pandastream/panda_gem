@@ -1,15 +1,21 @@
 module Panda
   class << self
-    def connect!(access_key, secret_key, api_host='api.pandastream.com', api_port=80)
+    
+    def connect!(auth_params={})
+      params = {:api_port => 'api.pandastream.com' }.merge(auth_params)
+      
       @api_version = 2
-      @access_key = access_key
-      @secret_key = secret_key
-      @api_host = api_host
-      @api_port = api_port
-
+      @access_key = params[:access_key]
+      @secret_key = params[:secret_key]
+      @api_host = params[:api_host]
+      @api_port = params[:api_port]
+      
+      puts params.inspect
+      puts api_url
+      
       @connection = RestClient::Resource.new(api_url)
     end
-
+    
     def get(request_uri, params={})
       append_authentication_params!("GET", request_uri, params)
       @connection[ApiAuthentication.add_params_to_request_uri(request_uri, params)].get
