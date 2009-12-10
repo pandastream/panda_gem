@@ -5,10 +5,10 @@ module Panda
       params = {:api_port => 'api.pandastream.com' }.merge(auth_params)
       
       @api_version = 2
-      @access_key = params[:access_key]
-      @secret_key = params[:secret_key]
-      @api_host = params[:api_host]
-      @api_port = params[:api_port]
+      @access_key = params["access_key"]
+      @secret_key = params["secret_key"]
+      @api_host = params["api_host"]
+      @api_port = params["api_port"]
       
       @connection = RestClient::Resource.new(api_url)
     end
