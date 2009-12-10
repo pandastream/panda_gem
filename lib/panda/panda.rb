@@ -10,9 +10,6 @@ module Panda
       @api_host = params[:api_host]
       @api_port = params[:api_port]
       
-      puts params.inspect
-      puts api_url
-      
       @connection = RestClient::Resource.new(api_url)
     end
     
@@ -35,18 +32,24 @@ module Panda
       append_authentication_params!("DELETE", request_uri, params)
       @connection[ApiAuthentication.add_params_to_request_uri(request_uri, params)].delete
     end
-
+    
+    def authentication_params(verb, request_uri, params)
+      auth_params = {}
+      auth_params['access_key'] = @access_key
+      auth_params['timestamp'] = Time.now.iso8601
+      auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
+      return auth_params
+    end
+    
     private
+    
+    def append_authentication_params!(verb, request_uri, params)
+      auth_params = authentication_params(verb, request_uri, params)
+      params.merge!(auth_params)
+    end
 
     def api_url
       "http://#{@api_host}:#{@api_port}/v#{@api_version}"
-    end
-
-    def append_authentication_params!(verb, request_uri, params)
-      params['access_key'] = @access_key
-      params['timestamp'] = Time.now.iso8601
-      params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params)
-      return params
     end
 
   end
