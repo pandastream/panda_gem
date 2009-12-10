@@ -12,7 +12,7 @@ module Panda
       
       query_string = canonical_querystring(params)
       
-      string_to_sign = verb + "\n" + 
+      string_to_sign = verb.to_s.upcase + "\n" + 
           host.downcase + "\n" +
           request_uri + "\n" +
           query_string
