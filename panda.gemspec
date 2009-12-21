@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
      "lib/panda.rb",
      "lib/panda/api_authentication.rb",
      "lib/panda/panda.rb",
-     "lib/panda/video.rb",
      "log/debug.log",
      "panda.gemspec",
      "spec/panda_spec.rb",
