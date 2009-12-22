@@ -41,15 +41,15 @@ module Panda
       return auth_params
     end
     
+    def api_url
+      "http://#{@api_host}:#{@api_port}/v#{@api_version}"
+    end
+    
     private
     
     def append_authentication_params!(verb, request_uri, params)
       auth_params = authentication_params(verb, request_uri, params)
       params.merge!(auth_params)
-    end
-
-    def api_url
-      "http://#{@api_host}:#{@api_port}/v#{@api_version}"
     end
 
   end
