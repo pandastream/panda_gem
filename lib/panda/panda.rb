@@ -5,6 +5,7 @@ module Panda
       params = {:api_port => 'api.pandastream.com' }.merge(auth_params)
       
       @api_version = 2
+      @cloud_id = params["cloud_id"]
       @access_key = params["access_key"]
       @secret_key = params["secret_key"]
       @api_host = params["api_host"]
@@ -35,6 +36,7 @@ module Panda
     
     def authentication_params(verb, request_uri, params)
       auth_params = {}
+      auth_params['cloud_id'] = @cloud_id
       auth_params['access_key'] = @access_key
       auth_params['timestamp'] = Time.now.iso8601
       auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
