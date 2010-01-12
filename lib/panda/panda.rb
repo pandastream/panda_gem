@@ -11,6 +11,8 @@ module Panda
       @api_host = params["api_host"]
       @api_port = params["api_port"]
       
+      @prefix = params["prefix_url"] || "v#{@api_version}"
+      
       @connection = RestClient::Resource.new(api_url)
     end
     
@@ -44,9 +46,8 @@ module Panda
     end
     
     def api_url
-      "http://#{@api_host}:#{@api_port}/v#{@api_version}"
+      "http://#{@api_host}:#{@api_port}/#{@prefix}"
     end
-    
     private
     
     def append_authentication_params!(verb, request_uri, params)
