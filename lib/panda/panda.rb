@@ -2,7 +2,7 @@ module Panda
   class << self
     
     def connect!(auth_params={})
-      params = {:api_port => 'api.pandastream.com' }.merge(auth_params)
+      params = {:api_host => 'api.pandastream.com' }.merge(auth_params)
       
       @api_version = 2
       @cloud_id = params["cloud_id"]
