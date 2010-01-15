@@ -2,14 +2,14 @@ module Panda
   class << self
     
     def connect!(auth_params={})
-      params = {:api_host => 'api.pandastream.com' }.merge(auth_params)
+      params = {:api_host => 'api.pandastream.com', :api_port => 80 }.merge(auth_params)
       
       @api_version = 2
-      @cloud_id = params["cloud_id"]
-      @access_key = params["access_key"]
-      @secret_key = params["secret_key"]
-      @api_host = params["api_host"]
-      @api_port = params["api_port"]
+      @cloud_id = params["cloud_id"] || params[:cloud_id]
+      @access_key = params["access_key"] || params[:access_key]
+      @secret_key = params["secret_key"] || params[:secret_key]
+      @api_host = params["api_host"] || params[:api_host]
+      @api_port = params["api_port"] || params[:api_port]
       
       @prefix = params["prefix_url"] || "v#{@api_version}"
       
