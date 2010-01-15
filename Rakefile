@@ -15,7 +15,7 @@ begin
     gem.add_development_dependency "fakeweb-matcher"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.add_dependency "ruby-hmac", ">= 0.3.2" 
-    gem.add_dependency "rest-client", ">= 1.0.3"
+    gem.add_dependency "rest-client", ">= 1.2"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -37,13 +37,3 @@ end
 task :spec => :check_dependencies
 
 task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "panda #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
