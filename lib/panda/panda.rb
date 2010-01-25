@@ -1,3 +1,5 @@
+require 'restclient'
+
 module Panda
   class << self
     
