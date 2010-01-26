@@ -7,7 +7,7 @@ begin
     gem.name = "panda"
     gem.summary = %Q{Panda Client}
     gem.description = %Q{Panda Client}
-    gem.email = "bambinos@new-bamboo.co.uk"
+    gem.email = "info@pandastream.com"
     gem.homepage = "http://github.com/newbamboo/panda_gem"
     gem.authors = ["New Bamboo"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
