@@ -40,7 +40,7 @@ module Panda
       auth_params = {}
       auth_params['cloud_id'] = @cloud_id
       auth_params['access_key'] = @access_key
-      auth_params['timestamp'] = Time.now.iso8601
+      auth_params['timestamp'] = Time.now.iso8601(6)
       auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
       return auth_params
     end
