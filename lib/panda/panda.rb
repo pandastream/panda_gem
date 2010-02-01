@@ -47,6 +47,15 @@ module Panda
       return auth_params
     end
     
+    def signed_params(verb, request_uri, params)
+      auth_params = params
+      auth_params['cloud_id'] = @cloud_id
+      auth_params['access_key'] = @access_key
+      auth_params['timestamp'] = Time.now.iso8601(6)
+      auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
+      auth_params
+    end
+    
     def api_url
       "http://#{@api_host}:#{@api_port}/#{@prefix}"
     end
