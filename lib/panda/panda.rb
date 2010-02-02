@@ -47,7 +47,7 @@ module Panda
       return auth_params
     end
     
-    def signed_params(verb, request_uri, params)
+    def signed_params(verb, request_uri, params = {})
       auth_params = params
       auth_params['cloud_id'] = @cloud_id
       auth_params['access_key'] = @access_key

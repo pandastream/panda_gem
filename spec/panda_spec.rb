@@ -39,4 +39,17 @@ describe Panda do
     
   end
 
+  it "should create a signed version of the parameters without additional arguments" do
+    Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
+
+    signed_params = Panda.signed_params('POST', '/videos.json')
+    
+    signed_params.should == {
+      'access_key' => "my_access_key",
+      'timestamp' => "2009-11-04T17:54:11+00:00",
+      'cloud_id' => 'my_cloud_id',
+      'signature' => 'TI2n/dsSllxFhxcEShRGKWtDSqxu+kuJUPs335NavMo='
+    }
+  end
+
 end
