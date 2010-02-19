@@ -1,10 +1,11 @@
+require 'rubygems'
 require 'cgi'
 require 'time'
 require 'hmac'
 require 'hmac-sha2'
 require 'base64'
 
-module Panda
+class Panda
   class ApiAuthentication
     def self.authenticate(verb, request_uri, host, secret_key, params_given={})
       # Ensure all param keys are strings
