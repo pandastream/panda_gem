@@ -10,9 +10,9 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
 
     require 'panda'
 
-### Connecting to Panda
+### Creating an instance of the client
 
-    Panda.connect!({
+    panda = Panda.new({
       :cloud_id => 'cloud_id', 
       :access_key => 'access_key', 
       :secret_key => 'secret_key', 
@@ -21,7 +21,7 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
 
 ### Posting a video
     
-    Panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
+    panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
     =>{"duration"=>nil,
      "created_at"=>"2010/01/15 14:48:42 +0000",
      "original_filename"=>"panda.mp4",
@@ -40,7 +40,7 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
     
 ### Getting all videos
 
-    Panda.get('/videos.json')
+    panda.get('/videos.json')
     => [{"duration"=>14010,
       "created_at"=>"2010/01/13 16:45:29 +0000",
       "original_filename"=>"panda.mp4",
@@ -59,7 +59,7 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
     
 ### Getting video encodings 
     
-    Panda.get('/videos/0ee6b656-0063-11df-a433-1231390041c1/encodings.json')
+    panda.get('/videos/0ee6b656-0063-11df-a433-1231390041c1/encodings.json')
     => [{"encoder_id"=>nil,
       "created_at"=>"2010/01/13 16:45:30 +0000",
       "video_id"=>"0ee6b656-0063-11df-a433-1231390041c1",
@@ -79,11 +79,11 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
     
 ### Deleting a video encoding
 
-    Panda.delete('/encodings/0f815986-0063-11df-a433-1231390041c1.json')
+    panda.delete('/encodings/0f815986-0063-11df-a433-1231390041c1.json')
 
 ### Deleting a video
     
-    Panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
+    panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
 
 Copyright
 ---------
