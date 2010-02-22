@@ -1,6 +1,6 @@
 # Panda
 
-Panda gem provides an interface to access the [Panda](http://api.pandastream.com) API from Ruby.
+Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
 
 ## Installation
 
@@ -16,7 +16,7 @@ Panda gem provides an interface to access the [Panda](http://api.pandastream.com
       :cloud_id => 'cloud_id', 
       :access_key => 'access_key', 
       :secret_key => 'secret_key', 
-      :api_host => 'api.pandastream.com'
+      :api_host => 'api.pandastream.com' # This may change depending on the region
     })
 
 ### Posting a video
