@@ -19,52 +19,38 @@ module Panda
     end
     
     def get(request_uri, params={})
-      append_authentication_params!("GET", request_uri, params)
-      @connection[ApiAuthentication.add_params_to_request_uri(request_uri, params)].get
+      query = signed_query("GET", request_uri, params)
+      @connection[request_uri + '?' + query].get
     end
 
     def post(request_uri, params)
-      append_authentication_params!("POST", request_uri, params)
-      @connection[request_uri].post(params)
+      @connection[request_uri].post(signed_params("POST", request_uri, params))
     end
 
     def put(request_uri, params)
-      append_authentication_params!("PUT", request_uri, params)
-      @connection[request_uri].put(params)
+      @connection[request_uri].put(signed_params("PUT", request_uri, params))
     end
 
     def delete(request_uri, params={})
-      append_authentication_params!("DELETE", request_uri, params)
-      @connection[ApiAuthentication.add_params_to_request_uri(request_uri, params)].delete
+      query = signed_query("DELETE", request_uri, params)
+      @connection[request_uri + '?' + query].delete
     end
     
-    def authentication_params(verb, request_uri, params)
-      auth_params = {}
-      auth_params['cloud_id'] = @cloud_id
-      auth_params['access_key'] = @access_key
-      auth_params['timestamp'] = Time.now.iso8601(6)
-      auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
-      return auth_params
+    def signed_query(*args)
+      ApiAuthentication.hash_to_query(signed_params(*args))
     end
     
-    def signed_params(verb, request_uri, params = {})
+    def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
       auth_params = params
       auth_params['cloud_id'] = @cloud_id
       auth_params['access_key'] = @access_key
-      auth_params['timestamp'] = Time.now.iso8601(6)
-      auth_params['signature'] = ApiAuthentication.authenticate(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
+      auth_params['timestamp'] = timestamp_str || Time.now.iso8601(6)
+      auth_params['signature'] = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
       auth_params
     end
     
     def api_url
       "http://#{@api_host}:#{@api_port}/#{@prefix}"
     end
-    private
-    
-    def append_authentication_params!(verb, request_uri, params)
-      auth_params = authentication_params(verb, request_uri, params)
-      params.merge!(auth_params)
-    end
-
   end
 end
