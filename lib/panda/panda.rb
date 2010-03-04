@@ -16,20 +16,20 @@ class Panda
   
   def get(request_uri, params={})
     query = signed_query("GET", request_uri, params)
-    @connection[request_uri + '?' + query].get
+    body_of @connection[request_uri + '?' + query].get
   end
 
   def post(request_uri, params)
-    @connection[request_uri].post(signed_params("POST", request_uri, params))
+    body_of @connection[request_uri].post(signed_params("POST", request_uri, params))
   end
 
   def put(request_uri, params)
-    @connection[request_uri].put(signed_params("PUT", request_uri, params))
+    body_of @connection[request_uri].put(signed_params("PUT", request_uri, params))
   end
 
   def delete(request_uri, params={})
     query = signed_query("DELETE", request_uri, params)
-    @connection[request_uri + '?' + query].delete
+    body_of @connection[request_uri + '?' + query].delete
   end
   
   def authentication_params(verb, request_uri, params)
@@ -56,5 +56,13 @@ class Panda
   
   def api_url
     "http://#{@api_host}:#{@api_port}/#{@prefix}"
+  end
+  
+  
+  private
+  
+  # API change on rest-client 1.4
+  def body_of(response)
+    response.respond_to?(:body) ? response.body : response
   end
 end
