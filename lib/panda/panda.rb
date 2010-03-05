@@ -15,21 +15,29 @@ class Panda
   end
   
   def get(request_uri, params={})
-    query = signed_query("GET", request_uri, params)
-    body_of @connection[request_uri + '?' + query].get
+    rescue_resclient_error do
+      query = signed_query("GET", request_uri, params)
+      body_of @connection[request_uri + '?' + query].get
+    end
   end
 
   def post(request_uri, params)
-    body_of @connection[request_uri].post(signed_params("POST", request_uri, params))
+    rescue_resclient_error do
+      body_of @connection[request_uri].post(signed_params("POST", request_uri, params))
+    end
   end
 
   def put(request_uri, params)
-    body_of @connection[request_uri].put(signed_params("PUT", request_uri, params))
+    rescue_resclient_error do
+      body_of @connection[request_uri].put(signed_params("PUT", request_uri, params))
+    end
   end
 
   def delete(request_uri, params={})
-    query = signed_query("DELETE", request_uri, params)
-    body_of @connection[request_uri + '?' + query].delete
+    rescue_resclient_error do
+      query = signed_query("DELETE", request_uri, params)
+      body_of @connection[request_uri + '?' + query].delete
+    end
   end
   
   def authentication_params(verb, request_uri, params)
@@ -64,6 +72,14 @@ class Panda
   end
   
   private
+  
+  def rescue_resclient_error(&block)
+    begin 
+      yield 
+    rescue RestClient::Exception => e
+      e.http_body
+    end
+  end
   
   # API change on rest-client 1.4
   def body_of(response)

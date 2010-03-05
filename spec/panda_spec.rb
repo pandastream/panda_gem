@@ -58,4 +58,19 @@ describe Panda do
       'space' => ' '
     }
   end
+  
+  it "should return a json file for every http code" do
+     FakeWeb.register_uri(:get, "http://myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id", :body => "abc")
+
+     resource = RestClient::Resource.new("http://myapihost:85/v2")
+     RestClient::Resource.stub!(:new).and_return(resource)
+     
+     e = RestClient::Exception.new({:body => "abc", :code => 400})
+     e.stub!(:http_body).and_return("abc")
+     
+     resource.stub!(:get).and_raise(e)
+     
+     panda = Panda.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+     panda.get("/videos").should == "abc"
+  end
 end
