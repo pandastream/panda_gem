@@ -1,6 +1,8 @@
 require 'restclient'
 
 class Panda
+  attr_reader :api_host, :api_port, :access_key, :secret_key, :api_version
+  
   def initialize(auth_params={})
     params = {:api_host => 'api.pandastream.com', :api_port => 80 }.merge(auth_params)
     
