@@ -55,10 +55,12 @@ class Panda
   
   def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
     auth_params = params
-    auth_params['cloud_id'] = @cloud_id
+    auth_params['cloud_id']   = @cloud_id
     auth_params['access_key'] = @access_key
-    auth_params['timestamp'] = timestamp_str || Time.now.iso8601(6)
-    auth_params['signature'] = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params.merge(auth_params))
+    auth_params['timestamp']  = timestamp_str || Time.now.iso8601(6)
+    
+    params_to_sign = auth_params.reject{|k,v| ['file'].include?(k)}
+    auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params_to_sign)
     auth_params
   end
   
