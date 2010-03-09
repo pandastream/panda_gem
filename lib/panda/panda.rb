@@ -17,26 +17,26 @@ class Panda
   end
   
   def get(request_uri, params={})
-    rescue_resclient_error do
+    rescue_restclient_exception do
       query = signed_query("GET", request_uri, params)
       body_of @connection[request_uri + '?' + query].get
     end
   end
 
   def post(request_uri, params)
-    rescue_resclient_error do
+    rescue_restclient_exception do
       body_of @connection[request_uri].post(signed_params("POST", request_uri, params))
     end
   end
 
   def put(request_uri, params)
-    rescue_resclient_error do
+    rescue_restclient_exception do
       body_of @connection[request_uri].put(signed_params("PUT", request_uri, params))
     end
   end
 
   def delete(request_uri, params={})
-    rescue_resclient_error do
+    rescue_restclient_exception do
       query = signed_query("DELETE", request_uri, params)
       body_of @connection[request_uri + '?' + query].delete
     end
@@ -77,7 +77,7 @@ class Panda
   
   private
   
-  def rescue_resclient_error(&block)
+  def rescue_restclient_exception(&block)
     begin 
       yield 
     rescue RestClient::Exception => e
