@@ -12,7 +12,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Creating an instance of the client
     
-    Panda.connect({
+    Panda.connect!({
       :cloud_id => 'cloud_id', 
       :access_key => 'access_key', 
       :secret_key => 'secret_key', 
@@ -21,10 +21,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Posting a video
 
+    Panda.post('/videos.json', {:file => File.open("panda.mp4")}) # Note that you will need a movie file to test this. You can grab http://panda-test-harness-videos.s3.amazonaws.com/panda.mp4
 
-    Panda.post('/videos.json', {:file => File.open("~/Movies/panda.mp4")})
-    
-    panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
+    Panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
     =>{"duration"=>nil,
      "created_at"=>"2010/01/15 14:48:42 +0000",
      "original_filename"=>"panda.mp4",
@@ -43,7 +42,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ### Getting all videos
 
-    panda.get('/videos.json')
+    Panda.get('/videos.json')
     => [{"duration"=>14010,
       "created_at"=>"2010/01/13 16:45:29 +0000",
       "original_filename"=>"panda.mp4",
@@ -62,7 +61,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ### Getting video encodings 
     
-    panda.get('/videos/0ee6b656-0063-11df-a433-1231390041c1/encodings.json')
+    Panda.get('/videos/0ee6b656-0063-11df-a433-1231390041c1/encodings.json')
     => [{"encoder_id"=>nil,
       "created_at"=>"2010/01/13 16:45:30 +0000",
       "video_id"=>"0ee6b656-0063-11df-a433-1231390041c1",
@@ -82,11 +81,11 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ### Deleting a video encoding
 
-    panda.delete('/encodings/0f815986-0063-11df-a433-1231390041c1.json')
+    Panda.delete('/encodings/0f815986-0063-11df-a433-1231390041c1.json')
 
 ### Deleting a video
     
-    panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
+    Panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
 
 ## Generating signatures
 
@@ -94,13 +93,13 @@ All requests to your Panda cloud are signed using HMAC-SHA256, based on a timest
 
 To do this, a method `signed_params()` is supported:
 
-    panda.signed_params('POST', '/videos.json')
+    Panda.signed_params('POST', '/videos.json')
     # => {'access_key' => '8df50af4-074f-11df-b278-1231350015b1',
     # 'cloud_id' => 'your-cloud-id',
     # 'signature' => 'LejCdm0O83+jk6/Q5SfGmk14WTO1pB6Sh6Z5eA2w5C0=',
     # 'timestamp' => '2010-02-26T15:01:46.221513'}
 
-    panda.signed_params('GET', '/videos.json', {'some_params' => 'some_value'})
+    Panda.signed_params('GET', '/videos.json', {'some_params' => 'some_value'})
     # => {'access_key' => '8df50af4-074f-11df-b278-1231350015b1',
     #  'cloud_id' => 'your-cloud-id',
     #  'signature' => 'uHnGZ+kI9mT3C4vW71Iop9z2N7UKCv38v2l2dvREUIQ=',

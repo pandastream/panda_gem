@@ -1,7 +1,7 @@
 require 'restclient'
 
 class Panda
-  def self.connect(auth_params)
+  def self.connect!(auth_params)
     @@connection = Connection.new(auth_params)
   end
   

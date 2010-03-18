@@ -85,7 +85,7 @@ describe Panda do
   
   describe "Panda.connect " do
     before(:each) do
-      Panda.connect({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      Panda.connect!({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
       @panda = Panda
     end
    it_should_behave_like "Connected"
