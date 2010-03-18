@@ -11,8 +11,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     require 'panda'
 
 ### Creating an instance of the client
-
-    panda = Panda.new({
+    
+    Panda.connect({
       :cloud_id => 'cloud_id', 
       :access_key => 'access_key', 
       :secret_key => 'secret_key', 
@@ -20,6 +20,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     })
 
 ### Posting a video
+
+
+    Panda.post('/videos.json', {:file => File.open("~/Movies/panda.mp4")})
     
     panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
     =>{"duration"=>nil,

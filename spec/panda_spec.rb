@@ -6,10 +6,7 @@ describe Panda do
     Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
   end
 
-  describe "Connected with Hash" do
-    before(:each) do
-      @panda = Panda.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
-    end
+  describe "Connected", :shared => true do
 
     it "should make get request with signed request to panda server" do
       FakeWeb.register_uri(:get, "http://myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id", :body => "abc")
@@ -73,19 +70,31 @@ describe Panda do
 
       resource.stub!(:get).and_raise(e)
 
-      panda = Panda.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
       panda.get("/videos").should == "abc"
     end
   end
   
   describe "Connected with a string url" do
     before(:each) do
-      @panda2 = Panda.new("f4676630-0522-11df-8148-1231350015b1:1ucba5EDJGf9aIl3/ve1klCkRQqiYZ1bzI+Dpvl3@myhost:85/eefa5d2cbe74289a500e62e2789347f3")
+      @panda = Panda::Connection.new("my_access_key:my_secret_key@myapihost:85/my_cloud_id")
     end
     
-    it "should make get request" do
-      FakeWeb.register_uri(:get, "http://myhost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=YcoBrpnRTwpgEpA%2FPO%2FMJr4d94suUqt5acQv67owUew%3D&access_key=f4676630-0522-11df-8148-1231350015b1&cloud_id=eefa5d2cbe74289a500e62e2789347f3", :body => "abc")
-      @panda2.get("/videos").should == "abc"
-    end
+    it_should_behave_like "Connected"
   end
+  
+  describe "Panda.connect " do
+    before(:each) do
+      Panda.connect({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      @panda = Panda
+    end
+   it_should_behave_like "Connected"
+  end
+  describe "Panda::Connection.new" do
+     before(:each) do
+       @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+     end
+    it_should_behave_like "Connected"
+  end
+  
 end
