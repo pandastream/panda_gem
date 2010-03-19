@@ -21,6 +21,10 @@ class Panda
     @@connection.delete(request_uri, params)
   end
   
+  def self.setup_bucket(params={})
+    @@connection.setup_bucket(params)
+  end
+  
   def self.authentication_params(*params)
     raise "Method deprecated. Please use signed_params instead."
   end
