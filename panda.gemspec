@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{panda}
-  s.version = "0.4.8"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["New Bamboo"]
-  s.date = %q{2010-03-19}
+  s.date = %q{2010-03-29}
   s.description = %q{Panda Client}
   s.email = %q{info@pandastream.com}
   s.extra_rdoc_files = [
