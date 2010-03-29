@@ -77,7 +77,7 @@ describe Panda do
   
   describe "Connected with a string url" do
     before(:each) do
-      @panda = Panda::Connection.new("my_access_key:my_secret_key@myapihost:85/my_cloud_id")
+      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
     end
     
     it_should_behave_like "Connected"
@@ -89,6 +89,14 @@ describe Panda do
       @panda = Panda
     end
    it_should_behave_like "Connected"
+  end
+
+  describe "Panda.connect with PANDASTREAM_URL" do
+     before(:each) do
+       Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
+       @panda = Panda
+     end
+    it_should_behave_like "Connected"
   end
   describe "Panda::Connection.new" do
      before(:each) do

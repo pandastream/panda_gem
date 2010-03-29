@@ -41,7 +41,7 @@ class Panda
   
     def initialize(auth_params)
       @api_version = 2
-    
+
       if auth_params.class == String
         init_from_url(auth_params)
       else
@@ -118,8 +118,7 @@ class Panda
 
 
       def init_from_url(url)
-        params = url.scan(/^([^:@]+):([^:@]+)@([^:@]+)(:[\d]+)?\/([^:@]+)$/).flatten
-
+        params = url.scan(/http:\/\/([^:@]+):([^:@]+)@([^:@]+)(:[\d]+)?\/([^:@]+)$/).flatten
         @access_key = params[0]
         @secret_key = params[1]
         @cloud_id   = params[4]
