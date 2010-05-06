@@ -5,24 +5,24 @@ class Panda
     @@connection = Connection.new(auth_params)
   end
   
-  def self.get(request_uri, params={})
-    @@connection.get(request_uri, params)
+  def self.get(request_uri, params={})    
+    connection.get(request_uri, params)
   end
 
   def self.post(request_uri, params)
-    @@connection.post(request_uri, params)
+    connection.post(request_uri, params)
   end
 
   def self.put(request_uri, params)
-    @@connection.put(request_uri, params)
+    connection.put(request_uri, params)
   end
 
   def self.delete(request_uri, params={})
-    @@connection.delete(request_uri, params)
+    connection.delete(request_uri, params)
   end
   
   def self.setup_bucket(params={})
-    @@connection.setup_bucket(params)
+    connection.setup_bucket(params)
   end
   
   def self.authentication_params(*params)
@@ -30,7 +30,17 @@ class Panda
   end
   
   def self.signed_params(verb, request_uri, params = {}, timestamp_str = nil)
-    @@connection.signed_params(verb, request_uri, params, timestamp_str)
+    connection.signed_params(verb, request_uri, params, timestamp_str)
+  end
+  
+  private 
+  
+  def self.connection
+    if defined?(@@connection)
+      @@connection
+    else
+      raise "Not connected. Please connect! first."
+    end
   end
   
   class Connection

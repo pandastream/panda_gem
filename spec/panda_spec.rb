@@ -5,6 +5,18 @@ describe Panda do
     FakeWeb.allow_net_connect = false
     Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
   end
+  
+  describe "when not connected" do
+    
+    ["get", "post", "put", "delete"].each do |method|
+      it "should raise error for #{method}" do
+        lambda {
+          Panda.send(method, nil, nil)
+        }.should raise_error("Not connected. Please connect! first.")
+      end
+    end
+    
+  end
 
   describe "Connected", :shared => true do
 
@@ -98,6 +110,7 @@ describe Panda do
      end
     it_should_behave_like "Connected"
   end
+  
   describe "Panda::Connection.new" do
      before(:each) do
        @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
