@@ -92,7 +92,7 @@ class Panda
     end
     
     def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
-      auth_params = params
+      auth_params = stringify_keys(params)
       auth_params['cloud_id']   = @cloud_id
       auth_params['access_key'] = @access_key
       auth_params['timestamp']  = timestamp_str || Time.now.iso8601(6)
@@ -112,7 +112,13 @@ class Panda
     end
 
     private
-
+      def stringify_keys(params)
+        params.inject({}) do |options, (key, value)|
+          options[key.to_s] = value
+          options
+        end
+      end
+      
       def rescue_restclient_exception(&block)
         begin
           yield

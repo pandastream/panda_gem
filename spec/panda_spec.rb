@@ -66,12 +66,22 @@ describe Panda do
     
     
     it "should not include file inside the signature" do
-      @panda.signed_params('POST', '/videos.json', { "file" => "my-file" }).should == {
+      @panda.signed_params('POST', '/videos.json', { "file" => "my_file" }).should == {
         'access_key' => "my_access_key",
         'timestamp' => "2009-11-04T17:54:11+00:00",
         'cloud_id' => 'my_cloud_id',
         'signature' => 'TI2n/dsSllxFhxcEShRGKWtDSqxu+kuJUPs335NavMo=',
-        'file' => "my-file"
+        'file' => "my_file"
+      }
+    end
+
+    it "should stringify keys" do
+      @panda.signed_params('POST', '/videos.json', { :file => "symbol_key" }).should == {
+        'access_key' => "my_access_key",
+        'timestamp' => "2009-11-04T17:54:11+00:00",
+        'cloud_id' => 'my_cloud_id',
+        'signature' => 'TI2n/dsSllxFhxcEShRGKWtDSqxu+kuJUPs335NavMo=',
+        'file' => "symbol_key"
       }
     end
 
