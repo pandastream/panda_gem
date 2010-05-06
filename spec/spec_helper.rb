@@ -4,8 +4,9 @@ require 'panda'
 require 'spec'
 require 'spec/autorun'
 
-require 'fakeweb'
-require 'fakeweb_matcher'
+require 'webmock/rspec'
+include WebMock
+
 
 Spec::Runner.configure do |config|
   
