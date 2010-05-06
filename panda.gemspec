@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{panda}
-  s.version = "0.4.9"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["New Bamboo"]
-  s.date = %q{2010-03-29}
+  s.date = %q{2010-05-06}
   s.description = %q{Panda Client}
   s.email = %q{info@pandastream.com}
   s.extra_rdoc_files = [
@@ -50,20 +50,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<fakeweb>, [">= 0"])
       s.add_development_dependency(%q<fakeweb-matcher>, [">= 0"])
       s.add_runtime_dependency(%q<ruby-hmac>, [">= 0.3.2"])
-      s.add_runtime_dependency(%q<rest-client>, [">= 1.2"])
+      s.add_runtime_dependency(%q<rest-client>, [">= 1.5"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<fakeweb>, [">= 0"])
       s.add_dependency(%q<fakeweb-matcher>, [">= 0"])
       s.add_dependency(%q<ruby-hmac>, [">= 0.3.2"])
-      s.add_dependency(%q<rest-client>, [">= 1.2"])
+      s.add_dependency(%q<rest-client>, [">= 1.5"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<fakeweb>, [">= 0"])
     s.add_dependency(%q<fakeweb-matcher>, [">= 0"])
     s.add_dependency(%q<ruby-hmac>, [">= 0.3.2"])
-    s.add_dependency(%q<rest-client>, [">= 1.2"])
+    s.add_dependency(%q<rest-client>, [">= 1.5"])
   end
 end
 
