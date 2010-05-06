@@ -97,7 +97,7 @@ class Panda
       auth_params['access_key'] = @access_key
       auth_params['timestamp']  = timestamp_str || Time.now.iso8601(6)
 
-      params_to_sign = auth_params.reject{|k,v| ['file'].include?(k)}
+      params_to_sign = auth_params.reject{|k,v| ['file'].include?(k.to_s)}
       auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params_to_sign)
       auth_params
     end

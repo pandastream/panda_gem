@@ -15,7 +15,7 @@ begin
     gem.add_development_dependency "fakeweb-matcher"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.add_dependency "ruby-hmac", ">= 0.3.2" 
-    gem.add_dependency "rest-client", ">= 1.2"
+    gem.add_dependency "rest-client", ">= 1.5"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
