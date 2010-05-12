@@ -8,6 +8,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ## How to use it
 
+    require 'rubygems'
     require 'panda'
 
 ### Creating an instance of the client
@@ -21,7 +22,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Posting a video
 
-    Panda.post('/videos.json', {:file => File.open("panda.mp4")}) # Note that you will need a movie file to test this. You can grab http://panda-test-harness-videos.s3.amazonaws.com/panda.mp4
+    Panda.post('/videos.json', {:file => File.new("panda.mp4")}) # Note that you will need a movie file to test this. You can grab http://panda-test-harness-videos.s3.amazonaws.com/panda.mp4
 
     Panda.post('/videos.json', {:source_url => 'http://www.example.com/original_video.mp4'})
     =>{"duration"=>nil,
@@ -31,7 +32,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
      "source_url"=>"http://www.example.com/original_video.mp4",
      "id"=>"12fce296-01e5-11df-ae37-12313902cc92",
      "extname"=>".mp4",
-     "thumbnail_position"=>nil,
      "audio_codec"=>nil,
      "height"=>nil,
      "upload_redirect_url"=>nil,
@@ -47,10 +47,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       "created_at"=>"2010/01/13 16:45:29 +0000",
       "original_filename"=>"panda.mp4",
       "updated_at"=>"2010/01/13 16:45:35 +0000",
-     "source_url"=>"http://www.example.com/original_video.mp4",
+      "source_url"=>"http://www.example.com/original_video.mp4",
       "id"=>"0ee6b656-0063-11df-a433-1231390041c1",
       "extname"=>".mp4",
-      "thumbnail_position"=>nil,
       "audio_codec"=>"aac",
       "height"=>240,
       "upload_redirect_url"=>nil,
@@ -65,11 +64,10 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => [{"encoder_id"=>nil,
       "created_at"=>"2010/01/13 16:45:30 +0000",
       "video_id"=>"0ee6b656-0063-11df-a433-1231390041c1",
-      "video_url"=>
-       "http://s3.amazonaws.com/panda-videos/0f815986-0063-11df-a433-1231390041c1.flv",
+      "video_url"=> 
+          "http://s3.amazonaws.com/panda-videos/0f815986-0063-11df-a433-1231390041c1.flv",
       "started_encoding_at"=>"2010/01/13 16:47:35 +0000",
       "updated_at"=>"2010/01/13 16:47:40 +0000",
-      "lock_version"=>7,
       "extname"=>".flv",
       "encoding_progress"=>87,
       "encoding_time"=>3,
