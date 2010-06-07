@@ -1,8 +1,10 @@
 require 'restclient'
+require 'json'
 
 class Panda
-  def self.connect!(auth_params)
-    @@connection = Connection.new(auth_params)
+  
+  def self.connect!(auth_params, options={})
+    @@connection = Connection.new(auth_params, options)
   end
   
   def self.get(request_uri, params={})    
@@ -44,23 +46,33 @@ class Panda
   end
   
   class Connection
-    attr_reader :api_host, :api_port, :access_key, :secret_key, :api_version
+    attr_reader :api_host, :api_port, :access_key, :secret_key, :api_version, :format
   
     DEFAULT_API_PORT=80
     DEFAULT_API_HOST="api.pandastream.com"
   
-    def initialize(auth_params)
+    def initialize(auth_params, options={})
       @api_version = 2
-
+      @format = "hash"
+      
       if auth_params.class == String
+        self.format = options["format"]
         init_from_url(auth_params)
       else
+        self.format = auth_params["format"]
         init_from_hash(auth_params)
       end
-    
+      
       @connection = RestClient::Resource.new(api_url)
     end
 
+    def format=(ret_format)
+      if ret_format 
+        raise "Format unknown" if !["json", "hash"].include?(ret_format.to_s)
+        @format = ret_format
+      end
+    end
+    
     def get(request_uri, params={})
       rescue_restclient_exception do
         query = signed_query("GET", request_uri, params)
@@ -123,16 +135,25 @@ class Panda
         begin
           yield
         rescue RestClient::Exception => e
-          e.http_body
+          format_to(e.http_body)
         end
       end
 
       # API change on rest-client 1.4
       def body_of(response)
-        response.respond_to?(:body) ? response.body : response
+        json_response = response.respond_to?(:body) ? response.body : response
+        format_to(json_response)
       end
-
-
+      
+      def format_to(response)
+        puts self.format
+        if self.format == "json"
+          return response
+        else
+          JSON.parse(response)
+        end
+      end
+      
       def init_from_url(url)
         params = url.scan(/http:\/\/([^:@]+):([^:@]+)@([^:@]+)(:[\d]+)?\/([^:@]+)$/).flatten
         @access_key = params[0]

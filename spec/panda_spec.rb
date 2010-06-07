@@ -103,7 +103,7 @@ describe Panda do
   
   describe "Connected with a string url" do
     before(:each) do
-      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
+      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
     end
     
     it_should_behave_like "Connected"
@@ -111,15 +111,14 @@ describe Panda do
   
   describe "Panda.connect " do
     before(:each) do
-      Panda.connect!({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
-      @panda = Panda
+      @panda = Panda.connect!({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id', "format" => "json" })
     end
    it_should_behave_like "Connected"
   end
 
   describe "Panda.connect with PANDASTREAM_URL" do
      before(:each) do
-       Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
+       Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
        @panda = Panda
      end
     it_should_behave_like "Connected"
@@ -127,9 +126,22 @@ describe Panda do
   
   describe "Panda::Connection.new" do
      before(:each) do
-       @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+       @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id', "format" => "json" })
      end
     it_should_behave_like "Connected"
   end
+  
+  describe "Using hash as a return format" do
+    before(:each) do
+      @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+    end
+    
+    it "should make get request" do
+      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "{\"key\":\"value\"}")
+      @panda.get("/videos").should == {'key' => 'value'}
+    end
+    
+  end
+  
   
 end
