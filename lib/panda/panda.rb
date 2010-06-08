@@ -146,7 +146,6 @@ class Panda
       end
       
       def format_to(response)
-        puts self.format
         if self.format == "json"
           return response
         else
