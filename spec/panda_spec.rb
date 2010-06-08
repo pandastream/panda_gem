@@ -96,7 +96,7 @@ describe Panda do
 
       resource.stub!(:get).and_raise(e)
 
-      panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id', "format" => "json" })
       panda.get("/videos").should == "abc"
     end
   end
@@ -132,7 +132,10 @@ describe Panda do
   end
   
   describe "Using hash as a return format" do
+    
     before(:each) do
+      puts "here"
+      
       @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
     end
     
