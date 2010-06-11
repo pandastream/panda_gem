@@ -11,11 +11,11 @@ class Panda
     connection.get(request_uri, params)
   end
 
-  def self.post(request_uri, params)
+  def self.post(request_uri, params={})
     connection.post(request_uri, params)
   end
 
-  def self.put(request_uri, params)
+  def self.put(request_uri, params={})
     connection.put(request_uri, params)
   end
 
@@ -80,13 +80,13 @@ class Panda
       end
     end
 
-    def post(request_uri, params)
+    def post(request_uri, params={})
       rescue_restclient_exception do
         body_of @connection[request_uri].post(signed_params("POST", request_uri, params))
       end
     end
 
-    def put(request_uri, params)
+    def put(request_uri, params={})
       rescue_restclient_exception do
         body_of @connection[request_uri].put(signed_params("PUT", request_uri, params))
       end
