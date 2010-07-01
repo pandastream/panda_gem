@@ -134,8 +134,6 @@ describe Panda do
   describe "Using hash as a return format" do
     
     before(:each) do
-      puts "here"
-      
       @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
     end
     
@@ -144,6 +142,22 @@ describe Panda do
       @panda.get("/videos").should == {'key' => 'value'}
     end
     
+  end
+
+  describe "ActiveSupport::JSON parsing" do
+
+    it "should use active support if it has been defined" do
+      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
+      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "abc")
+
+
+      module ActiveSupport
+        class JSON; end
+      end
+
+      ActiveSupport::JSON.should_receive(:decode).with("abc").and_return("blah")
+      @panda.get("/videos").should == "blah"
+    end
   end
   
   
