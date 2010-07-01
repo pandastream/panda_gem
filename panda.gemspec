@@ -50,17 +50,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<webmock>, [">= 0"])
       s.add_runtime_dependency(%q<ruby-hmac>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<rest-client>, [">= 1.5"])
+      s.add_runtime_dependency(%q<json>, [">= 1.2"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<webmock>, [">= 0"])
       s.add_dependency(%q<ruby-hmac>, [">= 0.3.2"])
       s.add_dependency(%q<rest-client>, [">= 1.5"])
+      s.add_dependency(%q<json>, [">= 1.2"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<webmock>, [">= 0"])
     s.add_dependency(%q<ruby-hmac>, [">= 0.3.2"])
     s.add_dependency(%q<rest-client>, [">= 1.5"])
+    s.add_dependency(%q<json>, [">= 1.2"])
   end
 end
 
