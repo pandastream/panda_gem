@@ -104,6 +104,17 @@ To do this, a method `signed_params()` is supported:
     #  'some_param' => 'some_value',
     #  'timestamp' => '2010-02-26T15:04:27.039620'}
 
+## Hash or JSON
+Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to return JSON do the following:
+
+    Panda.connect!({
+      :cloud_id => 'cloud_id',
+      :access_key => 'access_key',
+      :secret_key => 'secret_key',
+      :format => 'json'
+    })
+
+
 Copyright
 ---------
 
