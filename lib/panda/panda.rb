@@ -56,10 +56,10 @@ class Panda
       @format = "hash"
       
       if auth_params.class == String
-        self.format = options["format"]
+        self.format = options[:format] || options["format"]
         init_from_url(auth_params)
       else
-        self.format = auth_params["format"]
+        self.format = auth_params[:format] || auth_params["format"]
         init_from_hash(auth_params)
       end
       
