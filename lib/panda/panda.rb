@@ -69,7 +69,7 @@ class Panda
     def format=(ret_format)
       if ret_format 
         raise "Format unknown" if !["json", "hash"].include?(ret_format.to_s)
-        @format = ret_format
+        @format = ret_format.to_s
       end
     end
     
