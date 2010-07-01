@@ -1,5 +1,5 @@
 require 'restclient'
-require 'json'
+require 'json' unless defined?(ActiveSupport::JSON)
 
 class Panda
   
@@ -147,7 +147,11 @@ class Panda
       
       def format_to(response)
         if self.format == "json"
-          return response
+          response
+
+        elsif defined?(ActiveSupport::JSON)
+          ActiveSupport::JSON.decode(response)
+
         else
           JSON.parse(response)
         end
