@@ -1,2 +1,5 @@
 require 'panda/api_authentication'
+require 'panda/connection'
+require 'panda/base'
+require 'panda/video'
 require 'panda/panda'

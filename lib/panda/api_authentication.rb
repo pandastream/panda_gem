@@ -5,7 +5,7 @@ require 'hmac'
 require 'hmac-sha2'
 require 'base64'
 
-class Panda
+module Panda
   class ApiAuthentication
     def self.generate_signature(verb, request_uri, host, secret_key, params_given={})
       # Ensure all param keys are strings
