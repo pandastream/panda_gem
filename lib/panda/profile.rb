@@ -1,16 +1,16 @@
 module Panda
-  class Video < Base
+  class Profile < Base
     
     class << self
       def path
-        "/videos"
+        "/profiles"
       end
     end
     
     def encodings
-      @encodings ||= Encoding.find_all_by_video_id(id)
+      @encodings ||= Encoding.find_all_by_profile_id(id)
     end
-    
+      
     def initialize(attrs={})
       super(attrs)
     end

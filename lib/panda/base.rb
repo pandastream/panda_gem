@@ -13,21 +13,43 @@ module Panda
     
     class << self
       
+      def path
+        raise "No rest path"
+      end
+      
+      def index_path
+        path + Base.format
+      end
+      
+      def show_path
+         path + "/:id" + Base.format
+      end
+ 
       def format
         ".json"
       end
       
-      def format_element_path(element_path)
-        element_path + Base.format
+      def format_element_path(url, map)
+        url.gsub(/:(\w)+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s] }
       end
       
       def find(id)
-        new(Panda.connection.get(format_element_path(path+"/"+id.to_s)))
+        find_by_path(show_path, {:id => id})
+      end      
+
+      def all
+         find_by_path(index_path)
       end
       
-      def all
-         Panda.connection.get(format_element_path(path)).map{|v| new(v)}
+      def find_by_path(map={}, suffix="")
+        object = Panda.connection.get(format_element_path(map, suffix))
+        if object.is_a?(Array)
+          object.map{|v| new(v)}
+        else
+          new(object)
+        end
       end
+
     end
     
     def new?
