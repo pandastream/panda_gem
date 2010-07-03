@@ -35,6 +35,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.save
 
+    video.delete
+    
 ###  Encodings
 
     encoding = Panda::Encoding.find ""
@@ -49,6 +51,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encoding = Panda::Encoding.new(:profile_id => profile.id)
     encoding.save
 
+    encoding.delete
 ###  Profiles
 
     profile = Panda::Profile.find "profile_id"
@@ -63,6 +66,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     profile.height = 320
     profile.save
     
+    profile.delete
 
 ###  Using multiple clouds
 
