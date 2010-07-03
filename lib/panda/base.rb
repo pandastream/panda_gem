@@ -6,17 +6,15 @@ module Panda
     attr_accessor :attributes, :connection
     
     def initialize(attributes = {})
-      connection = Base.connection
+      @connection = Base.connection
       @attributes = {}
       load(attributes)
     end
     
-    
     def cloud_id
       connection.cloud_id
     end
-          
-      
+
     class << self
     
       def connection 
@@ -51,7 +49,7 @@ module Panda
             param_id = "#{self.class.name[0..-1].split('::').last.downcase}_id"
             unless instance_variable_get("@#{name.to_s}")
               instance_variable_set("@#{name.to_s}",
-               Panda::const_get(name.to_s[0..-2].capitalize).send("find_all_by_#{param_id}",send(:id)))
+               Panda::const_get(name.to_s[0..-2].capitalize)[send(:connection)].send("find_all_by_#{param_id}",send(:id)))
             end
           end
         end
@@ -63,7 +61,7 @@ module Panda
             param_id = "#{name.to_s}_id"
             unless instance_variable_get("@#{name.to_s}")
               instance_variable_set("@#{name.to_s}", 
-                Panda::const_get(name.to_s.capitalize).find(send(param_id.to_sym)))
+                Panda::const_get(name.to_s.capitalize)[send(:connection)].find(send(param_id.to_sym)))
             end
           end
         end
