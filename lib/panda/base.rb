@@ -13,30 +13,51 @@ module Panda
       @attributes = {}
       load(attributes)
     end
-    
+        
     class << self
+      def resource_url
+        @url || "/#{self.name.split('::').last.downcase}s"
+      end
+
+      def resource_url=(url)
+        @url = url
+      end
       
-      def has_one(*property_names)
+      def match(url)
+        self.resource_url = url
+      end
+      
+      def has_many(*property_names)
         property_names.collect do |name|
           define_method name do
-            param_id = "#{name.to_s}_id"
-            unless instance_variable_get("@#{name.to_s}s")
-              instance_variable_set("@#{name.to_s}s", Panda::const_get(name.to_s.capitalize).find(send(param_id.to_sym)))
+            param_id = "#{self.class.name[0..-1].split('::').last.downcase}_id"
+            unless instance_variable_get("@#{name.to_s}")
+              instance_variable_set("@#{name.to_s}",
+               Panda::const_get(name.to_s[0..-2].capitalize).send("find_all_by_#{param_id}",send(:id)))
             end
           end
         end
       end
-
-      def path
-        "/#{self.name.split('::').last.downcase}s"
-      end
       
-      def get_one_path
-        path + ".#{DEFAULT_FORMAT}"
+            
+      def has_one(*property_names)
+        property_names.collect do |name|
+          define_method name do
+            param_id = "#{name.to_s}_id"
+            unless instance_variable_get("@#{name.to_s}")
+              instance_variable_set("@#{name.to_s}", 
+                Panda::const_get(name.to_s.capitalize).find(send(param_id.to_sym)))
+            end
+          end
+        end
       end
       
       def get_all_path
-         path + "/:id.#{DEFAULT_FORMAT}"
+        resource_url + ".#{DEFAULT_FORMAT}"
+      end
+      
+      def get_one_path
+         resource_url + "/:id.#{DEFAULT_FORMAT}"
       end
  
       def element_url(url, map)
@@ -44,11 +65,11 @@ module Panda
       end
       
       def find(id)
-        find_by_path(get_all_path, {:id => id})
+        find_by_path(get_one_path, {:id => id})
       end      
 
       def all
-         find_by_path(get_one_path)
+         find_by_path(get_all_path)
       end
       
       def find_by_path(map={}, suffix="")
@@ -57,6 +78,22 @@ module Panda
           object.map{|v| new(v)}
         else
           new(object)
+        end
+      end
+
+      
+      def method_missing(method_symbol, *arguments)
+        method_name = method_symbol.to_s
+        if method_name =~ /^find_(all_by|by)_([_a-zA-Z]\w*)$/
+          finder = $1
+          names = $2
+          if finder == "all_by"
+            map = {}
+            map[$2.to_sym] = arguments.pop
+            find_by_path(get_all_path, map)
+          end
+        else
+          super
         end
       end
 
@@ -97,7 +134,7 @@ module Panda
     
     private
 
-    
+      
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value
@@ -107,14 +144,16 @@ module Panda
     def id
       attributes['id']
     end
-
+    
     def id=(id)
       attributes['id'] = id
     end
-
+    
     def reload
       self.load(self.class.find())
     end
+    
+    match "/#{self.name.split('::').last.downcase}s"
     
     def method_missing(method_symbol, *arguments)
       method_name = method_symbol.to_s
