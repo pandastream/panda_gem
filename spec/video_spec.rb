@@ -28,8 +28,7 @@ describe Panda::Video do
     v = Panda::Video.new({ :attr => "abc" })
     v.new?.should be_true
   end
-  
-  
+
   it "should find return all videos" do
     
     videos_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":1},{\"source_url\":\"http://a.b.com/file2.mp4\",\"id\":2}]"
@@ -67,4 +66,10 @@ describe Panda::Video do
     video.encodings
   end
   
+  it "should allow to specify a connection" do
+    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /myotherapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myotherapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+    Panda::Video[connection].find("123")
+  end
 end

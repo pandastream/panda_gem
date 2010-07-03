@@ -3,22 +3,36 @@ module Panda
     
     DEFAULT_FORMAT = "json"
     
-    attr_accessor :attributes
+    attr_accessor :attributes, :connection
     
-    def connection 
-      Panda.connection
+    def initialize(attributes = {})
+      connection = Base.connection
+      @attributes = {}
+      load(attributes)
     end
+    
     
     def cloud_id
       connection.cloud_id
     end
-    
-    def initialize(attributes = {})
-      @attributes = {}
-      load(attributes)
-    end
-        
+          
+      
     class << self
+    
+      def connection 
+        @connection ||= Panda.connection
+      end      
+    
+      def connection=(c)
+        @connection = c
+      end
+      
+      def [](connection)
+        new_clone = self.clone!
+        new_clone.connection = connection
+        new_clone
+      end
+      
       def resource_url
         @url || "/#{self.name.split('::').last.downcase}s"
       end
@@ -42,7 +56,6 @@ module Panda
           end
         end
       end
-      
             
       def has_one(*property_names)
         property_names.collect do |name|
@@ -74,26 +87,32 @@ module Panda
       end      
 
       def all
-         find_by_path(get_all_path)
+        find_by_path(get_all_path)
       end
       
-      def find_by_path(map={}, suffix="")
-        object = Panda.connection.get(element_url(map, suffix))
+      def find_by_path(url, map={})
+        object = self.connection.get(element_url(url, map))
         if object.is_a?(Array)
-          object.map{|v| new(v)}
+          object.map{|v| new(v.merge(map))}
         else
-          new(object)
+          new(object.merge(map))
         end
       end
 
-      
+      def clone!
+        new_self = self.clone
+        new_self.resource_url = self.resource_url
+        new_self.connection = self.connection
+        new_self
+      end
+
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
+        map = {}
+        
         if method_name =~ /^find_(all_by|by)_([_a-zA-Z]\w*)$/
-          finder = $1
-          names = $2
+          finder = $1; names = $2
           if finder == "all_by"
-            map = {}
             map[$2.to_sym] = arguments.pop
             find_by_path(get_all_path, map)
           end
@@ -101,7 +120,6 @@ module Panda
           super
         end
       end
-
     end
     
     def new?
@@ -138,7 +156,6 @@ module Panda
     end
     
     private
-
       
     def load(attributes)
       attributes.each do |key, value|
@@ -158,8 +175,6 @@ module Panda
       self.load(self.class.find())
     end
     
-    match "/#{self.name.split('::').last.downcase}s"
-    
     def method_missing(method_symbol, *arguments)
       method_name = method_symbol.to_s
       if method_name =~ /(=|\?)$/
@@ -167,7 +182,7 @@ module Panda
         when "="
           attributes[$`] = arguments.first
         when "?"
-          attributes[$`]
+          !! attributes[$`]
         end
       else
         return attributes[method_name] if attributes.include?(method_name)
