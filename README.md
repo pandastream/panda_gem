@@ -25,42 +25,56 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     video = Panda::Video.find "video_id"
     video.id
-    video.created_at
+    => "video_id"
 
-    encodings = video.encodings
+    video.created_at
+    
+    video.encodings
+    => [...]
     
     videos = Panda::Video.all
+    => [...]
+    
     videos.first.id
+    => "3456"
     
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.save
+    => true
     
     video = Panda::Video.find "fake_id"
     => raise: RecordNotFound: Couldn't find Video with ID=fake_id
 
     video.delete
-    
+    => true
 ###  Encodings
 
     encoding = Panda::Encoding.find "encoding_id"
-    encoding.id
-  
-    encoding = Panda::Encoding.find_all_by_video_id(video_id)
-    encodings = Panda::Encoding.all
-
-    encodings.progress
-    profile = encodings.first.profile
+    encoding.progress
+    => 60%
     encoding.video.id
+    => "21435"
+  
+    encodings = Panda::Encoding.find_all_by_video_id(video_id)
+    => [...]
+    
+    encodings = Panda::Encoding.all
+    => [...]
+    
+    profile = encodings.first.profile
+    profile.title
+    => "H264 profile"
 
     encoding = Panda::Encoding.new(:profile_id => profile.id)
     encoding.save
-
+    => true
+    
     encoding.delete
+    => true
     
 ###  Profiles
 
-    profile = Panda::Profile.find "profile_id"
-    profile.title
+    profile = Panda::Profile.find "profile_id"    
     
     profiles = Panda::Profile.all
     
@@ -68,6 +82,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     profile = Panda::Profile.new(:preset_name => "h264")
     profile.save
+    => true
     
     profile.width = 280
     profile.height = 320
