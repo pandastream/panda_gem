@@ -3,6 +3,7 @@ module Panda
 
     has_one :cloud
     has_one :video
+    has_one :profile
 
     class << self
       def path
@@ -12,10 +13,6 @@ module Panda
       def find_all_by_video_id(id)
         find_by_path(get_one_path, {:video_id => id})
       end
-    end
-
-    def profile
-      @profile ||= Profile.find(profile_id)
     end
 
     def cloud_id
