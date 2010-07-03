@@ -59,13 +59,13 @@ describe Panda::Encoding do
     
     
   it "should filter on find" do
-    encoding_json = "{{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}}"
+    encoding_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}]"
     
-    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/123\/encodings.json/).
+    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/encodings.json/).
       with(:profile_name => "mp4").
         to_return(:body => encoding_json)
     
-    encodings = Panda::Encoding.find_all_by(:video_id => "123", :profile_name => "456")
+    encodings = Panda::Encoding.find_all_by(:video_id => "123", :profile_name => "my_profile")
     encodings.first.id.should == "456"
     
   end

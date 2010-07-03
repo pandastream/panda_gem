@@ -47,6 +47,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     video.delete
     => true
+    
 ###  Encodings
 
     encoding = Panda::Encoding.find "encoding_id"
