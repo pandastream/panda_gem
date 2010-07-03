@@ -72,4 +72,43 @@ describe Panda::Video do
     connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myotherapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
     Panda::Video[connection].find("123")
   end
+  
+  it "should create a video" do
+    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
+    stub_http_request(:post, /http:\/\/myapihost:85\/v2\/videos.json/).
+      with(:source_url =>"http://a.b.com/file.mp4").
+        to_return(:body => video_json)
+
+    video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4")
+    
+    video.new?.should == true
+    video.save.should == true
+    video.id.should == "123" 
+    video.new?.should == false
+  end
+  
+  it "should update a video" do
+    video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
+    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/123.json/).
+      with(:source_url =>"http://a.b.com/file.mp4").
+        to_return(:body => video_json)
+
+    video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4", :id => "123")
+    
+    video.new?.should == false
+    video.save.should == true
+    video.source_url.should == "http://a.b.com/file4.mp4"
+  end
+  
+  it "should delete a video" do
+    video_json = "{\"deleted\":\"ok\"}"
+    stub_http_request(:delete, /http:\/\/myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+
+    video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4", :id => "123")
+    
+    video.new?.should == false
+    video.delete.should == true
+  end
+  
+  
 end

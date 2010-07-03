@@ -142,23 +142,20 @@ module Panda
     end
     
     def delete
-      connection.delete(element_path + "/" + id.to_s + ".json")
+      response = connection.delete(self.class.element_url(self.class.get_one_path, {:id => id}))
+      response['deleted'] == 'ok'
     end
     
     def create
-      Panda.connection.post(element_url(path))
+      response = connection.post(self.class.element_url(self.class.get_all_path, {}), @attributes)
+      load(response)
+      response['error'].nil? && !response['id'].nil?
     end
     
     def update
-      Panda.connection.put(element_url(path))
-    end
-    
-    private
-      
-    def load(attributes)
-      attributes.each do |key, value|
-        @attributes[key.to_s] = value
-      end
+      response = connection.put(self.class.element_url(self.class.get_one_path, {:id => id}), @attributes)
+      load(response)
+      response['error'].nil? && !response['id'].nil?
     end
     
     def id
@@ -172,14 +169,22 @@ module Panda
     def reload
       self.load(self.class.find())
     end
+
+    private
+      
+    def load(attributes)
+      attributes.each do |key, value|
+        @attributes[key.to_s] = value
+      end
+    end
     
     def method_missing(method_symbol, *arguments)
       method_name = method_symbol.to_s
       if method_name =~ /(=|\?)$/
         case $1
-        when "="
+        when '='
           attributes[$`] = arguments.first
-        when "?"
+        when '?'
           !! attributes[$`]
         end
       else
