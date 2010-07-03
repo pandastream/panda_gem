@@ -17,19 +17,19 @@ module Panda
     class << self
       
       def find(id)
-        find_by_path(get_one_path, {:id => id})
+        find_by_path(one_path, {:id => id})
       end      
 
       def find_by(map)
-        find_by_path(get_one_path, map)
+        find_by_path(one_path, map)
       end
 
       def find_all_by(map)
-        find_by_path(get_all_path, map)
+        find_by_path(many_path, map)
       end
 
       def all
-        find_by_path(get_all_path)
+        find_by_path(many_path)
       end
       
       def find_by_path(url, map={})
@@ -80,20 +80,20 @@ module Panda
     end
     
     def delete
-      response = connection.delete(element_url_map(self.class.get_one_path))
+      response = connection.delete(element_url_map(self.class.one_path))
       response['deleted'] == 'ok'
     end
     
     def create
       return false if !valid?
-      response = connection.post(element_url_map(self.class.get_all_path), @attributes)
+      response = connection.post(element_url_map(self.class.many_path), @attributes)
       load(response)
       response['error'].nil? && !response['id'].nil?
     end
     
     def update
       return false if !valid?
-      response = connection.put(element_url_map(self.class.get_one_path), @attributes)
+      response = connection.put(element_url_map(self.class.one_path), @attributes)
       load(response)
       response['error'].nil? && !response['id'].nil?
     end

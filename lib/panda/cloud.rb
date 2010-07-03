@@ -5,7 +5,7 @@ module Panda
     class << self
       
       def find(id)
-        cloud = find_by_path(get_one_path, {:id => id})
+        cloud = find_by_path(one_path, {:id => id})
         
         c = Panda.connection
         cloud.connection = Panda::Connection.new({

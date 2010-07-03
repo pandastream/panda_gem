@@ -20,11 +20,11 @@ module Panda
         self.resource_url = url
       end
 
-      def get_all_path
+      def many_path
         resource_url
       end
 
-      def get_one_path
+      def one_path
         resource_url + "/:id"
       end
 
