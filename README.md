@@ -32,8 +32,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     videos = Panda::Video.all
     videos.first.id
     
-     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
-     video.save
+    video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
+    video.save
 
 ###  Encodings
 
