@@ -18,7 +18,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     Panda.configure do |c|
       c.access_key = "access_key"
       c.secret_key = "secret_key"
-      c.cloud_id = 'cloud_id'
+      c.cloud_id = "cloud_id"
     end
 
 ###  Videos
