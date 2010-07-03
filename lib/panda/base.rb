@@ -1,7 +1,10 @@
 module Panda
   class Base
     
+    DEFAULT_FORMAT = "json"
+    
     attr_accessor :attributes
+    
     def connection 
       Panda.connection
     end
@@ -14,35 +17,31 @@ module Panda
     class << self
       
       def path
-        raise "No rest path"
+        "/#{self.name.split('::').last.downcase}s"
       end
       
-      def index_path
-        path + Base.format
+      def get_one_path
+        path + ".#{DEFAULT_FORMAT}"
       end
       
-      def show_path
-         path + "/:id" + Base.format
+      def get_all_path
+         path + "/:id.#{DEFAULT_FORMAT}"
       end
  
-      def format
-        ".json"
-      end
-      
-      def format_element_path(url, map)
-        url.gsub(/:(\w)+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s] }
+      def element_url(url, map)
+        url.gsub(/:(\w)+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]}
       end
       
       def find(id)
-        find_by_path(show_path, {:id => id})
+        find_by_path(get_all_path, {:id => id})
       end      
 
       def all
-         find_by_path(index_path)
+         find_by_path(get_one_path)
       end
       
       def find_by_path(map={}, suffix="")
-        object = Panda.connection.get(format_element_path(map, suffix))
+        object = Panda.connection.get(element_url(map, suffix))
         if object.is_a?(Array)
           object.map{|v| new(v)}
         else
@@ -78,11 +77,11 @@ module Panda
     end
     
     def create
-      Panda.connection.post(format_element_path(path))
+      Panda.connection.post(element_url(path))
     end
     
     def update
-      Panda.connection.put(format_element_path(path))
+      Panda.connection.put(element_url(path))
     end
     
     private

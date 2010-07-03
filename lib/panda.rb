@@ -1,6 +1,7 @@
 require 'panda/api_authentication'
 require 'panda/connection'
 require 'panda/base'
+require 'panda/cloud'
 require 'panda/encoding'
 require 'panda/profile'
 require 'panda/video'
