@@ -1,5 +1,5 @@
 module Panda
-  class Video < Base
+  class Video < Resource
     belongs_to :cloud
     has_many :encodings
   end

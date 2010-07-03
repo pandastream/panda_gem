@@ -1,5 +1,5 @@
 module Panda
-  class Profile < Base
+  class Profile < Resource
     belongs_to :cloud
   end
 end

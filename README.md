@@ -42,8 +42,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encoding = Panda::Encoding.find ""
     encoding.id
   
+    encoding = Panda::Encoding.find_all_by_video_id(video_id)
     encodings = Panda::Encoding.all
-  
+
     encodings.progress
     profile = encodings.first.profile
     encoding.video.id
@@ -56,7 +57,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     profile = Panda::Profile.find "profile_id"
     profile.title
-
+    
     profiles = Panda::Profile.all
     
     profile = Panda::Profile.new(:preset_name => "h264")
@@ -79,11 +80,12 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     cloud_two.video.find "video_id_2"
   
 ###  Using a model with a specific connection
+
     @connection = Panda::Connection.new({ :access_key => "" .... })
     Panda::Video[@connection].find "video_id"
   
 
-# Old Panda way, still works
+## Old Panda way, still works
 
 ### Creating an instance of the client
     

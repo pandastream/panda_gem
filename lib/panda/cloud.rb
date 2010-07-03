@@ -1,5 +1,7 @@
 module Panda
   class Cloud < Base
+    match "/clouds"
+    
     class << self
       
       def find(id)
