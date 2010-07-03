@@ -56,10 +56,6 @@ module Panda
       end
       
       def validate(&block)
-        def initialize
-          
-        end
-        
         if block_given?
           @validations = [] unless @validations
           @validations << block

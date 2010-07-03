@@ -1,3 +1,5 @@
+# ALFA VERSION -- DO NOT USE!!
+
 # Panda
 
 Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
@@ -10,6 +12,60 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     require 'rubygems'
     require 'panda'
+
+### Creating an instance of the client
+
+    Panda.configure do |c|
+      c.access_key = "access_key"
+      c.secret_key = "secret_key"
+      c.cloud_id = 'cloud_id'
+    end
+
+###  Video
+
+    video = Panda::Video.find "video_id"
+    video.id
+    video.created_at
+
+    encodings = video.encodings
+    
+    videos = Panda::Video.all
+    videos.first.id
+
+###  Encodings
+
+    encoding = Panda::Encoding.find ""
+    encoding.id
+  
+    encodings = Panda::Encoding.all
+  
+    encodings.progress
+    encodings.first.profile
+    encoding.video.id
+
+###  Using multiple clouds
+
+    cloud_one = Panda::Cloud.find "cloud_id_1"
+    cloud_two = Panda::Cloud.find "cloud_id_2"
+  
+    cloud_two.profiles.find "profile_id"
+  
+    cloud_one.video.find "video_id_1"
+    cloud_two.video.find "video_id_2"
+  
+###  Using a Model with
+    @connection = Panda::Connection.new({ :access_key => "" .... })
+    Panda::Video[@connection].find "video_id"
+  
+###  Profile
+
+    profile = Panda::Profile.find "profile_id"
+    profile.title
+  
+    profiles = Panda::Profile.all
+  
+
+# Old Panda way, still works
 
 ### Creating an instance of the client
     
