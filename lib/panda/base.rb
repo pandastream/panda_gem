@@ -16,6 +16,17 @@ module Panda
     
     class << self
       
+      def has_one(*property_names)
+        property_names.collect do |name|
+          define_method name do
+            param_id = "#{name.to_s}_id"
+            unless instance_variable_get("@#{name.to_s}s")
+              instance_variable_set("@#{name.to_s}s", Panda::const_get(name.to_s.capitalize).find(send(param_id.to_sym)))
+            end
+          end
+        end
+      end
+
       def path
         "/#{self.name.split('::').last.downcase}s"
       end
