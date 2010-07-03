@@ -1,6 +1,5 @@
 module Panda
   class Encoding < Base
-    match "/videos/:video_id/encodings"
     
     belongs_to :cloud
     belongs_to :video

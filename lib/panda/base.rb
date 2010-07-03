@@ -27,6 +27,13 @@ module Panda
       def find_all_by(map)
         find_by_path(many_path, map)
       end
+      
+      def find_all_by_has_many(relation, relation_value)
+         map = {}
+         map[relation.to_sym] = relation_value
+         has_many_path = build_hash_many_path(many_path, relation)
+         find_by_path(has_many_path, map)
+       end
 
       def all
         find_by_path(many_path)
@@ -48,15 +55,13 @@ module Panda
         if method_name =~ /^find_(all_by|by)_([_a-zA-Z]\w*)$/
           finder = $1; names = $2
           if finder == "all_by"
-            map[$2.to_sym] = arguments.pop
-            find_all_by(map)
+            find_all_by_has_many($2, arguments.pop)
           end
         else
           super
         end
       end
     end
-    
     
     def new?
       id.nil?
@@ -112,7 +117,6 @@ module Panda
 
     private
 
-    
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value

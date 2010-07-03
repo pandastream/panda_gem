@@ -28,6 +28,12 @@ module Panda
         resource_url + "/:id"
       end
 
+      def build_hash_many_path(end_path, relation)
+        relation_class_name = relation[0..relation.rindex("_id")-1].capitalize
+        prefix_path = Panda::const_get(relation_class_name).resource_url + "/:" + relation
+        prefix_path + end_path
+      end
+      
       def element_url(url, map)
         full_element_url(url.clone.gsub(/:\w+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
       end
