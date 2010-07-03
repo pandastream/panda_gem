@@ -44,7 +44,7 @@ module Panda
         full_url = element_url(url, map)
         params = element_params(url, map)
         
-        object = self.connection.get(element_url(full_url, map), params)
+        object = self.connection.get(full_url, params)
         if object.is_a?(Array)
           object.map{|v| new(v.merge(map))}
         elsif object["id"]
