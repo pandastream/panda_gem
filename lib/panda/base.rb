@@ -1,3 +1,11 @@
+class Proc
+  def bind(other)
+    return Proc.new do
+        other.instance_eval(&self)
+    end
+  end
+end
+
 module Panda
   class Base
     
@@ -25,6 +33,10 @@ module Panda
         @connection = c
       end
       
+      def validations
+        @validations.to_a
+      end
+      
       def [](connection)
         new_clone = self.clone!
         new_clone.connection = connection
@@ -42,6 +54,18 @@ module Panda
       def match(url)
         self.resource_url = url
       end
+      
+      def validate(&block)
+        def initialize
+          
+        end
+        
+        if block_given?
+          @validations = [] unless @validations
+          @validations << block
+        end
+      end
+      
       
       def has_many(*property_names)
         property_names.collect do |name|
@@ -120,6 +144,10 @@ module Panda
       end
     end
     
+    def valid?
+      self.class.validations.all?{|v| !!v.bind(self).call}
+    end
+    
     def new?
       id.nil?
     end
@@ -142,18 +170,20 @@ module Panda
     end
     
     def delete
-      response = connection.delete(self.class.element_url(self.class.get_one_path, {:id => id}))
+      response = connection.delete(element_url_map(self.class.get_one_path))
       response['deleted'] == 'ok'
     end
     
     def create
-      response = connection.post(self.class.element_url(self.class.get_all_path, {}), @attributes)
+      return false if !valid?
+      response = connection.post(element_url_map(self.class.get_all_path), @attributes)
       load(response)
       response['error'].nil? && !response['id'].nil?
     end
     
     def update
-      response = connection.put(self.class.element_url(self.class.get_one_path, {:id => id}), @attributes)
+      return false if !valid?
+      response = connection.put(element_url_map(self.class.get_one_path), @attributes)
       load(response)
       response['error'].nil? && !response['id'].nil?
     end
@@ -171,7 +201,11 @@ module Panda
     end
 
     private
-      
+    
+    def element_url_map(url)
+      url.clone.gsub(/:(\w)+/) { |key| @attributes[key[1..-1].to_sym] || @attributes[key[1..-1].to_s]}
+    end
+    
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value
@@ -189,7 +223,7 @@ module Panda
         end
       else
         return attributes[method_name] if attributes.include?(method_name)
-        super
+        nil
       end
     end
   
