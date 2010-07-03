@@ -1,12 +1,13 @@
 module Panda
   class Base
     
-    attr_accessor :attributes, :connection
+    attr_accessor :attributes, :errors, :connection
     
     def initialize(attributes = {})
       @connection = Base.connection
       @attributes = {}
       load(attributes)
+      @errors = []
     end
     
     include Panda::Router
@@ -43,8 +44,10 @@ module Panda
         object = self.connection.get(element_url(url, map))
         if object.is_a?(Array)
           object.map{|v| new(v.merge(map))}
-        else
+        elsif object["id"]
           new(object.merge(map))
+        else
+          Error.new(object).raise!
         end
       end
 
@@ -87,14 +90,14 @@ module Panda
     def create
       return false if !valid?
       response = connection.post(element_url_map(self.class.many_path), @attributes)
-      load(response)
+      load_response(response)
       response['error'].nil? && !response['id'].nil?
     end
     
     def update
       return false if !valid?
       response = connection.put(element_url_map(self.class.one_path), @attributes)
-      load(response)
+      load_response(response)
       response['error'].nil? && !response['id'].nil?
     end
     
@@ -107,7 +110,10 @@ module Panda
     end
     
     def reload
-      self.load(self.class.find(id))
+      record_id = id
+      @errors = []
+      attributes = {}
+      self.load(self.class.find(record_id))
     end
 
     private
@@ -115,6 +121,14 @@ module Panda
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value
+      end
+    end
+    
+    def load_response(response)
+      if response['error']
+        @errors << Error.new(response)
+      else
+        load(response)
       end
     end
     

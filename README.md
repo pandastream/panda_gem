@@ -34,6 +34,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.save
+    
+    video = Panda::Video.find "fake_id"
+    => raise: RecordNotFound: Couldn't find Video with ID=fake_id
 
     video.delete
     
@@ -67,8 +70,16 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     profile.width = 280
     profile.height = 320
     profile.save
+    => true
     
     profile.delete
+    
+    profile.name = "my name"
+    profile.save
+    => false
+    
+    profile.errors.first.to_s
+    => raise: RecordNotFound: Couldn't find Profile with ID=profile_id
 
 ###  Using multiple clouds
 

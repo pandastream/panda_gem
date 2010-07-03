@@ -110,5 +110,30 @@ describe Panda::Video do
     video.delete.should == true
   end
   
+  it "should have an error object if something goes wrong" do
+    response = "{\"message\":\"no-abc\",\"error\":\"error-abc\"}"
+    
+    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/videos\/abc.json/).to_return(:body => response)
+    
+    lambda {
+        Panda::Video.find "abc"
+    }.should raise_error("error-abc: no-abc")
+  end
+  
+  it "should have an error object if something goes wrong" do
+    response = "{\"message\":\"no-abc\",\"error\":\"error-abc\"}"
+    
+    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/abc.json/).to_return(:body => response)
+    
+    panda = Panda::Video.new (:id => "abc")
+    original_attrs = panda.attributes
+    panda.save
+    
+    panda.errors.size.should == 1
+    panda.errors.first.message.should == "no-abc"
+    panda.errors.first.error_class.should == "error-abc"
+    panda.attributes.should == original_attrs
+    
+  end
   
 end
