@@ -57,4 +57,16 @@ describe Panda::Encoding do
     encoding.id.should == "456"
   end
     
+    
+  it "should filter on find" do
+    encoding_json = "{{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}}"
+    
+    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/123\/encodings.json/).
+      with(:profile_name => "mp4").
+        to_return(:body => encoding_json)
+    
+    encodings = Panda::Encoding.find_all_by(:video_id => "123", :profile_name => "456")
+    encodings.first.id.should == "456"
+    
+  end
 end

@@ -41,7 +41,10 @@ module Panda
       end
       
       def find_by_path(url, map={})
-        object = self.connection.get(element_url(url, map))
+        full_url = element_url(url, map)
+        params = element_params(url, map)
+        
+        object = self.connection.get(element_url(full_url, map), params)
         if object.is_a?(Array)
           object.map{|v| new(v.merge(map))}
         elsif object["id"]

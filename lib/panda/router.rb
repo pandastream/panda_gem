@@ -38,6 +38,12 @@ module Panda
       def element_url(url, map)
         full_element_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
       end
+      
+      def element_params(url, map)
+        params = map.clone
+        url.clone.scan(VAR_PATTERN).map{|key| params.reject!{|k,v| k==key[1..-1] } }
+        params
+      end
 
       def full_element_url(url)
         url + ".#{DEFAULT_FORMAT}"
