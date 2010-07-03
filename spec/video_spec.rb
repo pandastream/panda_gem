@@ -87,7 +87,7 @@ describe Panda::Video do
     video.new?.should == false
   end
   
-  it "should update a video" do
+  it "should not call update a video" do
     video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
     stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/123.json/).
       with(:source_url =>"http://a.b.com/file.mp4").
@@ -96,8 +96,7 @@ describe Panda::Video do
     video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4", :id => "123")
     
     video.new?.should == false
-    video.save.should == true
-    video.source_url.should == "http://a.b.com/file4.mp4"
+    video.save.should == false
   end
   
   it "should delete a video" do
@@ -123,16 +122,16 @@ describe Panda::Video do
   it "should have an error object if something goes wrong" do
     response = "{\"message\":\"no-abc\",\"error\":\"error-abc\"}"
     
-    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/abc.json/).to_return(:body => response)
+    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/profiles\/abc.json/).to_return(:body => response)
     
-    panda = Panda::Video.new (:id => "abc")
-    original_attrs = panda.attributes
-    panda.save
+    obj = Panda::Profile.new (:id => "abc")
+    original_attrs = obj.attributes
+    obj.save
     
-    panda.errors.size.should == 1
-    panda.errors.first.message.should == "no-abc"
-    panda.errors.first.error_class.should == "error-abc"
-    panda.attributes.should == original_attrs
+    obj.errors.size.should == 1
+    obj.errors.first.message.should == "no-abc"
+    obj.errors.first.error_class.should == "error-abc"
+    obj.attributes.should == original_attrs
     
   end
   
