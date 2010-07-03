@@ -39,7 +39,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ###  Encodings
 
-    encoding = Panda::Encoding.find ""
+    encoding = Panda::Encoding.find "encoding_id"
     encoding.id
   
     encoding = Panda::Encoding.find_all_by_video_id(video_id)
