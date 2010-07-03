@@ -64,6 +64,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     profiles = Panda::Profile.all
     
+    profiles = Panda::Profile.find_all_by :video_id => "video_id", :profile_name => "ogg"
+    
     profile = Panda::Profile.new(:preset_name => "h264")
     profile.save
     
