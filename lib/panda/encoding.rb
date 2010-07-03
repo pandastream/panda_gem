@@ -1,8 +1,8 @@
 module Panda
   class Encoding < Base
 
-    has_one :cloud
-    has_one :video
+    belongs_to :cloud
+    belongs_to :video
     has_one :profile
 
     match "/videos/:video_id/encodings"

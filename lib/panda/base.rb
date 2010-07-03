@@ -51,6 +51,7 @@ module Panda
           end
         end
       end
+      alias :belongs_to :has_one
       
       def get_all_path
         resource_url + ".#{DEFAULT_FORMAT}"

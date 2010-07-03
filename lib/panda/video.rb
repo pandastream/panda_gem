@@ -1,6 +1,6 @@
 module Panda
   class Video < Base
-    has_one :cloud
+    belongs_to :cloud
     has_many :encodings
   end
 end

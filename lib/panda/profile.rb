@@ -1,6 +1,6 @@
 module Panda
   class Profile < Base
-    has_one :cloud
+    belongs_to :cloud
 
   end
 end
