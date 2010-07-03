@@ -9,6 +9,10 @@ module Panda
       Panda.connection
     end
     
+    def cloud_id
+      connection.cloud_id
+    end
+    
     def initialize(attributes = {})
       @attributes = {}
       load(attributes)
@@ -62,7 +66,7 @@ module Panda
       end
  
       def element_url(url, map)
-        url.gsub(/:(\w)+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]}
+        url.clone.gsub(/:(\w)+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]}
       end
       
       def find(id)
