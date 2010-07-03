@@ -21,7 +21,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       c.cloud_id = 'cloud_id'
     end
 
-###  Video
+###  Videos
 
     video = Panda::Video.find "video_id"
     video.id
@@ -43,6 +43,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encodings.first.profile
     encoding.video.id
 
+###  Profiles
+
+    profile = Panda::Profile.find "profile_id"
+    profile.title
+
+    profiles = Panda::Profile.all
+
 ###  Using multiple clouds
 
     cloud_one = Panda::Cloud.find "cloud_id_1"
@@ -56,13 +63,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ###  Using a model with a specific connection
     @connection = Panda::Connection.new({ :access_key => "" .... })
     Panda::Video[@connection].find "video_id"
-  
-###  Profile
-
-    profile = Panda::Profile.find "profile_id"
-    profile.title
-  
-    profiles = Panda::Profile.all
   
 
 # Old Panda way, still works
