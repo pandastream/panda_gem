@@ -53,7 +53,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     cloud_one.video.find "video_id_1"
     cloud_two.video.find "video_id_2"
   
-###  Using a Model with
+###  Using a model with a specific connection
     @connection = Panda::Connection.new({ :access_key => "" .... })
     Panda::Video[@connection].find "video_id"
   
