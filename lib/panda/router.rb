@@ -1,6 +1,7 @@
 module Panda
   module Router
     DEFAULT_FORMAT = "json"
+    VAR_PATTERN = /:\w+/
     
     def self.included(base)
       base.extend(ClassMethods)
@@ -28,14 +29,14 @@ module Panda
         resource_url + "/:id"
       end
 
-      def build_hash_many_path(end_path, relation)
-        relation_class_name = relation[0..relation.rindex("_id")-1].capitalize
-        prefix_path = Panda::const_get(relation_class_name).resource_url + "/:" + relation
+      def build_hash_many_path(end_path, relation_attr)
+        relation_class_name = relation_attr[0..relation_attr.rindex("_id")-1].capitalize
+        prefix_path = Panda::const_get(relation_class_name).resource_url + "/:" + relation_attr
         prefix_path + end_path
       end
       
       def element_url(url, map)
-        full_element_url(url.clone.gsub(/:\w+/) { |key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
+        full_element_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
       end
 
       def full_element_url(url)
@@ -51,7 +52,7 @@ module Panda
     end
 
     def element_url_map(url)
-      self.class.full_element_url(url.clone.gsub(/:(\w)+/) { |key| @attributes[key[1..-1].to_sym] || @attributes[key[1..-1].to_s]})
+      self.class.full_element_url(url.clone.gsub(VAR_PATTERN) {|key| send(key[1..-1].to_sym)})
     end
   end
 end

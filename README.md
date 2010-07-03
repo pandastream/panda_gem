@@ -53,6 +53,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encoding.save
 
     encoding.delete
+    
 ###  Profiles
 
     profile = Panda::Profile.find "profile_id"

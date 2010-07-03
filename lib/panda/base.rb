@@ -50,13 +50,8 @@ module Panda
 
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
-        map = {}
-        
-        if method_name =~ /^find_(all_by|by)_([_a-zA-Z]\w*)$/
-          finder = $1; names = $2
-          if finder == "all_by"
-            find_all_by_has_many($2, arguments.pop)
-          end
+        if method_name =~ /^find_all_by_([_a-zA-Z]\w*)$/
+          find_all_by_has_many($1, arguments.pop)
         else
           super
         end
