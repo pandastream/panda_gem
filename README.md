@@ -51,14 +51,18 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ###  Encodings
 
     encoding = Panda::Encoding.find "encoding_id"
-    encoding.progress
-    => 60%
+    encoding.encoding_progress
+    => 60
+    
     encoding.video.id
     => "21435"
   
     encodings = Panda::Encoding.find_all_by_video_id(video_id)
     => [...]
     
+    profiles = Panda::Encodings.find_by :video_id => "video_id", :profile_name => "ogg"
+    
+
     encodings = Panda::Encoding.all
     => [...]
     
@@ -78,9 +82,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     profile = Panda::Profile.find "profile_id"    
     
     profiles = Panda::Profile.all
-    
-    profiles = Panda::Profile.find_all_by :video_id => "video_id", :profile_name => "ogg"
-    
+        
     profile = Panda::Profile.new(:preset_name => "h264")
     profile.save
     => true

@@ -22,20 +22,13 @@ module Panda
       end
 
       def find_by(map)
-        find_by_path(one_path, map)
+        find_by_path(many_path, map).first
       end
 
       def find_all_by(map)
         find_by_path(many_path, map)
       end
       
-      def find_all_by_has_many(relation_name, relation_value)
-         map = {}
-         map[relation_name.to_sym] = relation_value
-         has_many_path = build_hash_many_path(many_path, relation_name)
-         find_by_path(has_many_path, map)
-       end
-
       def all
         find_by_path(many_path)
       end
@@ -53,6 +46,16 @@ module Panda
           Error.new(object).raise!
         end
       end
+      
+      private
+      
+      def find_all_by_has_many(relation_name, relation_value)
+         map = {}
+         map[relation_name.to_sym] = relation_value
+         has_many_path = build_hash_many_path(many_path, relation_name)
+         find_by_path(has_many_path, map)
+      end
+      
 
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
@@ -91,17 +94,17 @@ module Panda
     end
     
     def create
-      return false if !valid?
       response = connection.post(element_url_map(self.class.many_path), @attributes)
       load_response(response)
-      response['error'].nil? && !response['id'].nil?
+    end
+    
+    def create!
+      create || errors.last.raise!
     end
     
     def update
-      return false if !valid?
       response = connection.put(element_url_map(self.class.one_path), @attributes)
       load_response(response)
-      response['error'].nil? && !response['id'].nil?
     end
     
     def id
@@ -131,8 +134,11 @@ module Panda
       if response['error']
         @errors << Error.new(response)
       else
+        @errors=[]
         load(response)
       end
+      
+      response['error'].nil? && !response['id'].nil?
     end
     
     def method_missing(method_symbol, *arguments)
