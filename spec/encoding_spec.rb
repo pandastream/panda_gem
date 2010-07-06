@@ -17,11 +17,8 @@ describe Panda::Encoding do
   
   it "should find by video_id" do
     encoding_json = "[{\"abc\":\"efg\",\"id\":456}]"
-    
     stub_http_request(:get, /myapihost:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encoding_json)
-    
-    Panda::Encoding.find_all_by_video_id("123").first.id.should == 456
-    
+    Panda::Encoding.find_all_by_video_id("123").first.id.should == 456    
   end
 
   it "should create a encodings" do
@@ -49,9 +46,16 @@ describe Panda::Encoding do
     stub_http_request(:get, /http:\/\/myapihost:85\/v2\/encodings.json/).
       with(:profile_name => "mp4").
         to_return(:body => encoding_json)
-    
+
     encodings = Panda::Encoding.find_all_by(:video_id => "123", :profile_name => "my_profile")
     encodings.first.id.should == "456"
+  end
+  
+  
+  it "should return the video_url" do
+    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/clouds\/my_cloud_id.json/).to_return(:body => "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" )
     
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
+    encoding.url.should == "http://s3.amazonaws.com/my_bucket/456.ext"
   end
 end
