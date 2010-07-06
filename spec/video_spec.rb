@@ -135,4 +135,17 @@ describe Panda::Video do
     
   end
   
+  it "should connect to eu" do
+    Panda.configure do |c|
+      c.access_key = "my_access_key"
+      c.secret_key = "my_secret_key"
+      c.cloud_id = 'my_cloud_id'
+      c.region = "eu"
+    end
+    
+    stub_http_request(:get, /http:\/\/api.eu.pandastream.com:80/).to_return(:body => "{\"id\":\"123\"}")
+    Panda::Video.find "123"
+  end
+  
+  
 end

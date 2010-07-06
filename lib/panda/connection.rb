@@ -2,8 +2,9 @@ module Panda
   class Connection
     attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id, :format
 
-    DEFAULT_API_PORT=80
-    DEFAULT_API_HOST="api.pandastream.com"
+    API_PORT=80
+    US_API_HOST="api.pandastream.com"
+    EU_API_HOST="api.eu.pandastream.com"
 
     def initialize(auth_params={}, options={})
       @api_version = 2
@@ -16,7 +17,16 @@ module Panda
         self.format = auth_params[:format] || auth_params["format"]
         init_from_hash(auth_params)
       end
-
+    end
+    
+    def region=(region)
+      if(region.to_s == "us")
+        self.api_host = US_API_HOST
+      elsif(region.to_s == "eu")
+        self.api_host = EU_API_HOST
+      else
+        raise "Region Unknown"
+      end
     end
 
     def format=(ret_format)
@@ -124,14 +134,14 @@ module Panda
         if params[3]
           @api_port = params[3][1..-1]
         else
-          @api_port = DEFAULT_API_PORT
+          @api_port = API_PORT
         end
         @prefix     = "v#{@api_version}"
 
       end
 
       def init_from_hash(hash_params)
-        params      = { :api_host => DEFAULT_API_HOST, :api_port => DEFAULT_API_PORT }.merge(hash_params)
+        params      = { :api_host => US_API_HOST, :api_port => API_PORT }.merge(hash_params)
 
         @cloud_id   = params["cloud_id"]    || params[:cloud_id]
         @access_key = params["access_key"]  || params[:access_key]
