@@ -96,13 +96,12 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 #### Delete a video
 
+    Panda::Video.delete("1234")
+    
+    or 
     video = Panda::Video.find "1234"
     video.delete
     => true
-    
-    or 
-    
-    Panda::Video.delete("1234")
     
 ###  Encodings
 
@@ -149,8 +148,14 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Find all success encodings
 
-    videos = Panda::Encoding.all(:video_id => "1234", :status => "success")
+    encodings = Panda::Encoding.all(:video_id => "1234", :status => "success")
     => [...]
+
+##### Retrieve the encoding 
+
+    encoding = Panda::Encoding.find "4567"
+    encoding.url
+    => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
 
 ##### Create a new encoding
 
