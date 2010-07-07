@@ -47,7 +47,7 @@ describe Panda::Encoding do
       with(:profile_name => "mp4").
         to_return(:body => encoding_json)
 
-    encodings = Panda::Encoding.find_all_by(:video_id => "123", :profile_name => "my_profile")
+    encodings = Panda::Encoding.all(:video_id => "123", :profile_name => "my_profile")
     encodings.first.id.should == "456"
   end
   

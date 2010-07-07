@@ -15,7 +15,7 @@ module Panda
     include Panda::Associations
     
     class << self
-  
+      
       private
       
       def method_missing(method_symbol, *arguments)

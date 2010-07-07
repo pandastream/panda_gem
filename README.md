@@ -16,90 +16,197 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ### Creating an instance of the client
 
     Panda.configure do |c|
-      c.access_key = "access_key"
-      c.secret_key = "secret_key"
-      c.cloud_id = "cloud_id"
+      c.access_key = "panda_access_key"
+      c.secret_key = "panda_secret_key"
+      c.cloud_id = "panda_cloud_id"
+    end
+
+### Creating an instance of the client for EU
+
+    Panda.configure do |c|
+      c.access_key = "panda_access_key"
+      c.secret_key = "panda_secret_key"
+      c.cloud_id = "panda_cloud_id"
+      c.region = "eu"
     end
 
 ###  Videos
 
-    video = Panda::Video.find "video_id"
-    video.id
-    => "video_id"
+#### Find a video
 
-    video.created_at
+    video = Panda::Video.find "1234"
+    video.attributes
+    => {
+      "id"=>"1234",
+      "original_filename"=>"panda.mp4",
+      "source_url"=>"http://www.example.com/original_video.mp4",
+      "extname"=>".mp4",
+      "duration"=>14010,
+      "audio_codec"=>"aac",
+      "video_codec"=>"h264",
+      "width"=>300,
+      "height"=>240,
+      "fps"=>29,
+      "status"=>"success",
+      "created_at"=>"2010/01/13 16:45:29 +0000",
+      "updated_at"=>"2010/01/13 16:45:35 +0000"
+    }
+
+    video.id
+    => "1234"
     
+    video.created_at
+    =>"2010/01/13 16:45:29 +0000"
+    
+    video = Panda::Video.find "fake_id"
+    => raise: RecordNotFound: Couldn't find Video with ID=fake_id
+
+##### Find encodings of a video
+    
+    video = Panda::Video.find "1234"
     video.encodings
     => [...]
-    
+
+##### Find all videos
+
     videos = Panda::Video.all
     => [...]
     
     videos.first.id
     => "3456"
-    
-    video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
-    video.save
-    => true
-    
-    video = Panda::Video.find "fake_id"
-    => raise: RecordNotFound: Couldn't find Video with ID=fake_id
 
+    videos = Panda::Video.all(:page => 2, :per_page => 20)
+    videos.size
+    => 20
+
+##### Find all success videos
+
+    videos = Panda::Videos.all(:status => "success")
+    => [...]
+
+#### Create a new video
+
+  from a source
+    
+    video = Panda::Video.create(:source_url => "http://mywebsite.com/myvideo.mp4")
+    
+  from a local file
+    
+    video = Panda::Video.create(:file => File.new("/home/me/panda.mp4"))
+
+#### Delete a video
+
+    Panda::Video.delete("1234")
+    
+    or 
+    video = Panda::Video.find "1234"
     video.delete
     => true
     
 ###  Encodings
 
-    encoding = Panda::Encoding.find "encoding_id"
+##### Find an encoding
+
+    encoding = Panda::Encoding.find "4567"
+    encoding.attributes
+    => {
+      "id"=>"4567",
+      "video_id"=>"1234",
+      "extname"=>".mp4",
+      "encoding_progress"=>60,
+      "encoding_time"=>3,
+      "width"=>300,
+      "height"=>240,
+      "profile_id"=>"6789",
+      "status"=>"success",
+      "started_encoding_at"=>"2010/01/13 16:47:35 +0000",
+      "created_at"=>"2010/01/13 16:45:30 +0000",
+      "updated_at"=>"2010/01/13 16:47:40 +0000"
+    }
+      
     encoding.encoding_progress
     => 60
     
-    encoding.video.id
-    => "21435"
-  
+    encoding.video.original_filename
+    => "panda.mp4"
+    
+##### Find all encodings of a video
+
+    encodings = Panda::Encoding.all(:page => 4)
+    => [...]
+    
     encodings = Panda::Encoding.find_all_by_video_id(video_id)
     => [...]
     
-    profiles = Panda::Encodings.find_by :video_id => "video_id", :profile_name => "ogg"
-    
-
-    encodings = Panda::Encoding.all
-    => [...]
+    profile = Panda::Encodings.find_by :video_id => "video_id", :profile_name => "h264"
+    profile.encoding_time
+    => 3
     
     profile = encodings.first.profile
     profile.title
     => "H264 profile"
 
-    encoding = Panda::Encoding.new(:profile_id => profile.id)
-    encoding.save
-    => true
+##### Find all success encodings
+
+    encodings = Panda::Encoding.all(:video_id => "1234", :status => "success")
+    => [...]
+
+##### Retrieve the encoding 
+
+    encoding = Panda::Encoding.find "4567"
+    encoding.url
+    => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
+
+##### Create a new encoding
+
+    encoding = Panda::Encoding.create(:video_id => 1234, :profile_id => 6789)
+    encoding.status
+    => "processing"
+
+##### Delete an encoding
+
+    Panda::Encoding.delete("4567")
     
+    or 
+    
+    encoding = Panda::Encoding.find "4567"
     encoding.delete
     => true
     
 ###  Profiles
 
-    profile = Panda::Profile.find "profile_id"    
-    
+##### Create a profile
+
+    profile = Panda::Profile.find "6789"
     profiles = Panda::Profile.all
-        
-    profile = Panda::Profile.new(:preset_name => "h264")
+    
+    profile = Panda::Profile.create(:preset_name => "h264")
+    profile = Panda::Profile.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
+
+##### Update a profile
+
+    profile = Panda::Profile.find "6789"
+    profile.width = 320
+    profile.height = 280
     profile.save
     => true
     
-    profile.width = 280
-    profile.height = 320
-    profile.save
-    => true
-    
-    profile.delete
-    
-    profile.name = "my name"
+    profile.id = "fake_profile_id"
     profile.save
     => false
     
     profile.errors.first.to_s
-    => raise: RecordNotFound: Couldn't find Profile with ID=profile_id
+    => RecordNotFound: Couldn't find Profile with ID=fake_profile_id
+
+##### Delete a profile
+
+    Panda::Profile.delete("4567")
+
+    or
+
+    profile = Panda::Profile.find "6789"
+    profile.delete
+    => true
 
 ###  Using multiple clouds
 
@@ -116,7 +223,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     @connection = Panda::Connection.new({ :access_key => "" .... })
     Panda::Video[@connection].find "video_id"
   
-
 ## Old Panda way, still works
 
 ### Creating an instance of the client
