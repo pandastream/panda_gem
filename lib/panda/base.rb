@@ -4,7 +4,7 @@ module Panda
     attr_accessor :attributes, :errors, :connection
     
     def initialize(attributes = {})
-      @connection = Base.connection
+      @connection = self.class.connection
       @attributes = {}
       load(attributes)
       @errors = []
@@ -12,51 +12,12 @@ module Panda
     
     include Panda::Router
     include Panda::Connectable
-    include Panda::Validatable
     include Panda::Associations
     
     class << self
-      
-      def find(id)
-        find_by_path(one_path, {:id => id})
-      end
-
-      def find_by(map)
-        find_by_path(many_path, map).first
-      end
-
-      def find_all_by(map)
-        find_by_path(many_path, map)
-      end
-      
-      def all
-        find_by_path(many_path)
-      end
-      
-      def find_by_path(url, map={})
-        full_url = element_url(url, map)
-        params = element_params(url, map)
-        
-        object = self.connection.get(full_url, params)
-        if object.is_a?(Array)
-          object.map{|v| new(v.merge(map))}
-        elsif object["id"]
-          new(object.merge(map))
-        else
-          Error.new(object).raise!
-        end
-      end
-      
+  
       private
       
-      def find_all_by_has_many(relation_name, relation_value)
-         map = {}
-         map[relation_name.to_sym] = relation_value
-         has_many_path = build_hash_many_path(many_path, relation_name)
-         find_by_path(has_many_path, map)
-      end
-      
-
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
         if method_name =~ /^find_all_by_([_a-zA-Z]\w*)$/
@@ -89,12 +50,12 @@ module Panda
     end
     
     def delete
-      response = connection.delete(element_url_map(self.class.one_path))
+      response = connection.delete(object_url_map(self.class.one_path))
       response['deleted'] == 'ok'
     end
     
     def create
-      response = connection.post(element_url_map(self.class.many_path), @attributes)
+      response = connection.post(object_url_map(self.class.many_path), @attributes)
       load_response(response)
     end
     
@@ -103,7 +64,7 @@ module Panda
     end
     
     def update
-      response = connection.put(element_url_map(self.class.one_path), @attributes)
+      response = connection.put(object_url_map(self.class.one_path), @attributes)
       load_response(response)
     end
     

@@ -35,8 +35,8 @@ module Panda
         prefix_path + end_path
       end
       
-      def element_url(url, map)
-        full_element_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
+      def object_url(url, map)
+        full_object_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
       end
       
       def element_params(url, map)
@@ -45,7 +45,7 @@ module Panda
         params
       end
 
-      def full_element_url(url)
+      def full_object_url(url)
         url + ".#{DEFAULT_FORMAT}"
       end
 
@@ -55,10 +55,18 @@ module Panda
         new_self.connection = self.connection
         new_self
       end
+      
+      def find_object_by_path(url, map={})
+        full_url = object_url(url, map)
+        params = element_params(url, map)
+        connection.get(full_url, params)
+      end
+      
     end
 
-    def element_url_map(url)
-      self.class.full_element_url(url.clone.gsub(VAR_PATTERN) {|key| send(key[1..-1].to_sym)})
+    def object_url_map(url)
+      self.class.full_object_url(url.clone.gsub(VAR_PATTERN) {|key| send(key[1..-1].to_sym)})
     end
+    
   end
 end

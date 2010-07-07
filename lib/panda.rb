@@ -1,6 +1,7 @@
 require 'panda/api_authentication'
 require 'panda/connection'
 require 'panda/modules/router'
+require 'panda/modules/finders'
 require 'panda/modules/connectable'
 require 'panda/modules/validatable'
 require 'panda/modules/associations'

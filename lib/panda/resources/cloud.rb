@@ -1,8 +1,9 @@
 module Panda
   class Cloud < Base
-    match "/clouds"
+    include Panda::Router
     
     class << self
+      include Panda::Finders::PathFinder
       
       def find(id)
         cloud = find_by_path(one_path, {:id => id})
