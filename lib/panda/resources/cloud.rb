@@ -19,21 +19,15 @@ module Panda
       def find(id)
         cloud = find_by_path(one_path, {:id => id})
         
-        c = Panda.connection
+        config = Panda.connection
         cloud.connection = Panda::Connection.new({
-          :access_key => c.access_key,
-          :secret_key => c.secret_key,
-          :api_host => c.api_host,
-          :api_port => c.api_port,
+          :access_key => config.access_key,
+          :secret_key => config.secret_key,
+          :api_host => config.api_host,
+          :api_port => config.api_port,
           :cloud_id => cloud.id
         })
         
-        cloud
-      end
-      
-      def connect(connection)
-        cloud = self.find(connection.cloud_id)
-        cloud.connection = connection
         cloud
       end
       

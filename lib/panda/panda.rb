@@ -13,7 +13,7 @@ module Panda
       else 
         connect!(auth_params)
       end
-      @cloud = Cloud::connect(self.connection)
+      @cloud = Cloud::find(self.connection.cloud_id)
     end
     
     def connect!(auth_params, options={})
