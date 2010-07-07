@@ -37,20 +37,21 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.find "1234"
     video.attributes
 
-    => {"duration"=>14010,
-      "created_at"=>"2010/01/13 16:45:29 +0000",
-      "original_filename"=>"panda.mp4",
-      "updated_at"=>"2010/01/13 16:45:35 +0000",
-      "source_url"=>"http://www.example.com/original_video.mp4",
+    => {
       "id"=>"1234",
+      "original_filename"=>"panda.mp4",
+      "source_url"=>"http://www.example.com/original_video.mp4",
       "extname"=>".mp4",
+      "duration"=>14010,
       "audio_codec"=>"aac",
-      "height"=>240,
-      "upload_redirect_url"=>nil,
-      "fps"=>29,
       "video_codec"=>"h264",
+      "width"=>300,
+      "height"=>240,
+      "fps"=>29,
       "status"=>"success",
-      "width"=>300}
+      "created_at"=>"2010/01/13 16:45:29 +0000",
+      "updated_at"=>"2010/01/13 16:45:35 +0000"
+    }
 
     video.id
     => "1234"
@@ -106,18 +107,19 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     encoding = Panda::Encoding.find "4567"
     => {
-      "created_at"=>"2010/01/13 16:45:30 +0000",
+      "id"=>"4567",
       "video_id"=>"1234",
-      "started_encoding_at"=>"2010/01/13 16:47:35 +0000",
-      "updated_at"=>"2010/01/13 16:47:40 +0000",
-      "extname"=>".flv",
+      "extname"=>".mp4",
       "encoding_progress"=>60,
       "encoding_time"=>3,
-      "id"=>"4567",
+      "width"=>300,
       "height"=>240,
-      "status"=>"success",
       "profile_id"=>"6789",
-      "width"=>300}
+      "status"=>"success",
+      "started_encoding_at"=>"2010/01/13 16:47:35 +0000",
+      "created_at"=>"2010/01/13 16:45:30 +0000",
+      "updated_at"=>"2010/01/13 16:47:40 +0000"
+    }
       
     encoding.encoding_progress
     => 60
@@ -145,7 +147,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     videos = Panda::Encoding.all(:video_id => "1234", :status => "success")
     => [...]
-
 
 ##### Create a new Encoding
 
