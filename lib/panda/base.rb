@@ -34,12 +34,12 @@ module Panda
     end
     
     def delete
-      response = self.class.connection.delete(object_url_map(self.class.one_path))
+      response = connection.delete(object_url_map(self.class.one_path))
       response['deleted'] == 'ok'
     end
     
     def create
-      response = self.class.connection.post(object_url_map(self.class.many_path), @attributes)
+      response = connection.post(object_url_map(self.class.many_path), @attributes)
       load_response(response)
     end
     
@@ -48,7 +48,7 @@ module Panda
     end
     
     def update
-      response = self.class.connection.put(object_url_map(self.class.one_path), @attributes)
+      response = connection.put(object_url_map(self.class.one_path), @attributes)
       load_response(response)
     end
     

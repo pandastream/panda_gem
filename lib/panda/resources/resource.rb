@@ -16,5 +16,8 @@ module Panda
       cloud.id
     end
     
+    def connection
+      cloud.connection
+    end
   end
 end

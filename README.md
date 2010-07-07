@@ -81,7 +81,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Find all success videos
 
-    videos = Panda::Videos.all(:status => "success")
+    videos = Panda::Video.all(:status => "success")
     => [...]
 
 #### Create a new video
@@ -138,7 +138,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encodings = Panda::Encoding.find_all_by_video_id(video_id)
     => [...]
     
-    profile = Panda::Encodings.find_by :video_id => "video_id", :profile_name => "h264"
+    profile = Panda::Encoding.find_by :video_id => "video_id", :profile_name => "h264"
     profile.encoding_time
     => 3
     
@@ -286,7 +286,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       "profile_id"=>"00182830-0063-11df-8c8a-1231390041c1",
       "width"=>300}]
     
-### Deleting a video encoding
+### Deleting an encoding
 
     Panda.delete('/encodings/0f815986-0063-11df-a433-1231390041c1.json')
 
