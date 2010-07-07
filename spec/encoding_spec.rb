@@ -52,7 +52,6 @@ describe Panda::Encoding do
     encoding.id.should == "456"
   end
   
-  
   it "should filter on find" do
     encoding_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}]"
     
@@ -64,10 +63,7 @@ describe Panda::Encoding do
     encodings.first.id.should == "456"
   end
   
-  
-  it "should return the video_url" do
-    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/clouds\/my_cloud_id.json/).to_return(:body => "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" )
-    
+  it "should return the video_url" do    
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
     encoding.url.should == "http://s3.amazonaws.com/my_bucket/456.ext"
   end
