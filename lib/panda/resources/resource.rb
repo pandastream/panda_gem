@@ -1,18 +1,20 @@
 module Panda
   class Resource < Base
-    include Panda::Finders
-    include Panda::Associations
+    attr_accessor :cloud
     
+    include Panda::Finders
+    include Panda::Builders
+    include Panda::Associations
+    include Panda::Connectable
+
+    def initialize(attributes={})
+      super(attributes)
+      @cloud = self.class.cloud
+    end
     
     def cloud_id
-      connection.cloud_id
+      cloud.id
     end
     
-    class << self
-      def delete(id)
-        new({:id => id}).delete
-      end
-    end
-
   end
 end

@@ -6,19 +6,23 @@ module Panda
     end
     
     module ClassMethods
-      def connection 
-        @connection ||= Panda.connection
+      
+      def cloud
+        @cloud || Panda.cloud
       end      
   
-      def connection=(c)
-        @connection = c
+      def cloud=(cloud)
+        @cloud = cloud
       end
     
-      def [](connection)
-        new_clone = self.clone!
-        new_clone.connection = connection
-        new_clone
+      def [](cloud, connect=true)
+        FinderProxy.new(name, cloud)
       end
+      
+      def connection
+        cloud.connection
+      end
+      
     end
     
   end

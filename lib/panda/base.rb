@@ -1,31 +1,15 @@
 module Panda
   class Base
     
-    attr_accessor :attributes, :errors, :connection
-    
-    def initialize(attributes = {})
-      @connection = self.class.connection
-      @attributes = {}
-      load(attributes)
-      @errors = []
-    end
+    attr_accessor :attributes, :errors
     
     include Panda::Router
-    include Panda::Connectable
     include Panda::Associations
     
-    class << self
-      
-      private
-      
-      def method_missing(method_symbol, *arguments)
-        method_name = method_symbol.to_s
-        if method_name =~ /^find_all_by_([_a-zA-Z]\w*)$/
-          find_all_by_has_many($1, arguments.pop)
-        else
-          super
-        end
-      end
+    def initialize(attributes = {})
+      @attributes = {}
+      @errors = []
+      load(attributes)
     end
     
     def new?
@@ -44,18 +28,18 @@ module Panda
       self.send("#{name}=".to_sym, value)
       self.save
     end
-
+    
     def update_attributes(attributes)
       load(attributes) && save
     end
     
     def delete
-      response = connection.delete(object_url_map(self.class.one_path))
+      response = self.class.connection.delete(object_url_map(self.class.one_path))
       response['deleted'] == 'ok'
     end
     
     def create
-      response = connection.post(object_url_map(self.class.many_path), @attributes)
+      response = self.class.connection.post(object_url_map(self.class.many_path), @attributes)
       load_response(response)
     end
     
@@ -64,7 +48,7 @@ module Panda
     end
     
     def update
-      response = connection.put(object_url_map(self.class.one_path), @attributes)
+      response = self.class.connection.put(object_url_map(self.class.one_path), @attributes)
       load_response(response)
     end
     
@@ -76,13 +60,6 @@ module Panda
       attributes['id'] = id
     end
     
-    def reload
-      record_id = id
-      @errors = []
-      attributes = {}
-      self.load(self.class.find(record_id))
-    end
-
     private
 
     def load(attributes)

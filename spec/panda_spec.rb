@@ -168,5 +168,15 @@ describe Panda do
     end
   end
   
-  
+  describe "parsing" do
+    it "should raise an error if the response is not JSON parsable" do
+      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
+      stub_http_request(:get, //).to_return(:body => "blahblah")
+            
+      lambda {
+        @panda.get("/fake")
+      }.should raise_error(Panda::ServiceNotAvailable)
+    end
+  end
+
 end

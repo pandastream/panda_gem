@@ -4,6 +4,9 @@ describe Panda::Encoding do
   before(:each) do
     Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
 
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
+    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/clouds\/my_cloud_id.json/).to_return(:body => cloud_json)
+
     Panda.configure do |c|
       c.access_key = "my_access_key"
       c.secret_key = "my_secret_key"

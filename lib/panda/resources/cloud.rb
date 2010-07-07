@@ -1,8 +1,19 @@
 module Panda
   class Cloud < Base
     include Panda::Router
+    attr_accessor :videos, :encodings, :profiles
+    attr_accessor :connection
     
-    class << self
+    def initialize(attributes={})
+      super(attributes)
+
+      # proxies
+      @videos = Video[self]
+      @encodings = Encoding[self]
+      @profiles = Profile[self]
+    end
+    
+    class << self      
       include Panda::Finders::PathFinder
       
       def find(id)
@@ -16,22 +27,20 @@ module Panda
           :api_port => c.api_port,
           :cloud_id => cloud.id
         })
-
+        
         cloud
       end
-
-    end
-    
-    def videos
-      Video[connection]
-    end
-    
-    def encodings
-      Encoding[connection]
-    end
-    
-    def profiles
-      Profile[connection]
+      
+      def connect(connection)
+        cloud = self.find(connection.cloud_id)
+        cloud.connection = connection
+        cloud
+      end
+      
+      def connection
+        Panda.connection
+      end
+      
     end
     
   end

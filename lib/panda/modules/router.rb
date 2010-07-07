@@ -48,19 +48,6 @@ module Panda
       def full_object_url(url)
         url + ".#{DEFAULT_FORMAT}"
       end
-
-      def clone!
-        new_self = self.clone
-        new_self.resource_url = self.resource_url
-        new_self.connection = self.connection
-        new_self
-      end
-      
-      def find_object_by_path(url, map={})
-        full_url = object_url(url, map)
-        params = element_params(url, map)
-        connection.get(full_url, params)
-      end
       
     end
 
