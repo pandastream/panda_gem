@@ -16,7 +16,7 @@ module Panda
         find_by_path(many_path, map).first
       end
 
-      def all(map )
+      def all(map={})
         find_by_path(many_path, map)
       end
 
