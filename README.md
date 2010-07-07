@@ -36,7 +36,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     video = Panda::Video.find "1234"
     video.attributes
-
     => {
       "id"=>"1234",
       "original_filename"=>"panda.mp4",
@@ -77,7 +76,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => "3456"
 
     videos = Panda::Video.all(:page => 2, :per_page => 20)
-    video.size
+    videos.size
     => 20
 
 ##### Find all success videos
@@ -106,6 +105,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ##### Find an encoding
 
     encoding = Panda::Encoding.find "4567"
+    encoding.attributes
     => {
       "id"=>"4567",
       "video_id"=>"1234",
