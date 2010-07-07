@@ -100,6 +100,10 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video.delete
     => true
     
+    or 
+    
+    Panda::Video.delete("1234")
+    
 ###  Encodings
 
 ##### Find an encoding
@@ -148,12 +152,19 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     videos = Panda::Encoding.all(:video_id => "1234", :status => "success")
     => [...]
 
-##### Create a new Encoding
+##### Create a new encoding
 
     encoding = Panda::Encoding.create(:video_id => 1234, :profile_id => 6789)
     encoding.status
     => "processing"
+
+##### Delete an encoding
+
+    Panda::Encoding.delete("4567")
     
+    or 
+    
+    encoding = Panda::Encoding.find "4567"
     encoding.delete
     => true
     
@@ -170,8 +181,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ##### Update a profile
 
     profile = Panda::Profile.find "6789"
-    profile.width = 280
-    profile.height = 320
+    profile.width = 320
+    profile.height = 280
     profile.save
     => true
     
@@ -184,9 +195,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Delete a profile
 
-     profile = Panda::Profile.find "6789"
-     profile.delete
-     => true
+    Panda::Profile.delete("4567")
+
+    or
+
+    profile = Panda::Profile.find "6789"
+    profile.delete
+    => true
 
 ###  Using multiple clouds
 

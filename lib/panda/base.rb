@@ -27,7 +27,7 @@ module Panda
       def all(map={})
         find_by_path(many_path, map)
       end
-      
+
       def find_by_path(url, map={})
         full_url = element_url(url, map)
         params = element_params(url, map)
@@ -81,11 +81,6 @@ module Panda
 
     def update_attributes(attributes)
       load(attributes) && save
-    end
-    
-    def delete
-      response = connection.delete(element_url_map(self.class.one_path))
-      response['deleted'] == 'ok'
     end
     
     def create

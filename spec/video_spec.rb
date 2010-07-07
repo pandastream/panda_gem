@@ -109,6 +109,13 @@ describe Panda::Video do
     video.delete.should == true
   end
   
+  it "should delete a video" do
+    video_json = "{\"deleted\":\"ok\"}"
+    stub_http_request(:delete, /http:\/\/myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+
+    Panda::Video.delete("123")
+  end
+  
   it "should have an error object if something goes wrong" do
     response = "{\"message\":\"no-abc\",\"error\":\"error-abc\"}"
     
