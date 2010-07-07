@@ -42,7 +42,17 @@ describe Panda::Encoding do
     encoding.id.should == "456"
   end
     
-    
+  it "should find by the video through the association" do
+    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
+    encoding_json = "{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\"}"
+    stub_http_request(:get, /myapihost:85\/v2\/encodings\/456.json/).to_return(:body => encoding_json)
+    stub_http_request(:get, /myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    encoding = Panda::Encoding.find("456")
+    encoding.video.id.should == "123"
+    encoding.id.should == "456"
+  end
+  
+  
   it "should filter on find" do
     encoding_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}]"
     

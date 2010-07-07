@@ -23,7 +23,7 @@ module Panda
           param_id = "#{relation_name.to_s}_id"
           unless instance_variable_get("@#{relation_name.to_s}")
             instance_variable_set("@#{relation_name.to_s}",
-              Panda::const_get(relation_name.to_s.capitalize)[send(:connection)].
+              Panda::const_get(relation_name.to_s.capitalize)[send(:cloud)].
                 find(send(param_id.to_sym)))
           end
         end
