@@ -4,8 +4,8 @@ class FinderProxy < Proxy
   include Panda::Finders::PathFinder
 
   def initialize(name, cloud)
-    @cloud = cloud
     @name = name
+    @cloud = cloud
   end
   
   def find_by_path(url, map={})

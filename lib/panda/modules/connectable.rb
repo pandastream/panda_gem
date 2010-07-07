@@ -15,7 +15,7 @@ module Panda
         @cloud = cloud
       end
     
-      def [](cloud, connect=true)
+      def [](cloud)
         FinderProxy.new(name, cloud)
       end
       

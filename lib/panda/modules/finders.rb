@@ -50,13 +50,16 @@ module Panda
       
       def find_by_path(url, map={})
         object = find_object_by_path(url, map)
+        kclass = Panda::const_get("#{name.split('::').last}")
+
         if object.is_a?(Array)
-          object.map{|o| Panda::const_get("#{name.split('::').last}").new(o)}
+          object.map{|o| kclass.new(o)}
         elsif object["id"]
-          Panda::const_get("#{name.split('::').last}").new(object)
+          kclass.new(object)
         else
           Error.new(object).raise!
         end
+        
       end
       
     end
