@@ -12,7 +12,6 @@ module Panda
     
     include Panda::Router
     include Panda::Connectable
-    include Panda::Validatable
     include Panda::Associations
     
     class << self
@@ -25,12 +24,8 @@ module Panda
         find_by_path(many_path, map).first
       end
 
-      def find_all_by(map)
+      def all(map={})
         find_by_path(many_path, map)
-      end
-      
-      def all
-        find_by_path(many_path)
       end
       
       def find_by_path(url, map={})
