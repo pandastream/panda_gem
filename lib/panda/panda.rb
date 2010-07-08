@@ -3,19 +3,20 @@ require 'json' unless defined?(ActiveSupport::JSON)
 
 module Panda
   class << self
-    attr_accessor :cloud, :connection
+    attr_accessor :cloud
+    attr_writer :connection
 
     def configure(auth_params=nil)
-      self.connection = Connection.new
+      @connection = Panda::Connection.new
       
       unless auth_params
-        yield self.connection
+        yield @connection
       else 
         connect!(auth_params)
       end
       
-      self.connection.raise_error=true
-      @cloud = Cloud::find(self.connection.cloud_id)
+      @connection.raise_error=true
+      @cloud = Cloud::find(@connection.cloud_id)
     end
     
     def connect!(auth_params, options={})
