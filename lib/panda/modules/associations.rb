@@ -17,7 +17,6 @@ module Panda
         end
       end
 
-
       def has_one(relation_name)
         define_method relation_name do
           param_id = "#{relation_name.to_s}_id"

@@ -1,6 +1,8 @@
 module Panda
   class Cloud < Base
     include Panda::Router
+    include Panda::Updatable
+    
     attr_accessor :videos, :encodings, :profiles
     attr_accessor :connection
     

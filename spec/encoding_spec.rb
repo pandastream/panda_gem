@@ -31,7 +31,7 @@ describe Panda::Encoding do
         to_return(:body => encoding_json)
     
     encoding = Panda::Encoding.new(:source_url => "http://a.b.com/file.mp4", :video_id => "123")
-    encoding.save.should == true
+    encoding.create.should == true
     encoding.id.should == "456" 
   end
   

@@ -92,32 +92,6 @@ describe Panda::Video do
     Panda::Video[cloud].find("123")
   end
   
-  it "should create a video" do
-    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
-    stub_http_request(:post, /http:\/\/myapihost:85\/v2\/videos.json/).
-      with(:source_url =>"http://a.b.com/file.mp4").
-        to_return(:body => video_json)
-
-    video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4")
-    
-    video.new?.should == true
-    video.save.should == true
-    video.id.should == "123" 
-    video.new?.should == false
-  end
-  
-  it "should not call update a video" do
-    video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
-    stub_http_request(:put, /http:\/\/myapihost:85\/v2\/videos\/123.json/).
-      with(:source_url =>"http://a.b.com/file.mp4").
-        to_return(:body => video_json)
-
-    video = Panda::Video.new(:source_url => "http://a.b.com/file.mp4", :id => "123")
-    
-    video.new?.should == false
-    video.save.should == false
-  end
-  
   it "should delete a video" do
     video_json = "{\"deleted\":\"ok\"}"
     stub_http_request(:delete, /http:\/\/myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
