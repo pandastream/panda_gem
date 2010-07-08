@@ -101,7 +101,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.create(:file => File.new("/home/me/panda.mp4"))
     
-    or
+  or
     
     video = Panda::Video.new(:file => File.new("/home/me/panda.mp4"))
     video.create
@@ -111,7 +111,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Video.delete("1234")
     
-    or 
+  or 
+  
     video = Panda::Video.find "1234"
     video.delete
     => true
@@ -177,11 +178,17 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encoding.status
     => "processing"
 
+  or 
+    
+    video = Panda::Video.find "123"
+    encoding = video.encoding.find "4567"
+    video.encoding.create(:profile => "profile_id")
+    
 ##### Delete an encoding
 
     Panda::Encoding.delete("4567")
     
-    or 
+  or 
     
     encoding = Panda::Encoding.find "4567"
     encoding.delete
@@ -216,23 +223,37 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Profile.delete("4567")
 
-    or
+  or
 
     profile = Panda::Profile.find "6789"
     profile.delete
     => true
+
+##### All encoding of a profile
+
+    profile = Panda::Profile.find "6789"
+    profile.encodings
+    => [...]
+    
+    profile = Panda::Profile.find "6789"
+    profile.encoding.all(:status => "success")
 
 ###  Using multiple clouds
 
     cloud_one = Panda::Cloud.find "cloud_id_1"
     cloud_two = Panda::Cloud.find "cloud_id_2"
   
+    cloud_one.profiles
     cloud_two.profiles.find "profile_id"
-  
+
+    cloud_two.videos
+    cloud_two.videos.all(:status => "success")
+    cloud_two.videos.all(:page => 2)
+
     cloud_one.videos.find "video_id_1"
     cloud_two.videos.find "video_id_2"
-
-    cloud_two.videos.all(:page => 2)
+    
+    cloud_two.profiles
     cloud_two.profiles.create(:preset_name => "h264")
     cloud_one.videos.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
 
