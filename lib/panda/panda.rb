@@ -13,6 +13,8 @@ module Panda
       else 
         connect!(auth_params)
       end
+      
+      self.connection.raise_error=true
       @cloud = Cloud::find(self.connection.cloud_id)
     end
     

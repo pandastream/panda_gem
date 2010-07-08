@@ -19,4 +19,11 @@ module Panda
     end
     
   end
+  
+  class ServiceNotAvailable < StandardError
+    def initialize
+      super("ServiceNotAvailable")
+    end
+  end
+  
 end

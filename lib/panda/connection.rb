@@ -7,6 +7,7 @@ module Panda
     EU_API_HOST="api.eu.pandastream.com"
 
     def initialize(auth_params={}, options={})
+      @raise_error = false
       @api_version = 2
       @format = "hash"
 
@@ -29,6 +30,10 @@ module Panda
       end
     end
 
+    def raise_error=(bool)
+      @raise_error = bool
+    end
+    
     def format=(ret_format)
       if ret_format
         raise "Format unknown" if !["json", "hash"].include?(ret_format.to_s)
@@ -113,14 +118,23 @@ module Panda
       end
 
       def format_to(response)
-        if self.format == "json"
-          response
-
-        elsif defined?(ActiveSupport::JSON)
-          ActiveSupport::JSON.decode(response)
-
-        else
-          JSON.parse(response)
+        begin
+          if self.format == "json"
+            response
+          elsif defined?(ActiveSupport::JSON)
+            ActiveSupport::JSON.decode(response)
+          else
+            JSON.parse(response)
+          end
+        rescue JSON::ParserError => e
+          # if not used with PandaResources
+          # don't raise Service Not Available because
+          # maybe the host, the url, or anything is wrongly setup
+          if @raise_error
+            raise ServiceNotAvailable.new
+          else
+            raise e
+          end
         end
       end
 
