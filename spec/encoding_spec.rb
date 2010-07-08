@@ -65,4 +65,9 @@ describe Panda::Encoding do
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
     encoding.url.should == "http://s3.amazonaws.com/my_bucket/456.ext"
   end
+  
+  it "should generate a screenhost array" do
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
+    encoding.screenshots[0].should == "http://s3.amazonaws.com/my_bucket/456_1.jpg"
+  end
 end

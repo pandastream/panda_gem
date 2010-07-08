@@ -8,7 +8,11 @@ module Panda
       "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{id}#{extname}"
     end
 
-    def update; false; end
-  
+    def screenshots
+      @screenshots ||= (1..7).map do |i|
+        "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{id}_#{i}.jpg"
+      end
+    end
+    
   end
 end
