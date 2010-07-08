@@ -38,6 +38,10 @@ module Panda
       create || errors.last.raise!
     end
     
+    def to_json
+      attributes.to_json
+    end
+    
     private
 
     def load(attributes)
