@@ -14,14 +14,14 @@ module Panda
        end
 
        def create!(attributes)
-         create(attributes) || raise ("Blah")
+         create(attributes) || raise(self.error.first.to_s)
        end
        
     end
     
     module DeleteBuilder
       def delete(id)
-        response = connection.delete( full_object_url(object_url(one_path,{:id =>id}) ))
+        response = connection.delete(full_object_url(object_url(one_path,{:id =>id})))
         response['deleted'] == 'ok'
       end
     end
