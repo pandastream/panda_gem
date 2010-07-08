@@ -32,12 +32,12 @@ describe Panda::Video do
 
   it "should find return all videos" do
     
-    videos_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":1},{\"source_url\":\"http://a.b.com/file2.mp4\",\"id\":2}]"
+    videos_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":111},{\"source_url\":\"http://a.b.com/file2.mp4\",\"id\":222}]"
 
     stub_http_request(:get, /myapihost:85\/v2\/videos.json/).to_return(:body => videos_json)
 
     videos = Panda::Video.all
-    videos.first.id.should == 1
+    videos.first.id.should == 111
     videos.first.source_url.should == "http://a.b.com/file.mp4"
     videos.size.should == 2
   end
@@ -69,7 +69,7 @@ describe Panda::Video do
     video.encodings
   end
   
-  it "should allow to specify a connection" do
+  it "should proxy video through a cloud" do
     video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
     stub_http_request(:get, /myotherapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
     connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myotherapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
@@ -79,18 +79,7 @@ describe Panda::Video do
     Panda::Video[cloud].find("123")
   end
   
-  it "should allow to specify a connection" do
-    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
-    stub_http_request(:get, /myotherapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
-    connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myotherapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
-
-    cloud = Panda::Cloud.new
-    cloud.connection = connection
-
-    Panda::Video[cloud].find("123")
-  end
-  
-  it "should delete a video" do
+  it "should delete a video using class" do
     video_json = "{\"deleted\":\"ok\"}"
     stub_http_request(:delete, /http:\/\/myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
 
@@ -100,7 +89,7 @@ describe Panda::Video do
     video.delete.should == true
   end
   
-  it "should delete a video" do
+  it "should delete a video using instance" do
     video_json = "{\"deleted\":\"ok\"}"
     stub_http_request(:delete, /http:\/\/myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
 
@@ -148,7 +137,7 @@ describe Panda::Video do
     Panda::Video.find "123"
   end
   
-  it "test" do
+  it "should use the correct connection" do
     video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"cloud1\"}"
     cloud2_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"cloud2\"}"
@@ -177,7 +166,6 @@ describe Panda::Video do
       Panda::Video.cloud.id.should == "my_cloud_id"
   end
   
-  
   it "should use a finder proxy" do
     video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
     
@@ -189,7 +177,7 @@ describe Panda::Video do
     video =  Panda::Video[cloud].find("123")
   end
   
-  it "should create a video" do
+  it "should create a video using class method" do
     video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
     
     stub_http_request(:post, /myapihost:85\/v2\/videos.json/).

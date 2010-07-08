@@ -22,7 +22,7 @@ describe Panda::Encoding do
     Panda::Encoding.find_all_by_video_id("123").first.id.should == 456    
   end
 
-  it "should create a encodings" do
+  it "should create an encoding using instance method" do
     encoding_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}"
     stub_http_request(:post, /http:\/\/myapihost:85\/v2\/encodings.json/).
       with(:source_url =>"http://a.b.com/file.mp4").
