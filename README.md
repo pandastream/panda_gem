@@ -184,7 +184,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
   or 
     
     video = Panda::Video.find "123"
-    encoding = video.encoding.find "4567"
     video.encoding.create(:profile => "profile_id")
     
 ##### Delete an encoding
@@ -238,9 +237,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     profile.encodings
     => [...]
     
-    profile = Panda::Profile.find "6789"
     profile.encoding.all(:status => "success")
-
+    => [...]
+    
 ###  Using multiple clouds
 
     cloud_one = Panda::Cloud.find "cloud_id_1"
