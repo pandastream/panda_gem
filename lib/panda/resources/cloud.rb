@@ -4,7 +4,7 @@ module Panda
     include Panda::Updatable
     
     attr_accessor :videos, :encodings, :profiles
-    attr_accessor :connection
+    attr_writer :connection
     
     def initialize(attributes={})
       super(attributes)
@@ -19,24 +19,17 @@ module Panda
       include Panda::Finders::PathFinder
       
       def find(id)
-        cloud = find_by_path(one_path, {:id => id})
-        
-        config = Panda.connection
-        cloud.connection = Panda::Connection.new({
-          :access_key => config.access_key,
-          :secret_key => config.secret_key,
-          :api_host => config.api_host,
-          :api_port => config.api_port,
-          :cloud_id => cloud.id
-        })
-        
-        cloud
+        find_by_path(one_path, {:id => id})
       end
       
       def connection
         Panda.connection
       end
-      
+
+    end
+    
+    def connection
+      @connection ||= Connection.new(Panda.connection.to_hash.merge!(:cloud_id => id))
     end
     
   end

@@ -1,6 +1,5 @@
 module Panda
   class Encoding < Resource
-
     belongs_to :video
     has_one :profile
 

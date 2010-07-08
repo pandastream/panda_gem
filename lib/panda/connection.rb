@@ -94,6 +94,14 @@ module Panda
       granting_params = { :s3_videos_bucket => params[:bucket], :user_aws_key => params[:access_key], :user_aws_secret => params[:secret_key] }
       put("/clouds/#{@cloud_id}.json", granting_params)
     end
+    
+    def to_hash
+      hash = {}
+      [:api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id].each do |a|
+        hash[a] = send(a)
+      end
+      hash
+    end
 
     private
       def stringify_keys(params)
