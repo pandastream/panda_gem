@@ -64,9 +64,6 @@ describe Panda::Video do
 
     video = Panda::Video.find("123")
     video.encodings.first.attributes.should == encodings.first.attributes
-    
-    Panda::Encoding.should_not_receive(:find_all_by_video_id)
-    video.encodings
   end
   
   it "should proxy video through a cloud" do
@@ -111,7 +108,7 @@ describe Panda::Video do
     
     stub_http_request(:put, /http:\/\/myapihost:85\/v2\/profiles\/abc.json/).to_return(:body => response)
     
-    obj = Panda::Profile.new (:id => "abc")
+    obj = Panda::Profile.new(:id => "abc")
     original_attrs = obj.attributes
     obj.save
     
@@ -188,5 +185,19 @@ describe Panda::Video do
     video.id.should == "123"
   end
   
+  it "should return a json on attributes" do
+    video = Panda::Video.new(:attr => "value")
+    video.to_json.should == video.attributes.to_json
+  end
+  
+  it "should create an encoding using video scope" do
+    encoding_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"678\"}"
+    video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    stub_http_request(:post, /myapihost:85\/v2\/encodings.json/).with(:profile_id => "345").to_return(:body => encoding_json)    
+    video = Panda::Video.find "123"
+    encoding = video.encodings.create(:profile_id => "345")
+    encoding.id.should == "678"
+  end
   
 end

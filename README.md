@@ -44,6 +44,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       "duration"=>14010,
       "audio_codec"=>"aac",
       "video_codec"=>"h264",
+      "file_size" => "44000",
       "width"=>300,
       "height"=>240,
       "fps"=>29,
@@ -89,6 +90,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
   from a source
     
     video = Panda::Video.create(:source_url => "http://mywebsite.com/myvideo.mp4")
+    
     or
     
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
@@ -126,6 +128,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       "extname"=>".mp4",
       "encoding_progress"=>60,
       "encoding_time"=>3,
+      "file_size" => "25000",
       "width"=>300,
       "height"=>240,
       "profile_id"=>"6789",

@@ -16,7 +16,7 @@ module Panda
       end
     
       def [](cloud)
-        FinderProxy.new(name, cloud)
+        Scope.new(nil, name.to_s[0..-1].split('::').last.capitalize, cloud)
       end
       
       def connection

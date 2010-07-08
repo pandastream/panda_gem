@@ -41,4 +41,15 @@ describe Panda::Profile do
     profile.save.should == true
   end
 
+
+  it "should have a many relation on encodings" do
+    encoding_json = "[{\"abc\":\"efg\",\"id\":456}]"
+    profile_json = "{\"title\":\"my_profile\",\"id\":\"901\"}"
+    stub_http_request(:get, /http:\/\/myapihost:85\/v2\/profiles\/901\/encodings.json/).
+      to_return(:body => encoding_json)
+    
+    profile = Panda::Profile.new(:title => "http://a.b.com/file.mp4", :id => "901")
+    profile.encodings.first.id.should ==  456
+  end
+  
 end

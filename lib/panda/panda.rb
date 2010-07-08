@@ -15,8 +15,8 @@ module Panda
         connect!(auth_params)
       end
       
-      @connection.raise_error=true
-      @cloud = Cloud::find(@connection.cloud_id)
+      connection.raise_error=true
+      @cloud = Cloud::find(connection.cloud_id)
     end
     
     def connect!(auth_params, options={})

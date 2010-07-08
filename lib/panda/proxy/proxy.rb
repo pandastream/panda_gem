@@ -1,11 +1,17 @@
-class Proxy
-  include Panda::Router::ClassMethods
+module Panda
+  class Proxy
+    include Panda::Router::ClassMethods
   
-  attr_accessor :name, :cloud
-  attr_writer :connection
+    attr_accessor :target, :kclass, :cloud
+    attr_writer :connection
   
-  def connection
-    @cloud.connection
+    def connection
+      @cloud.connection
+    end
+  
+    def name
+      kclass
+    end
+  
   end
-  
 end
