@@ -25,11 +25,10 @@ module Panda
       def connection
         Panda.connection
       end
-
     end
     
     def connection
-      @connection ||= Connection.new(Panda.connection.to_hash.merge!(:cloud_id => id))
+      @connection ||= Connection.new(self.class.connection.to_hash.merge!(:cloud_id => id))
     end
     
   end
