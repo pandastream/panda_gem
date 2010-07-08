@@ -1,10 +1,7 @@
 module Panda
-  class Base
-    
+  class Base    
     attr_accessor :attributes, :errors
-    
     include Panda::Router
-    include Panda::Associations
     
     def initialize(attributes = {})
       @attributes = {}

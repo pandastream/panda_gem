@@ -1,8 +1,9 @@
 module Panda
   class Resource < Base
     attr_accessor :cloud
-    
+
     include Panda::Finders
+    include Panda::Associations
     include Panda::Builders
     include Panda::Associations
     include Panda::Connectable
