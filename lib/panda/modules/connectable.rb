@@ -8,13 +8,9 @@ module Panda
     module ClassMethods
       
       def cloud
-        @cloud || Panda.cloud
+        Panda.cloud
       end      
   
-      def cloud=(cloud)
-        @cloud = cloud
-      end
-    
       def [](cloud)
         Scope.new(nil, name.to_s[0..-1].split('::').last.capitalize, cloud)
       end
