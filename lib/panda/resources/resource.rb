@@ -5,7 +5,7 @@ module Panda
     include Panda::Finders
     include Panda::Builders
     include Panda::Associations
-    include Panda::Connectable
+    include Panda::Scoped
 
     def initialize(attributes={})
       super(attributes)

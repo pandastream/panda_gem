@@ -1,5 +1,5 @@
 module Panda
-  module Connectable
+  module Scoped
     
     def self.included(base)
       base.extend(ClassMethods)
