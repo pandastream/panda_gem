@@ -12,7 +12,7 @@ module Panda
       end      
   
       def [](cloud)
-        Scope.new(nil, name.to_s[0..-1].split('::').last.capitalize, cloud)
+        Scope.new(nil, name.split('::').last.capitalize, cloud)
       end
       
       def connection
