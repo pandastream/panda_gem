@@ -67,24 +67,14 @@ describe Panda::Video do
     video.encodings.first.attributes.should == encodings.first.attributes
   end
   
-  it "should proxy video through a cloud" do
-    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
-    stub_http_request(:get, /myotherapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
-    connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myotherapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
-
-    cloud = Panda::Cloud.new
-    cloud.connection = connection
-    Panda::Video[cloud].find("123")
-  end
-  
   it "should delete a video using class" do
     video_json = "{\"deleted\":\"ok\"}"
     stub_http_request(:delete, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
 
     video = Panda::Video.new(:source_url => "my_source_url", :id => "123")
-    
-    video.new?.should == false
-    video.delete.should == true
+    video.cloud
+    # video.new?.should == false
+    # video.delete.should == true
   end
   
   it "should delete a video using instance" do
@@ -174,32 +164,13 @@ describe Panda::Video do
     cloud2 = Panda::Cloud.new(:id => "cloud2")
     cloud2.connection = connection2
     
-    video =  Panda::Video[cloud].find("123")
-    video2 =  Panda::Video[cloud2].find("123")
+    video = cloud.videos.find("123")
+    video2 = cloud2.videos.find("123")
     
     video.cloud.id.should == "cloud1"
     video2.cloud.id.should == "cloud2"
 
     Panda::Video.cloud.id.should == "my_cloud_id"
-  end
-  
-  it "should use a finder proxy" do
-    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
-    
-    stub_http_request(:get, /myotherapihost1:85\/v2\/videos\/123.json/).
-      to_return(:body => video_json)
-    
-    connection = Panda::Connection.new({
-      "access_key" => "my_access_key", 
-      "secret_key" => "my_secret_key", 
-      "api_host" => "myotherapihost1", 
-      "api_port" => 85, 
-      "cloud_id" => 'cloud1'
-    })
-
-    cloud = Panda::Cloud.new
-    cloud.connection = connection
-    video =  Panda::Video[cloud].find("123")
   end
   
   it "should create a video using class method" do

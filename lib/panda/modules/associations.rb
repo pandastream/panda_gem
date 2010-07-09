@@ -8,7 +8,10 @@ module Panda
 
       def has_many(relation_name)
         define_method relation_name do
-          Scope.new(self, relation_name.to_s[0..-2].capitalize, send(:cloud))
+          unless instance_variable_get("@#{relation_name.to_s}")
+            klass = Panda::const_get(relation_name.to_s[0..-2].capitalize)
+            instance_variable_set("@#{relation_name.to_s}", Scope.new(self, klass))
+          end
         end
       end
 
@@ -17,8 +20,7 @@ module Panda
           param_id = "#{relation_name.to_s}_id"
           unless instance_variable_get("@#{relation_name.to_s}")
             instance_variable_set("@#{relation_name.to_s}",
-              Panda::const_get(relation_name.to_s.capitalize)[send(:cloud)].
-                find(send(param_id.to_sym)))
+              Panda::const_get(relation_name.to_s.capitalize).find(send(param_id.to_sym)))
           end
         end
       end

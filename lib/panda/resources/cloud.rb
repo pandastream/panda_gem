@@ -2,21 +2,26 @@ module Panda
   class Cloud < Base
     include Panda::Router
     include Panda::Updatable
-    
-    attr_accessor :videos, :encodings, :profiles
     attr_writer :connection
     
     def initialize(attributes={})
       super(attributes)
-
-      # proxies
-      @videos = Video[self]
-      @encodings = Encoding[self]
-      @profiles = Profile[self]
+      Panda.clouds[id]=self
+    end
+    
+    def videos
+      Scope.new(self, Video)
+    end
+    
+    def encodings
+      Scope.new(self, Encoding)
+    end
+    
+    def profiles
+      Scope.new(self, Profile)
     end
     
     class << self
-
       def connection
         Panda.connection
       end

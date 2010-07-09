@@ -3,7 +3,7 @@ require 'json' unless defined?(ActiveSupport::JSON)
 
 module Panda
   class << self
-    attr_accessor :cloud
+    attr_accessor :cloud, :clouds
     attr_writer :connection
 
     def configure(auth_params=nil)
@@ -16,6 +16,7 @@ module Panda
       end
       
       connection.raise_error=true
+      @clouds = {} ;
       @cloud = Cloud::find(connection.cloud_id)
     end
     

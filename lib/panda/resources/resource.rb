@@ -1,6 +1,5 @@
 module Panda
   class Resource < Base
-    attr_accessor :cloud
 
     include Panda::Builders
     include Panda::Associations
@@ -8,15 +7,15 @@ module Panda
 
     def initialize(attributes={})
       super(attributes)
-      @cloud = self.class.cloud
+      @attributes['cloud_id'] = Panda.cloud.id
     end
 
     class << self
       include Panda::Finders::FindMany
     end
     
-    def cloud_id
-      cloud.id
+    def cloud
+      Panda.clouds[cloud_id]
     end
     
     def connection
@@ -33,5 +32,14 @@ module Panda
       create || errors.last.raise!
     end
 
+    def reload
+      raise "Record not found" if new?
+      record_cloud_id = cloud_id
+      record_id = id
+      init_load
+      @attributes['cloud_id'] = record_cloud_id
+      perform_reload(record_id)
+    end
+    
   end
 end

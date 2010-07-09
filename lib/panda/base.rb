@@ -30,12 +30,10 @@ module Panda
     end
     
     def reload
-      record_id = id
       raise "Record not found" if new?
+      record_id = id
       init_load
-      url = self.class.object_url(self.class.one_path,:id => record_id)
-      response = connection.get(url)
-      load_response(response)
+      perform_reload(record_id)
     end
     
     def to_json
@@ -43,6 +41,12 @@ module Panda
     end
     
     private
+    
+    def perform_reload(id)
+      url = self.class.object_url(self.class.one_path,:id => id)
+      response = connection.get(url)
+      load_response(response)
+    end
 
     def init_load
       @attributes = {}

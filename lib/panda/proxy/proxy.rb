@@ -5,7 +5,7 @@ module Panda
     include Panda::Finders::FindOne
     include Panda::Builders::CreateBuilder
   
-    attr_accessor :target, :kclass, :cloud
+    attr_accessor :target, :klass
     attr_writer :connection
   
     def connection
@@ -13,8 +13,9 @@ module Panda
     end
   
     def name
-      kclass
+      klass.name
     end
+  
   
   end
 end
