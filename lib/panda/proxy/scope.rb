@@ -1,11 +1,8 @@
 module Panda
   class Scope < Proxy
 
-    include Panda::Finders::ClassMethods
-    include Panda::Finders::PathFinder
-    include Panda::Builders::CreateBuilder
 
-    NON_DELEGATE_METHODS=%w(nil? send object_id find create all size respond_to? inspect class)
+    NON_DELEGATE_METHODS=%w(nil? send object_id respond_to? class find find_by all create create!)
 
     def initialize(target, kclass, cloud)
       @target = target
@@ -28,6 +25,13 @@ module Panda
       end        
     end
 
+    def create(attributes)
+      scoped_attrs = {}
+      if @target
+        scoped_attrs[target_relation_name.to_sym] = @target.id
+      end
+      super(attributes.merge(scoped_attrs))
+    end
 
     private
 
@@ -46,11 +50,15 @@ module Panda
       def trigger_request
         if @target
           Panda::const_get(kclass)[send(:cloud)].
-            send("find_all_by_#{@target.class.name.split('::').last.downcase}_id", @target.id)
+            send("find_all_by_#{target_relation_name}", @target.id)
         else
           Panda::const_get(kclass)[send(:cloud)].all
         end
       end
 
+      def target_relation_name
+        "#{@target.class.name.split('::').last.downcase}_id"
+      end
+      
   end
 end

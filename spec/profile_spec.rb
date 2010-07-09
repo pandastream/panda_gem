@@ -18,10 +18,10 @@ describe Panda::Profile do
   it "should create a video" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:post, /http:\/\/myapihost:85\/v2\/profiles.json/).
-      with(:title =>"my_profiles").
+      with(:body => /title=my_profile/).
         to_return(:body => profile_json)
 
-    profile = Panda::Profile.new(:title => "http://a.b.com/file.mp4")
+    profile = Panda::Profile.new(:title => "my_profile")
     
     profile.new?.should == true
     profile.save.should == true
@@ -32,10 +32,10 @@ describe Panda::Profile do
   it "should not call update a video" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:put, /http:\/\/myapihost:85\/v2\/profiles\/123.json/).
-      with(:title =>"my_profiles").
+      with(:body => /title=my_profile/).
         to_return(:body => profile_json)
 
-    profile = Panda::Profile.new(:title => "http://a.b.com/file.mp4", :id => "123")
+    profile = Panda::Profile.new(:title => "my_profile", :id => "123")
     
     profile.new?.should == false
     profile.save.should == true

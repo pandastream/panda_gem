@@ -23,12 +23,12 @@ describe Panda::Encoding do
   end
 
   it "should create an encoding using instance method" do
-    encoding_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}"
+    encoding_json = "{\"source_url\":\"url_file\",\"id\":\"456\"}"
     stub_http_request(:post, /http:\/\/myapihost:85\/v2\/encodings.json/).
-      with(:source_url =>"http://a.b.com/file.mp4").
+      with(:body => /source_url=url_file/).
         to_return(:body => encoding_json)
     
-    encoding = Panda::Encoding.new(:source_url => "http://a.b.com/file.mp4", :video_id => "123")
+    encoding = Panda::Encoding.new(:source_url => "url_file", :video_id => "123")
     encoding.create.should == true
     encoding.id.should == "456" 
   end
@@ -54,7 +54,7 @@ describe Panda::Encoding do
     encoding_json = "[{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"456\"}]"
     
     stub_http_request(:get, /http:\/\/myapihost:85\/v2\/encodings.json/).
-      with(:profile_name => "mp4").
+      with{|r| r.uri.query =~ /profile_name=my_profile/ && r.uri.query =~ /video_id=123/ }.
         to_return(:body => encoding_json)
 
     encodings = Panda::Encoding.all(:video_id => "123", :profile_name => "my_profile")
@@ -69,5 +69,22 @@ describe Panda::Encoding do
   it "should generate a screenhost array" do
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
     encoding.screenshots[0].should == "http://s3.amazonaws.com/my_bucket/456_1.jpg"
+  end
+  
+  it "should create an encoding through the association" do
+    video_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
+    encoding_json = "{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\", \"profile_id\":\"901\"}"
+
+    stub_http_request(:get, /myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+
+    stub_http_request(:post, /myapihost:85\/v2\/encodings.json/).
+        with{|r| r.body =~ /video_id=123/ && r.body =~ /profile_id=901/}.
+          to_return(:body => encoding_json)
+
+    video = Panda::Video.find("123")
+    
+    encoding = video.encodings.create(:profile_id => "901")
+    encoding.id.should == "456"
+    encoding.profile_id.should == "901"
   end
 end

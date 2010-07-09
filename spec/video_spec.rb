@@ -175,13 +175,13 @@ describe Panda::Video do
   end
   
   it "should create a video using class method" do
-    video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
     
     stub_http_request(:post, /myapihost:85\/v2\/videos.json/).
-      with(:source_url => "panda.mp4").
+      with(:body => /source_url=url_panda.mp4/).
         to_return(:body => video_json)
     
-    video = Panda::Video.create(:source_url => "http://panda.mp4")
+    video = Panda::Video.create(:source_url => "url_panda.mp4")
     video.id.should == "123"
   end
   
@@ -194,7 +194,11 @@ describe Panda::Video do
     encoding_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"678\"}"
     video_json = "{\"source_url\":\"http://a.b.com/file4.mp4\",\"id\":\"123\"}"
     stub_http_request(:get, /myapihost:85\/v2\/videos\/123.json/).to_return(:body => video_json)
-    stub_http_request(:post, /myapihost:85\/v2\/encodings.json/).with(:profile_id => "345").to_return(:body => encoding_json)    
+
+    stub_http_request(:post, /myapihost:85\/v2\/encodings.json/).
+      with(:body => /profile_id=345/).
+        to_return(:body => encoding_json)
+
     video = Panda::Video.find "123"
     encoding = video.encodings.create(:profile_id => "345")
     encoding.id.should == "678"

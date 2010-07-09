@@ -16,12 +16,6 @@ describe Panda::Video do
     
   end
 
-  it "should find a cloud" do
-    
-   
-  end
-  
-  
   describe "using a cloud" do
     before(:each) do
        cloud_json = "{\"s3_videos_bucket\":\"my_bucket1\",\"id\":\"cloud1\"}"
@@ -45,11 +39,10 @@ describe Panda::Video do
       video.id.should == "134"
     end
     
-    
     it "should find all video with params" do
-      videos_json = "{\"source_url\":\"http://a.b.com/file.mp4\",\"id\":\"123\"}"
+      videos_json = "{\"source_url\":\"mysourceurl\",\"id\":\"123\"}"
       stub_http_request(:post, /myapihost:85\/v2\/videos.json/).to_return(:body => videos_json)
-      @cloud.videos.create "123"
+      @cloud.videos.create(:source_url => "mysourceurl")
     end    
     
   end
