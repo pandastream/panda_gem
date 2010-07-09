@@ -8,18 +8,18 @@ module Panda
 
       def has_many(relation_name)
         define_method relation_name do
-          unless instance_variable_get("@#{relation_name.to_s}")
+          unless instance_variable_get("@#{relation_name}")
             klass = Panda::const_get(relation_name.to_s[0..-2].capitalize)
-            instance_variable_set("@#{relation_name.to_s}", Scope.new(self, klass))
+            instance_variable_set("@#{relation_name}", Scope.new(self, klass))
           end
         end
       end
 
       def has_one(relation_name)
         define_method relation_name do
-          param_id = "#{relation_name.to_s}_id"
-          unless instance_variable_get("@#{relation_name.to_s}")
-            instance_variable_set("@#{relation_name.to_s}",
+          param_id = "#{relation_name}_id"
+          unless instance_variable_get("@#{relation_name}")
+            instance_variable_set("@#{relation_name}",
               Panda::const_get(relation_name.to_s.capitalize).find(send(param_id.to_sym)))
           end
         end

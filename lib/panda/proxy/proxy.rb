@@ -5,7 +5,7 @@ module Panda
     include Panda::Finders::FindOne
     include Panda::Builders::CreateBuilder
   
-    attr_accessor :target, :klass
+    attr_accessor :parent, :klass
     attr_writer :connection
   
     def connection
