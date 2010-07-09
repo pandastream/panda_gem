@@ -172,7 +172,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encoding.url
     => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
 
-    encoding.screenshots[1]
+    encoding.screenshots[0]
     => "http://s3.amazonaws.com/my_panda_bucket/4567_1.jpg"
 
 ##### Create a new encoding
