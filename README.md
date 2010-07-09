@@ -180,7 +180,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => [...]
 
     video = Panda::Video.find "1234"
-    video.encoding.all(:status => "success")
+    video.encodings.all(:status => "success")
     
     status: success | processing | fail
     
@@ -253,7 +253,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     profile.encodings
     => [...]
     
-    profile.encoding.all(:status => "success")
+    profile.encodings.all(:status => "success")
     => [...]
     
 ###  Using multiple clouds
