@@ -36,7 +36,7 @@ module Panda
     module FindMany
 
       def find_by(map)
-        find_by_path(many_path, map).first
+        all(map).first
       end
 
       def all(map={})

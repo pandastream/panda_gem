@@ -1,6 +1,6 @@
 module Panda
   class Scope < Proxy
-    NON_DELEGATE_METHODS=%w(nil? send object_id respond_to? class find find_by all create create!)
+    NON_DELEGATE_METHODS=%w(nil? send object_id respond_to? class find find_by create create! all)
 
     def initialize(parent, klass)
       @parent = parent
@@ -26,8 +26,13 @@ module Panda
     end
 
     def all(attributes={})
-      scoped_attrs = merge_with_parent(attributes)
-      super(scoped_attrs)
+      if @parent.is_a?(Resource)
+        scoped_attrs = merge_with_parent(attributes)
+        has_many_path = build_hash_many_path(many_path, parent_relation_name)
+        klass.find_by_path(has_many_path, scoped_attrs)
+      else
+        super(attributes)
+      end
     end
     
     def cloud

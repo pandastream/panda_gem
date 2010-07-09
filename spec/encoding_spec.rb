@@ -20,7 +20,7 @@ describe Panda::Encoding do
     encoding_json = "[{\"abc\":\"efg\",\"id\":456}]"
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).
       to_return(:body => encoding_json)
-    Panda::Encoding.find_all_by_video_id("123").first.id.should == 456    
+    Panda::Encoding.find_all_by_video_id("123").first.id.should == 456
   end
 
   it "should create an encoding using instance method" do
@@ -100,10 +100,10 @@ describe Panda::Encoding do
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
       to_return(:body => video_json)
     
-    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
-        with{|r| r.uri.query =~ /video_id=123/ && r.uri.query =~ /profile_id=901/}.
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).
+        with{|r| r.uri.query =~ /profile_id=901/}.
           to_return(:body => encodings_json)
-    
+
     video = Panda::Video.find("123")
     encodings = video.encodings.all(:profile_id => "901")
     encodings.first.id = "456"
