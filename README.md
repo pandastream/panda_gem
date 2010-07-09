@@ -61,6 +61,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.find "fake_id"
     => raise: RecordNotFound: Couldn't find Video with ID=fake_id
+    
+    video.to_json
+    =>"{\"duration\":14010,\"created_at\":\"2010/01/13 16:45:29 +0000\",\"original_filename\":\"panda.mp4\"....}"
 
 ##### Find encodings of a video
     
@@ -96,6 +99,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.create
     => true
+    
+    # Note that you will need a movie file to test this. 
+    # You can grab http://panda-test-harness-videos.s3.amazonaws.com/panda.mp4
     
   from a local file
     

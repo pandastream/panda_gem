@@ -30,13 +30,29 @@ describe Panda::Profile do
     profile.new?.should == false
   end
 
+
+  it "should update a video and sending the changed attributes" do
+    profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
+    stub_http_request(:put, /api.example.com:85\/v2\/profiles\/999.json/).
+      with{|r| !(r.body =~ /title=my_new_profile_title/) && r.body =~ /width=80/}.
+        to_return(:body => profile_json)
+
+    profile = Panda::Profile.new(:id => "999", :title => "my_profile_title")
+    
+    profile.width=80    
+    profile.new?.should == false
+    profile.save.should == true
+  end
+
+
   it "should not call update a video" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:put, /api.example.com:85\/v2\/profiles\/123.json/).
       with(:body => /title=my_profile/).
         to_return(:body => profile_json)
 
-    profile = Panda::Profile.new(:title => "my_profile", :id => "123")
+    profile = Panda::Profile.new(:id => "123")
+    profile.title = "my_profile"
     
     profile.new?.should == false
     profile.save.should == true

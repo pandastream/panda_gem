@@ -9,6 +9,10 @@ module Panda
     module CreateBuilder
       
        def create(attributes)
+         if attr_id=(attributes[:id] || attributes['id'])
+           raise "Can't create attribute. Already have an id=#{attr_id}"
+         end
+         
          response = connection.post(full_object_url(many_path), attributes)
          Panda::const_get("#{name.split('::').last}").new(response)
        end

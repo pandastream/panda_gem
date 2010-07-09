@@ -5,6 +5,7 @@ module Panda
     
     def initialize(attributes = {})
       @attributes = {}
+      @changed_attributes = {}
       @errors = []
       load(attributes)
     end
@@ -25,16 +26,7 @@ module Panda
     def id=(id)
       attributes['id'] = id
     end
-    
-    def create
-      response = connection.post(object_url_map(self.class.many_path), @attributes)
-      load_response(response)
-    end
-    
-    def create!
-      create || errors.last.raise!
-    end
-    
+        
     def to_json
       attributes.to_json
     end
@@ -44,6 +36,7 @@ module Panda
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value
+        @changed_attributes[key.to_s] = value if !(attributes['id'] || attributes[:id])
       end
     end
     
@@ -64,6 +57,7 @@ module Panda
         case $1
         when '='
           attributes[$`] = arguments.first
+          @changed_attributes[$`] = arguments.first
         when '?'
           !! attributes[$`]
         end

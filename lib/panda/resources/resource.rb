@@ -19,5 +19,16 @@ module Panda
     def connection
       cloud.connection
     end
+    
+    def create
+      raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
+      response = connection.post(object_url_map(self.class.many_path), @attributes)
+      load_response(response)
+    end
+    
+    def create!
+      create || errors.last.raise!
+    end
+    
   end
 end

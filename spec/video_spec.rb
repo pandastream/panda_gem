@@ -233,4 +233,17 @@ describe Panda::Video do
     encoding.id.should == "678"
   end
   
+  it "should not create a model having an id" do
+    video = Panda::Video.new(:id => "abc")
+    lambda {
+      video.create
+    }.should raise_error "Can't create attribute. Already have an id=abc"
+  end
+  
+  it "should not create a model having an id" do
+    lambda {
+      Panda::Video.create(:id => "abc")
+    }.should raise_error "Can't create attribute. Already have an id=abc"
+  end
+  
 end

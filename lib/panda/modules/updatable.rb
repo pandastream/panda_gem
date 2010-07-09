@@ -19,7 +19,7 @@ module Panda
     end
         
     def update
-      response = connection.put(object_url_map(self.class.one_path), @attributes)
+      response = connection.put(object_url_map(self.class.one_path), @changed_attributes)
       load_response(response)
     end
     
