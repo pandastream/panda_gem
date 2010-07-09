@@ -92,4 +92,20 @@ describe Panda::Encoding do
     encoding.id.should == "456"
     encoding.profile_id.should == "901"
   end
+  
+  it "should create an encoding through the association" do
+    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+    encodings_json = "[{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\", \"profile_id\":\"901\"}]"
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+      to_return(:body => video_json)
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+        with{|r| r.uri.query =~ /video_id=123/ && r.uri.query =~ /profile_id=901/}.
+          to_return(:body => encodings_json)
+    
+    video = Panda::Video.find("123")
+    encodings = video.encodings.all(:profile_id => "901")
+    encodings.first.id = "456"
+  end
 end

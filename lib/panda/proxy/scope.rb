@@ -26,13 +26,15 @@ module Panda
     end
 
     def create(attributes)
-      scoped_attrs = {}
-      if @target
-        scoped_attrs[target_relation_name.to_sym] = @target.id
-      end
-      super(attributes.merge(scoped_attrs))
+      scoped_attrs = merge_with_target(attributes)
+      super(scoped_attrs)
     end
 
+    def all(attributes={})
+      scoped_attrs = merge_with_target(attributes)
+      super(scoped_attrs)
+    end
+    
     private
 
       def initialize_scopes
@@ -60,5 +62,12 @@ module Panda
         "#{@target.class.name.split('::').last.downcase}_id"
       end
       
+      def merge_with_target(attributes)
+        scoped_attrs = attributes.clone
+        if @target
+          scoped_attrs[target_relation_name.to_sym] = @target.id
+        end
+        scoped_attrs
+      end
   end
 end

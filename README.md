@@ -93,7 +93,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     videos = Panda::Video.all(:status => "success")
     => [...]
 
-    status: success | processing | error
+    status: success | processing | fail
 
 #### Create a new video
 
@@ -182,7 +182,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.find "1234"
     video.encoding.all(:status => "success")
     
-    status: success | processing | error
+    status: success | processing | fail
     
 ##### Retrieve the encoding 
 
