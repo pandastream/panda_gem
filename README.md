@@ -184,7 +184,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
   or 
     
     video = Panda::Video.find "123"
-    video.encoding.create(:profile => "profile_id")
+    video.encodings.create(:profile => "profile_id")
     
 ##### Delete an encoding
 
