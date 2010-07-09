@@ -15,16 +15,19 @@ module Panda
       initialize_scopes
     end
 
-
     def find_by_path(url, map={})
-      object = super(url, map)
+      object = find_object_by_path(url, map)
+      kclass = Panda::const_get("#{name.split('::').last}")
+
       if object.is_a?(Array)
-        object.each{|o| o.cloud = @cloud}
+        object.map{|o| r=kclass.new(o); r.cloud = @cloud; r}
+      elsif object["id"]
+        r=kclass.new(object);r.cloud=@cloud;r
       else
-        object.cloud = @cloud
-      end
-      object
+        Error.new(object).raise!
+      end        
     end
+
 
     private
 
@@ -33,7 +36,7 @@ module Panda
           unless m =~ /^__/ || NON_DELEGATE_METHODS.include?(m.to_s)
             self.class.class_eval do
               define_method m do
-              trigger_request.send(m)
+                trigger_request.send(m)
               end
             end
           end
@@ -41,17 +44,13 @@ module Panda
       end
 
       def trigger_request
-         if @target
-           Panda::const_get(kclass)[send(:cloud)].
+        if @target
+          Panda::const_get(kclass)[send(:cloud)].
             send("find_all_by_#{@target.class.name.split('::').last.downcase}_id", @target.id)
-          else
-            Panda::const_get(kclass)[send(:cloud)].all
-          end
+        else
+          Panda::const_get(kclass)[send(:cloud)].all
+        end
       end
 
-
-      def attributes
-        target.attributes
-      end
   end
 end

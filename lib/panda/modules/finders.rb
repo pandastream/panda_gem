@@ -58,8 +58,7 @@ module Panda
           kclass.new(object)
         else
           Error.new(object).raise!
-        end
-        
+        end        
       end
       
     end
