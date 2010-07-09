@@ -4,10 +4,12 @@ module Panda
     include Panda::Router
     
     def initialize(attributes = {})
-      @attributes = {}
-      @changed_attributes = {}
-      @errors = []
+      init_load
       load(attributes)
+    end
+    
+    class << self
+      include Panda::Finders::FindOne
     end
     
     def new?
@@ -26,13 +28,28 @@ module Panda
     def id=(id)
       attributes['id'] = id
     end
-        
+    
+    def reload
+      record_id = id
+      raise "Record not found" if new?
+      init_load
+      url = self.class.object_url(self.class.one_path,:id => record_id)
+      response = connection.get(url)
+      load_response(response)
+    end
+    
     def to_json
       attributes.to_json
     end
     
     private
 
+    def init_load
+      @attributes = {}
+      @changed_attributes = {}
+      @errors = []
+    end
+    
     def load(attributes)
       attributes.each do |key, value|
         @attributes[key.to_s] = value
@@ -41,14 +58,14 @@ module Panda
     end
     
     def load_response(response)
-      if response['error']
+      if response['error'] || response['id'].nil?
         @errors << Error.new(response)
+        false
       else
         @errors=[]
         load(response)
+        true
       end
-      
-      response['error'].nil? && !response['id'].nil?
     end
     
     def method_missing(method_symbol, *arguments)

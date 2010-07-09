@@ -15,13 +15,8 @@ module Panda
       @profiles = Profile[self]
     end
     
-    class << self      
-      include Panda::Finders::PathFinder
-      
-      def find(id)
-        find_by_path(one_path, {:id => id})
-      end
-      
+    class << self
+
       def connection
         Panda.connection
       end

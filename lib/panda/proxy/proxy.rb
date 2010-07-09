@@ -1,8 +1,8 @@
 module Panda
   class Proxy
     include Panda::Router::ClassMethods
-    include Panda::Finders::ClassMethods
-    include Panda::Finders::PathFinder
+    include Panda::Finders::FindMany
+    include Panda::Finders::FindOne
     include Panda::Builders::CreateBuilder
   
     attr_accessor :target, :kclass, :cloud

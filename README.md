@@ -70,7 +70,10 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.find "1234"
     video.encodings
     => [...]
-
+    
+    video.encodings.all(:profile_id => "3456")
+    => [...]
+    
 ##### Find all videos
 
     videos = Panda::Video.all
@@ -88,13 +91,15 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     videos = Panda::Video.all(:status => "success")
     => [...]
 
+    status: success | processing | error
+
 #### Create a new video
 
   from a source
     
     video = Panda::Video.create(:source_url => "http://mywebsite.com/myvideo.mp4")
     
-    or
+  or
     
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.create
@@ -117,7 +122,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Video.delete("1234")
     
-  or 
+  or
   
     video = Panda::Video.find "1234"
     video.delete
@@ -172,6 +177,11 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     encodings = Panda::Encoding.all(:video_id => "1234", :status => "success")
     => [...]
 
+    video = Panda::Video.find "1234"
+    video.encoding.all(:status => "success")
+    
+    status: success | processing | error
+    
 ##### Retrieve the encoding 
 
     encoding = Panda::Encoding.find "4567"
@@ -184,19 +194,17 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ##### Create a new encoding
 
     encoding = Panda::Encoding.create(:video_id => 1234, :profile_id => 6789)
-    encoding.status
-    => "processing"
-
-  or 
+    
+  or
     
     video = Panda::Video.find "123"
-    video.encodings.create(:profile => "profile_id")
+    encoding = video.encodings.create(:profile => "profile_id")
     
 ##### Delete an encoding
 
     Panda::Encoding.delete("4567")
     
-  or 
+  or
     
     encoding = Panda::Encoding.find "4567"
     encoding.delete

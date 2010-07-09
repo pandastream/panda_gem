@@ -2,15 +2,38 @@ module Panda
   module Finders
     
     def self.included(base)
-      base.extend(ClassMethods)
-      base.extend(PathFinder)
+      base.extend(FindOne)
+      base.extend(FindMany)
     end
-    
-    module ClassMethods
+
+    module FindOne
       
       def find(id)
         find_by_path(one_path, {:id => id})
       end
+      
+      def find_object_by_path(url, map={})
+        full_url = object_url(url, map)
+        params = element_params(url, map)
+        self.connection.get(full_url, params)
+      end
+      
+      def find_by_path(url, map={})
+        object = find_object_by_path(url, map)
+        kclass = Panda::const_get("#{name.split('::').last}")
+
+        if object.is_a?(Array)
+          object.map{|o| kclass.new(o)}
+        elsif object["id"]
+          kclass.new(object)
+        else
+          Error.new(object).raise!
+        end
+      end
+      
+    end
+    
+    module FindMany
 
       def find_by(map)
         find_by_path(many_path, map).first
@@ -36,29 +59,6 @@ module Panda
         else
           super
         end
-      end
-      
-    end
-    
-    module PathFinder
-      
-      def find_object_by_path(url, map={})
-        full_url = object_url(url, map)
-        params = element_params(url, map)
-        self.connection.get(full_url, params)
-      end
-      
-      def find_by_path(url, map={})
-        object = find_object_by_path(url, map)
-        kclass = Panda::const_get("#{name.split('::').last}")
-
-        if object.is_a?(Array)
-          object.map{|o| kclass.new(o)}
-        elsif object["id"]
-          kclass.new(object)
-        else
-          Error.new(object).raise!
-        end        
       end
       
     end
