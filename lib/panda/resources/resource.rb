@@ -3,7 +3,6 @@ module Panda
 
     include Panda::Builders
     include Panda::Associations
-    include Panda::Scoped
 
     def initialize(attributes={})
       super(attributes)
@@ -12,6 +11,14 @@ module Panda
 
     class << self
       include Panda::Finders::FindMany
+      
+      def cloud
+        Panda.cloud
+      end      
+        
+      def connection
+        cloud.connection
+      end
     end
     
     def cloud
