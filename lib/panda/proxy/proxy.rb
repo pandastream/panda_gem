@@ -16,6 +16,5 @@ module Panda
       klass.name
     end
   
-  
   end
 end

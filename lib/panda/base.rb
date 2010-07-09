@@ -59,16 +59,15 @@ module Panda
         @attributes[key.to_s] = value
         @changed_attributes[key.to_s] = value if !(attributes['id'] || attributes[:id])
       end
+      true
     end
     
     def load_response(response)
       if response['error'] || response['id'].nil?
-        @errors << Error.new(response)
-        false
+        !(@errors << Error.new(response))
       else
         @errors=[]
         load(response)
-        true
       end
     end
     
