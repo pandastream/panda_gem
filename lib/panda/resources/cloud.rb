@@ -10,11 +10,11 @@ module Panda
     end
     
     def videos
-      @videos_scope ||= Scope.new(self, Video)
+      @videos_scope ||= VideoScope.new(self)
     end
     
     def encodings
-      @encodings_scope ||= Scope.new(self, Encoding)
+      @encodings_scope ||= EncodingScope.new(self)
     end
     
     def profiles

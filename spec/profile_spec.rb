@@ -16,7 +16,7 @@ describe Panda::Profile do
     
   end
 
-  it "should create a video" do
+  it "should create a profile" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:post, /api.example.com:85\/v2\/profiles.json/).
       with(:body => /title=my_profile/).
@@ -31,7 +31,7 @@ describe Panda::Profile do
   end
 
 
-  it "should update a video and sending the changed attributes" do
+  it "should update a profile and sending the changed attributes" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:put, /api.example.com:85\/v2\/profiles\/999.json/).
       with{|r| !(r.body =~ /title=my_new_profile_title/) && r.body =~ /width=80/}.
@@ -45,7 +45,7 @@ describe Panda::Profile do
   end
 
 
-  it "should not call update a video" do
+  it "should not call update a profile" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:put, /api.example.com:85\/v2\/profiles\/123.json/).
       with(:body => /title=my_profile/).
@@ -87,5 +87,6 @@ describe Panda::Profile do
       profile.reload.should == true
     }.should raise_error("Record not found")
   end
+  
   
 end

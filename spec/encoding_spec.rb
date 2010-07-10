@@ -108,4 +108,64 @@ describe Panda::Encoding do
     encodings = video.encodings.all(:profile_id => "901")
     encodings.first.id = "456"
   end
+  
+  it "should create an encoding through the association" do
+    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+    encodings_json = "[{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\", \"profile_id\":\"901\"}]"
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+      to_return(:body => video_json)
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).
+        with{|r| r.uri.query =~ /profile_id=901/}.
+          to_return(:body => encodings_json)
+
+    video = Panda::Video.find("123")
+    encodings = video.encodings.profile("901")
+    encodings.first.id = "456"
+  end
+  
+  it "should filter encodings specifying video and status as a method" do
+    encoding_json = "[{\"source_url\":\"my_source_url\",\"id\":\"456\"}]"
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+      with{|r| r.uri.query =~ /status=success/ && r.uri.query =~ /video_id=123/ }.
+        to_return(:body => encoding_json)
+
+    encodings = Panda::Encoding.video(123).status("success").all
+    encodings.first.id.should == "456"    
+  end
+  
+  it "should filter encodings specifying video and status as a method" do
+    encoding_json = "[{\"source_url\":\"my_source_url\",\"id\":\"456\"}]"
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+      with{|r| r.uri.query =~ /profile_id=prof_1/ && r.uri.query =~ /video_id=123/ }.
+        to_return(:body => encoding_json)
+
+    encodings = Panda::Encoding.video(123).profile("prof_1").all
+    encodings.first.id.should == "456"
+  end
+  
+  it "should filter encodings specifying video and profile id as a method" do
+    encoding_json = "[{\"source_url\":\"my_source_url\",\"id\":\"456\"}]"
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+      with{|r| r.uri.query =~ /profile_name=prof_name/ && r.uri.query =~ /video_id=123/ }.
+        to_return(:body => encoding_json)
+
+    encodings = Panda::Encoding.video(123).profile_name("prof_name").all
+    encodings.first.id.should == "456"
+  end
+  
+  it "should find an encoding" do
+    encoding_json = "[{\"source_url\":\"my_source_url\",\"id\":\"456\"}]"
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings\/456.json/).
+      to_return(:body => encoding_json)
+    
+    Panda::Encoding.id("456")
+  end
+  
+  
+  
 end

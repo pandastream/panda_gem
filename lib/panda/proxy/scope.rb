@@ -1,10 +1,16 @@
 module Panda
   class Scope < Proxy
-    NON_DELEGATE_METHODS=%w(nil? send object_id respond_to? class find find_by create create! all)
 
+    def non_delegate_methods
+      %w(nil? send object_id respond_to? class find find_by create create! all)
+    end
+    
     def initialize(parent, klass)
       @parent = parent
       @klass = klass
+      @scoped_attributes={}
+
+      initialize_scope_attributes
       initialize_scopes
     end
 
@@ -21,18 +27,13 @@ module Panda
     end
 
     def create(attributes)
-      scoped_attrs = merge_with_parent(attributes)
+      scoped_attrs = attributes.merge(@scoped_attributes)
       super(scoped_attrs)
     end
 
     def all(attributes={})
-      if @parent.is_a?(Resource)
-        scoped_attrs = merge_with_parent(attributes)
-        has_many_path = build_hash_many_path(many_path, parent_relation_name)
-        klass.find_by_path(has_many_path, scoped_attrs)
-      else
-        super(attributes)
-      end
+      @scoped_attributes.merge!(attributes)
+      trigger_request
     end
     
     def cloud
@@ -45,9 +46,15 @@ module Panda
     
     private
 
+      def initialize_scope_attributes
+        if @parent.is_a?(Panda::Resource)
+          @scoped_attributes[parent_relation_name.to_sym] = @parent.id
+        end
+      end
+      
       def initialize_scopes
         [].methods.each do |m|
-          unless m =~ /^__/ || NON_DELEGATE_METHODS.include?(m.to_s)
+          unless m =~ /^__/ || non_delegate_methods.include?(m.to_s)
             self.class.class_eval do
               define_method m do
                 trigger_request.send(m)
@@ -58,10 +65,11 @@ module Panda
       end
 
       def trigger_request
-        if @parent.is_a?(Panda::Resource)
-          klass.send("find_all_by_#{parent_relation_name}", @parent.id)
+        if @parent.is_a?(Resource)
+          has_many_path = build_hash_many_path(many_path, parent_relation_name)
+          klass.find_by_path(has_many_path, @scoped_attributes)
         else
-          klass.all
+          klass.all(@scoped_attributes)
         end
       end
 
@@ -69,12 +77,5 @@ module Panda
         "#{@parent.class.name.split('::').last.downcase}_id"
       end
       
-      def merge_with_parent(attributes)
-        scoped_attrs = attributes.clone
-        if @parent.is_a?(Panda::Resource)
-          scoped_attrs[parent_relation_name.to_sym] = @parent.id
-        end
-        scoped_attrs
-      end
   end
 end

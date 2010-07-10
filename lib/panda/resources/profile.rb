@@ -1,6 +1,10 @@
 module Panda
   class Profile < Resource
     include Panda::Updatable
-    has_many :encodings
+    
+    def encodings
+      EncodingScope.new(self)
+    end
+    
   end
 end

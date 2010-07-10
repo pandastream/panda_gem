@@ -10,6 +10,10 @@ module Panda
     
     class << self
       include Panda::Finders::FindOne
+      
+      def id(this_id)
+        find(this_id)
+      end
     end
     
     def new?
