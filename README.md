@@ -69,7 +69,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => true
 ##### Find encodings of a video
     
-    video = Panda::Video.id "1234"
+    video = Panda::Video.id("1234")
     video.encodings
     => [...]
     
@@ -99,7 +99,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video = Panda::Video.status("success")
     => [...]
     
-    or 
+    or
+    
     videos = Panda::Video.all(:status => "success")
     => [...]
 
@@ -111,7 +112,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.create(:source_url => "http://mywebsite.com/myvideo.mp4")
     
-  or
+    or
     
     video = Panda::Video.new(:source_url => "http://mywebsite.com/myvideo.mp4")
     video.create
@@ -124,7 +125,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.create(:file => File.new("/home/me/panda.mp4"))
     
-  or
+    or
     
     video = Panda::Video.new(:file => File.new("/home/me/panda.mp4"))
     video.create
@@ -134,7 +135,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Video.delete("1234")
     
-  or
+    or
   
     video = Panda::Video.id("1234")
     video.delete
@@ -177,12 +178,16 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     encodings = Panda::Encoding.video(video_id)
     => [...]
+    
     or
+    
     encodings = Panda::Encoding.find_all_by_video_id(video_id)
     => [...]
     
     encoding = Panda::Encoding.video(video_id).profile_name("h264").first
+    
     or
+    
     encoding = Panda::Encoding.find_by :video_id => "video_id", :profile_name => "h264"
     encoding.encoding_time
     => 3
@@ -202,7 +207,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     video = Panda::Video.id("1234")
     video.encodings.status("success")
-    
+
     status: success | processing | fail
     
 ##### Retrieve the encoding 
@@ -218,7 +223,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     encoding = Panda::Encoding.create(:video_id => 1234, :profile_id => 6789)
     
-  or
+    or
     
     video = Panda::Video.id("123")
     encoding = video.encodings.create(:profile => "profile_id")
@@ -227,7 +232,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Encoding.delete("4567")
     
-  or
+    or
     
     encoding = Panda::Encoding.id("4567")
     encoding.delete
@@ -267,7 +272,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     Panda::Profile.delete("4567")
 
-  or
+    or
 
     profile = Panda::Profile.id("6789")
     profile.delete
@@ -286,6 +291,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ###  Using multiple clouds
 
+  By default Cloud.id uses options defined with: Panda.configure do .. end
+    
     cloud_one = Panda::Cloud.id("cloud_id_1")
     cloud_two = Panda::Cloud.id("cloud_id_2")
   
@@ -303,6 +310,11 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     cloud_two.profiles
     cloud_two.profiles.create(:preset_name => "h264")
     cloud_one.videos.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
+
+  You can also connect directly using Cloud.find
+    
+    cloud = Panda::Cloud.find("cloud_id_1", {:access_key => ..., :secret_key => ... })
+    
 
 ## Old Panda way, still works
 

@@ -21,9 +21,15 @@ module Panda
     
     class << self
       include Panda::Finders::FindOne
+      attr_reader :connection
       
-      def connection
-        Panda.connection
+      def find(id, options=nil)
+        @connection = if options
+          Connection.new(options.merge!(:cloud_id => id, :format => :hash))
+        else
+          Connection.new(Panda.connection.to_hash.merge!(:cloud_id => id))
+        end
+        super(id)
       end
     end
     

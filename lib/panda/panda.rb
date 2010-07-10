@@ -16,6 +16,7 @@ module Panda
       end
       
       connection.raise_error=true
+      connection.format = "hash"
       @clouds = {} ;
       @cloud = Cloud::find(connection.cloud_id)
     end
