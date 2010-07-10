@@ -1,6 +1,5 @@
 module Panda
   class Cloud < Base
-    include Panda::Router
     include Panda::Updatable
     attr_writer :connection
     
