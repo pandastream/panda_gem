@@ -5,9 +5,18 @@ module Panda
       super(parent, Encoding)
     end
     
-    
     def non_delegate_methods
-      super + ['status', 'profile_id', 'profile_name', 'video', 'id']
+      super + ['status', 'profile_id', 'profile_name', 'video', 'page', 'per_page']
+    end
+
+    def page(this_page)
+      @scoped_attributes[:page] = this_page
+      self
+    end
+
+    def per_page(this_per_page)
+      @scoped_attributes[:per_page] = this_per_page
+      self
     end
     
     def video(this_video_id)
