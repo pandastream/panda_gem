@@ -2,7 +2,7 @@ module Panda
   class Video < Resource
     
     def encodings
-      EncodingScope.new(self)
+      @encodings ||= EncodingScope.new(self)
     end
     
     class << self

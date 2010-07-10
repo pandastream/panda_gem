@@ -8,7 +8,6 @@ module Panda
     def initialize(parent, klass)
       @parent = parent
       @klass = klass
-      @scoped_attributes={}
 
       initialize_scope_attributes
       initialize_scopes
@@ -47,6 +46,7 @@ module Panda
     private
 
       def initialize_scope_attributes
+        @scoped_attributes={}
         if @parent.is_a?(Panda::Resource)
           @scoped_attributes[parent_relation_name.to_sym] = @parent.id
         end
