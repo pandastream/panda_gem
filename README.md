@@ -235,11 +235,16 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ###  Profiles
 
-##### Create a profile
+##### Find a profile
 
     profile = Panda::Profile.id("6789")
-    profiles = Panda::Profile.all
     
+##### Find all profiles
+
+    profiles = Panda::Profile.all
+
+##### Create a profile
+
     profile = Panda::Profile.create(:preset_name => "h264")
     profile = Panda::Profile.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
 

@@ -12,5 +12,10 @@ module Panda
       end
     end
 
+    def reload
+      super
+      @encodings = nil
+    end
+    
   end
 end

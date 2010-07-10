@@ -13,12 +13,8 @@ module Panda
         @url || "/#{end_class_name.downcase}s"
       end
 
-      def resource_path=(url)
-        @url = url
-      end
-
       def match(url)
-        self.resource_path = url
+        @url = url
       end
 
       def many_path

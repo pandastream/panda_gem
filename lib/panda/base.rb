@@ -53,7 +53,7 @@ module Panda
     private
     
     def perform_reload(id)
-      url = self.class.object_url(self.class.one_path,:id => id)
+      url = self.class.object_url(self.class.one_path, :id => id)
       response = connection.get(url)
       load_response(response)
     end
