@@ -6,14 +6,13 @@ module Panda
     include Panda::Builders::CreateBuilder
   
     attr_accessor :parent, :klass
-    attr_writer :connection
   
     def connection
       @cloud.connection
     end
   
-    def name
-      klass.name
+    def end_name
+      klass.end_name
     end
   
   end

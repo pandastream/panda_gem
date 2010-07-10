@@ -22,6 +22,8 @@ module Panda
     end
     
     class << self
+      include Panda::Finders::FindOne
+      
       def connection
         Panda.connection
       end

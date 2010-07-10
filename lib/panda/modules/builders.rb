@@ -14,7 +14,7 @@ module Panda
          end
          
          response = connection.post(full_object_url(many_path), attributes)
-         Panda::const_get("#{name.split('::').last}").new(response)
+         Panda::const_get("#{end_name}").new(response)
        end
 
        def create!(attributes)

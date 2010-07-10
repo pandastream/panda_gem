@@ -9,29 +9,29 @@ module Panda
 
     module ClassMethods
 
-      def resource_url
-        @url || "/#{self.name.split('::').last.downcase}s"
+      def resource_path
+        @url || "/#{end_name.downcase}s"
       end
 
-      def resource_url=(url)
+      def resource_path=(url)
         @url = url
       end
 
       def match(url)
-        self.resource_url = url
+        self.resource_path = url
       end
 
       def many_path
-        resource_url
+        resource_path
       end
 
       def one_path
-        resource_url + "/:id"
+        resource_path + "/:id"
       end
 
       def build_hash_many_path(end_path, relation_attr)
         relation_class_name = relation_attr[0..relation_attr.rindex("_id")-1].capitalize
-        prefix_path = Panda::const_get(relation_class_name).resource_url + "/:" + relation_attr
+        prefix_path = Panda::const_get(relation_class_name).resource_path + "/:" + relation_attr
         prefix_path + end_path
       end
       

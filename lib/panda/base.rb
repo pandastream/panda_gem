@@ -9,10 +9,12 @@ module Panda
     end
     
     class << self
-      include Panda::Finders::FindOne
-      
       def id(this_id)
         find(this_id)
+      end
+      
+      def end_name
+        "#{name.split('::').last}"
       end
     end
     

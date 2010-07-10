@@ -30,10 +30,5 @@ module Panda
       self
     end
     
-    def id(this_id)
-      puts "here"
-      find(this_id)
-    end
-    
   end
 end
