@@ -86,6 +86,10 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     videos.first.id
     => "3456"
 
+    videos = Panda::Video.page(2).per_page(20)
+    
+    or
+    
     videos = Panda::Video.all(:page => 2, :per_page => 20)
     videos.size
     => 20
@@ -166,6 +170,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
 ##### Find all encodings of a video
 
+    encodings = Panda::Encoding.page(4)
+    or
     encodings = Panda::Encoding.all(:page => 4)
     => [...]
     
