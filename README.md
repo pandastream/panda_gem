@@ -172,16 +172,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 ##### Find all encodings of a video
 
     encodings = Panda::Encoding.page(4)
+    
     or
+    
     encodings = Panda::Encoding.all(:page => 4)
     => [...]
     
     encodings = Panda::Encoding.video(video_id)
-    => [...]
-    
-    or
-    
-    encodings = Panda::Encoding.find_all_by_video_id(video_id)
     => [...]
     
     encoding = Panda::Encoding.video(video_id).profile_name("h264").first

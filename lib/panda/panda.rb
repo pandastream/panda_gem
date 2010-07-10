@@ -7,17 +7,17 @@ module Panda
     attr_writer :connection
 
     def configure(auth_params=nil)
+      @clouds = {}
       @connection = Panda::Connection.new
       
-      unless auth_params
-        yield @connection
-      else 
+      if auth_params
         connect!(auth_params)
+      else
+        yield @connection
       end
       
       connection.raise_error=true
-      connection.format = "hash"
-      @clouds = {} ;
+      connection.format = :hash
       @cloud = Cloud::find(connection.cloud_id)
     end
     
@@ -49,13 +49,13 @@ module Panda
       raise "Method deprecated. Please use signed_params instead."
     end
 
+    def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
+      connection.signed_params(verb, request_uri, params, timestamp_str)
+    end
+
     def connection
       raise "Not connected. Please connect! first." unless @connection
       @connection
-    end
-
-    def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
-      connection.signed_params(verb, request_uri, params, timestamp_str)
     end
     
   end

@@ -19,5 +19,11 @@ module Panda
       end
     end
     
+    def reload
+      super
+      @profile = nil
+      @video = nil
+    end
+    
   end
 end

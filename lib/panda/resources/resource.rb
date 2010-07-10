@@ -14,7 +14,7 @@ module Panda
       
       def cloud
         Panda.cloud
-      end      
+      end
         
       def connection
         cloud.connection

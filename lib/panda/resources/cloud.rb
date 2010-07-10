@@ -37,5 +37,12 @@ module Panda
       @connection ||= Connection.new(self.class.connection.to_hash.merge!(:cloud_id => id))
     end
     
+    def reload
+      super
+      @videos_scope = nil
+      @encodings_scope = nil
+      @profiles_scope = nil
+    end
+    
   end
 end
