@@ -13,9 +13,13 @@ module Panda
         find(this_id)
       end
       
-      def end_name
+      def end_class_name
         "#{name.split('::').last}"
       end
+    end
+    
+    def changed?
+      !@changed_attributes.empty?
     end
     
     def new?

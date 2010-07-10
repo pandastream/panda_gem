@@ -15,7 +15,7 @@ module Panda
       
       def find_by_path(url, map={})
         object = find_object_by_path(url, map)
-        kclass = Panda::const_get("#{end_name}")
+        kclass = Panda::const_get("#{end_class_name}")
 
         if object.is_a?(Array)
           object.map{|o| kclass.new(o)}

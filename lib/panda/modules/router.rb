@@ -10,7 +10,7 @@ module Panda
     module ClassMethods
 
       def resource_path
-        @url || "/#{end_name.downcase}s"
+        @url || "/#{end_class_name.downcase}s"
       end
 
       def resource_path=(url)

@@ -25,9 +25,16 @@ describe Panda::Profile do
     profile = Panda::Profile.new(:title => "my_profile")
     
     profile.new?.should == true
+    profile.changed?.should == true
     profile.save.should == true
+    profile.changed?.should == false
     profile.id.should == "123" 
     profile.new?.should == false
+    
+    profile.changed?.should == false
+        
+    profile.title = "new_last_title"
+    profile.changed?.should == true
   end
 
 

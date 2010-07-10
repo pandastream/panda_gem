@@ -74,7 +74,7 @@ module Panda
       end
 
       def parent_relation_name
-        "#{@parent.class.end_name.downcase}_id"
+        "#{@parent.class.end_class_name.downcase}_id"
       end
       
   end

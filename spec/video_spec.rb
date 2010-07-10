@@ -132,37 +132,19 @@ describe Panda::Video do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"cloud1\"}"
     cloud2_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"cloud2\"}"
 
-    stub_http_request(:get, /myotherapihost1:85\/v2\/clouds\/cloud1.json/).
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/cloud1.json/).
       to_return(:body => cloud_json)    
-    stub_http_request(:get, /myotherapihost2:85\/v2\/clouds\/cloud2.json/).
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/cloud2.json/).
       to_return(:body => cloud2_json)
 
-    stub_http_request(:get, /myotherapihost1:85\/v2\/videos\/123.json/).
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
       to_return(:body => video_json)
-    stub_http_request(:get, /myotherapihost2:85\/v2\/videos\/123.json/).
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
       to_return(:body => video_json)          
     
-    connection = Panda::Connection.new({
-      "access_key" => "my_access_key", 
-      "secret_key" => "my_secret_key", 
-      "api_host" => "myotherapihost1", 
-      "api_port" => 85, 
-      "cloud_id" => 'cloud1'
-    })
-    
     cloud = Panda::Cloud.new(:id => "cloud1")
-    cloud.connection = connection
-    
-    connection2 = Panda::Connection.new({
-      "access_key" => "my_access_key", 
-      "secret_key" => "my_secret_key", 
-      "api_host" => "myotherapihost2", 
-      "api_port" => 85, 
-      "cloud_id" => 'cloud2'  
-    })
-    
+
     cloud2 = Panda::Cloud.new(:id => "cloud2")
-    cloud2.connection = connection2
     
     video = cloud.videos.find("123")
     video2 = cloud2.videos.find("123")

@@ -11,8 +11,8 @@ module Panda
       @cloud.connection
     end
   
-    def end_name
-      klass.end_name
+    def end_class_name
+      klass.end_class_name
     end
   
   end

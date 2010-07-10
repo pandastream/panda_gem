@@ -1,11 +1,10 @@
 module Panda
   class Cloud < Base
     include Panda::Updatable
-    attr_writer :connection
     
     def initialize(attributes={})
       super(attributes)
-      Panda.clouds[id]=self
+      Panda.clouds[id] = self
     end
     
     def videos
