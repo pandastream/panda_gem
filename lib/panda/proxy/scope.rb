@@ -57,7 +57,10 @@ module Panda
           unless m =~ /^__/ || non_delegate_methods.include?(m.to_s)
             self.class.class_eval do
               define_method m do
-                trigger_request.send(m)
+                if !@found || (@last_scoped_attributes != @scoped_attributes)
+                  @found = trigger_request.send(m)
+                  @last_scoped_attributes = @scoped_attributes.clone
+                end
               end
             end
           end

@@ -199,4 +199,32 @@ describe Panda::Video do
     }.should raise_error "Can't create attribute. Already have an id=abc"
   end
   
+  it "should not call the request twice" do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    video = Panda::Video.find("123")
+
+    encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
+
+    video.encodings.first
+    video.encodings.first
+    
+    WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).once
+  end
+  
+  it "should call the request if the scope has changed" do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    video = Panda::Video.find("123")
+
+    encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
+
+    video.encodings.first
+    video.encodings.profile_name("h264").first
+    
+    WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).twice
+  end
+  
 end
