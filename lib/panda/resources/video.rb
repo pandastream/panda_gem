@@ -16,5 +16,5 @@ module Panda
       @encodings = nil
     end
     
-  end  
+  end
 end
