@@ -7,6 +7,9 @@ require 'spec/autorun'
 require 'webmock/rspec'
 include WebMock
 
+def hputs(*args)
+  puts ERB::Util.html_escape(args.join("\n")).gsub(/\r?\n/, '<br/>') + '<br/>'
+end
 
 Spec::Runner.configure do |config|
   config.before(:each) do
