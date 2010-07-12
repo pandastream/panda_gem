@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["New Bamboo"]
-  s.date = %q{2010-07-01}
+  s.date = %q{2010-07-08}
   s.description = %q{Panda Client}
   s.email = %q{info@pandastream.com}
   s.extra_rdoc_files = [
@@ -24,12 +24,32 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/panda.rb",
      "lib/panda/api_authentication.rb",
+     "lib/panda/base.rb",
+     "lib/panda/connection.rb",
+     "lib/panda/error.rb",
+     "lib/panda/modules/associations.rb",
+     "lib/panda/modules/builders.rb",
+     "lib/panda/modules/connectable.rb",
+     "lib/panda/modules/finders.rb",
+     "lib/panda/modules/router.rb",
+     "lib/panda/modules/updatable.rb",
+     "lib/panda/modules/validatable.rb",
      "lib/panda/panda.rb",
+     "lib/panda/proxy/finder_proxy.rb",
+     "lib/panda/proxy/proxy.rb",
+     "lib/panda/resources/cloud.rb",
+     "lib/panda/resources/encoding.rb",
+     "lib/panda/resources/profile.rb",
+     "lib/panda/resources/resource.rb",
+     "lib/panda/resources/video.rb",
      "log/debug.log",
      "panda.gemspec",
+     "spec/encoding_spec.rb",
      "spec/panda_spec.rb",
+     "spec/profile_spec.rb",
      "spec/spec.opts",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/video_spec.rb"
   ]
   s.homepage = %q{http://github.com/newbamboo/panda_gem}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -37,8 +57,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Panda Client}
   s.test_files = [
-    "spec/panda_spec.rb",
-     "spec/spec_helper.rb"
+    "spec/encoding_spec.rb",
+     "spec/panda_spec.rb",
+     "spec/profile_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/video_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
