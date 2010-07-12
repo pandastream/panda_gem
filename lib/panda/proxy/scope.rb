@@ -60,6 +60,7 @@ module Panda
                 if !@found || (@last_scoped_attributes != @scoped_attributes)
                   @found = trigger_request.send(m)
                   @last_scoped_attributes = @scoped_attributes.clone
+                  @found
                 end
               end
             end
