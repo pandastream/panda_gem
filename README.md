@@ -15,25 +15,25 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Creating an instance of the client
 
-    Panda.configure do |c|
-      c.access_key = "panda_access_key"
-      c.secret_key = "panda_secret_key"
-      c.cloud_id = "panda_cloud_id"
+    Panda.configure do |config|
+      config.access_key = "panda_access_key"
+      config.secret_key = "panda_secret_key"
+      config.cloud_id = "panda_cloud_id"
     end
 
 ### Creating an instance of the client for EU
 
-    Panda.configure do |c|
-      c.access_key = "panda_access_key"
-      c.secret_key = "panda_secret_key"
-      c.cloud_id = "panda_cloud_id"
-      c.region = "eu"
+    Panda.configure do |config|
+      config.access_key = "panda_access_key"
+      config.secret_key = "panda_secret_key"
+      config.cloud_id = "panda_cloud_id"
+      config.region = "eu"
     end
 
 ### Creating an instance using Heroku
 
-    Panda.configure do |c|
-      c.url = ENV['PANDASTREAM_URL']
+    Panda.configure do |config|
+      config.heroku = ENV['PANDASTREAM_URL']
     end
 
 ###  Videos
