@@ -71,9 +71,15 @@ describe Panda::Encoding do
   end
   
   it "should generate a screenhost array" do
-    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :status => "success"})
     encoding.screenshots[0].should == "http://s3.amazonaws.com/my_bucket/456_1.jpg"
   end
+
+  it "should generate a screenhost array" do
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :status => "fail"})
+    encoding.screenshots.should == []
+  end
+
   
   it "should create an encoding through the association" do
     video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
