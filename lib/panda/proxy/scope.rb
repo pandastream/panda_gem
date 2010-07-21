@@ -1,6 +1,9 @@
+require 'forwardable'
+
 module Panda
   class Scope < Proxy
-
+    extend Forwardable
+    
     def non_delegate_methods
       %w(nil? send object_id respond_to? class find find_by create create! all)
     end
@@ -52,17 +55,15 @@ module Panda
         end
       end
       
+      def proxy_found
+        @found ||= trigger_request
+      end
+      
       def initialize_scopes
         [].methods.each do |m|
           unless m =~ /^__/ || non_delegate_methods.include?(m.to_s)
             self.class.class_eval do
-              define_method m do
-                if !@found || (@last_scoped_attributes != @scoped_attributes)
-                  @found = trigger_request.send(m)
-                  @last_scoped_attributes = @scoped_attributes.clone
-                  @found
-                end
-              end
+              def_delegators :proxy_found, m
             end
           end
         end

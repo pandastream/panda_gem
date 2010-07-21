@@ -222,21 +222,6 @@ describe Panda::Video do
     encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"    
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
 
-    encodings=video.encodings
-    encodings.first
-    encodings.profile_name("h264").first
-    
-    WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).twice
-  end
-  
-  it "should call the request if the scope has changed" do
-    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
-    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
-    video = Panda::Video.find("123")
-
-    encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"    
-    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
-
     encodings = video.encodings.status("success")
     
     encodings.first
