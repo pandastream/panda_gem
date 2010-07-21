@@ -32,9 +32,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Creating an instance using Heroku
 
-  Panda.configure do |c|
-    c.url = ENV['PANDASTREAM_URL']
-  end
+    Panda.configure do |c|
+      c.url = ENV['PANDASTREAM_URL']
+    end
 
 ###  Videos
 
