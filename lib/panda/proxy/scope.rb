@@ -46,6 +46,10 @@ module Panda
       cloud.connection
     end
     
+    def reload
+      @found = trigger_request
+    end
+    
     private
 
       def initialize_scope_attributes
