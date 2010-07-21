@@ -30,6 +30,10 @@ module Panda
       end
     end
 
+    def heroku=(url)
+      init_from_url(url)
+    end
+    
     def raise_error=(bool)
       @raise_error = bool
     end

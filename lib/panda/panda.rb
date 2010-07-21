@@ -6,12 +6,12 @@ module Panda
     attr_accessor :cloud, :clouds
     attr_writer :connection
 
-    def configure(auth_params=nil)
+    def configure(auth_params=nil, options={})
       @clouds = {}
       @connection = Panda::Connection.new
       
       if auth_params
-        connect!(auth_params)
+        connect!(auth_params, options)
       else
         yield @connection
       end
