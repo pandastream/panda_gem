@@ -92,7 +92,7 @@ describe Panda::Profile do
     profile = Panda::Profile.new(:title => "my_new_profile_title")
     lambda {
       profile.reload.should == true
-    }.should raise_error("Record not found")
+    }.should raise_error("RecordNotFound")
   end
   
   

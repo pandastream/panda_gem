@@ -43,9 +43,7 @@ module Panda
       raise "RecordNotFound" if new?
       record_cloud_id = cloud_id
       record_id = id
-      init_load
-      @attributes['cloud_id'] = record_cloud_id
-      perform_reload(record_id)
+      perform_reload(record_id, "cloud_id" => record_cloud_id)
     end
     
   end

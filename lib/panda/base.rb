@@ -42,7 +42,6 @@ module Panda
     def reload
       raise "Record not found" if new?
       record_id = id
-      init_load
       perform_reload(record_id)
     end
     
@@ -52,10 +51,11 @@ module Panda
     
     private
     
-    def perform_reload(id)
+    def perform_reload(id, args={})
       url = self.class.object_url(self.class.one_path, :id => id)
       response = connection.get(url)
-      load_response(response)
+      init_load
+      load_response(response.merge(args))
     end
 
     def init_load

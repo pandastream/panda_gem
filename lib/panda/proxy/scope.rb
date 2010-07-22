@@ -20,9 +20,9 @@ module Panda
       object = find_object_by_path(url, map)
 
       if object.is_a?(Array)
-        object.map{|o| klass.new(o.merge(:cloud_id => cloud.id))}
+        object.map{|o| klass.new(o.merge("cloud_id" => cloud.id))}
       elsif object["id"]
-        klass.new(object.merge(:cloud_id => cloud.id))
+        klass.new(object.merge("cloud_id" => cloud.id))
       else
         Error.new(object).raise!
       end        
