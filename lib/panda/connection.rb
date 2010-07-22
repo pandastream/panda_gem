@@ -95,7 +95,12 @@ module Panda
     end
 
     def setup_bucket(params={})
-      granting_params = { :s3_videos_bucket => params[:bucket], :user_aws_key => params[:access_key], :user_aws_secret => params[:secret_key] }
+      granting_params = { 
+        :s3_videos_bucket => params[:bucket],
+        :user_aws_key => params[:access_key],
+        :user_aws_secret => params[:secret_key]
+      }
+      
       put("/clouds/#{@cloud_id}.json", granting_params)
     end
     
@@ -163,7 +168,6 @@ module Panda
           @api_port = API_PORT
         end
         @prefix     = "v#{@api_version}"
-
       end
 
       def init_from_hash(hash_params)
