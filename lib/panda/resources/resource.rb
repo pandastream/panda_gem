@@ -32,9 +32,7 @@ module Panda
     def create
       raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
       response = connection.post(object_url_map(self.class.many_path), attributes)
-      res = load_response(response)
-      @changed_attributes = {}
-      res
+      load_response(response) ? (@changed_attributes = {}; true) : false
     end
     
     def create!
@@ -42,7 +40,7 @@ module Panda
     end
 
     def reload
-      raise "Record not found" if new?
+      raise "RecordNotFound" if new?
       record_cloud_id = cloud_id
       record_id = id
       init_load
