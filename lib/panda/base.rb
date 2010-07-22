@@ -41,7 +41,7 @@ module Panda
     
     def reload
       raise "Record not found" if new?
-      perform_reload(id)
+      perform_reload
     end
     
     def to_json
@@ -50,7 +50,7 @@ module Panda
     
     private
     
-    def perform_reload(id, args={})
+    def perform_reload(args={})
       url = self.class.object_url(self.class.one_path, :id => id)
       response = connection.get(url)
       init_load
