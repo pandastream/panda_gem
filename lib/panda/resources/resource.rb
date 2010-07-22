@@ -6,7 +6,7 @@ module Panda
 
     def initialize(attributes={})
       super(attributes)
-      @attributes['cloud_id'] = Panda.cloud.id
+      @attributes['cloud_id'] ||= Panda.cloud.id
     end
 
     class << self
