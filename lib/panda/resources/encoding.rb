@@ -19,8 +19,8 @@ module Panda
     end
     
     class << self
-      def method_missing(method_symbol, *arguments)
-        EncodingScope.new(self).send(method_symbol, *arguments)
+      def method_missing(method_symbol, *args, &block)
+        EncodingScope.new(self).send(method_symbol, *args, &block)
       end
     end
     
