@@ -41,8 +41,7 @@ module Panda
     
     def reload
       raise "Record not found" if new?
-      record_id = id
-      perform_reload(record_id)
+      perform_reload(id)
     end
     
     def to_json

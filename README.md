@@ -89,7 +89,9 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => [...]
     
     video.encodings.profile("3456")
+    
     or
+    
     video.encodings.all(:profile_id => "3456")
     => [...]
     
