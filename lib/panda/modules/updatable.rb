@@ -20,9 +20,7 @@ module Panda
         
     def update
       response = connection.put(object_url_map(self.class.one_path), @changed_attributes)
-      res = load_response(response)
-      @changed_attributes = {}
-      res
+      load_response(response) ? (@changed_attributes = {}; true) : false
     end
     
   end
