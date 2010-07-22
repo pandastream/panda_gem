@@ -40,7 +40,6 @@ module Panda
     end
 
     def reload
-      raise "RecordNotFound" if new?
       perform_reload("cloud_id" => cloud_id)
     end
     
