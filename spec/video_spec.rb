@@ -232,7 +232,6 @@ describe Panda::Video do
     WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).twice
   end
   
-  
   it "should not call the request twice" do
     video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
@@ -248,4 +247,22 @@ describe Panda::Video do
     WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).twice
   end
 
+  it "should tell if the video is success" do
+    encoding = Panda::Video.new({:status => "success"})
+    encoding.success?.should == true
+    encoding.processing?.should == false
+  end
+
+  it "should tell if the video is success" do
+    encoding = Panda::Video.new({:status => "processing"})
+    encoding.success?.should == false
+    encoding.processing?.should == true
+  end
+
+  it "should tell if the video is success" do
+    encoding = Panda::Video.new({:status => "fail"})
+    encoding.success?.should == false
+    encoding.fail?.should == true
+  end
+  
 end

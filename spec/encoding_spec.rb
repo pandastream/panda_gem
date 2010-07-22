@@ -172,6 +172,21 @@ describe Panda::Encoding do
     Panda::Encoding.id("456")
   end
   
-  
-  
+  it "should tell if the encoding is success" do
+    encoding = Panda::Encoding.new({:status => "success"})
+    encoding.success?.should == true
+    encoding.processing?.should == false
+  end
+
+  it "should tell if the encoding is success" do
+    encoding = Panda::Encoding.new({:status => "processing"})
+    encoding.success?.should == false
+    encoding.processing?.should == true
+  end
+
+  it "should tell if the encoding is success" do
+    encoding = Panda::Encoding.new({:status => "fail"})
+    encoding.success?.should == false
+    encoding.fail?.should == true
+  end
 end

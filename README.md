@@ -71,6 +71,15 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video.to_json
     =>"{\"duration\":14010,\"created_at\":\"2010/01/13 16:45:29 +0000\",\"original_filename\":\"panda.mp4\"....}"
 
+    video.processing?
+    => false
+
+    video.fail?
+    => false
+
+    video.success?
+    => true
+    
     video.reload
     => true
 ##### Find encodings of a video
@@ -168,9 +177,18 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       "created_at"=>"2010/01/13 16:45:30 +0000",
       "updated_at"=>"2010/01/13 16:47:40 +0000"
     }
-      
+    
     encoding.encoding_progress
     => 60
+
+    encoding.processing?
+    => false
+
+    encoding.fail?
+    => false
+
+    encoding.success?
+    => true
     
     encoding.video.original_filename
     => "panda.mp4"

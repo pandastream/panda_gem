@@ -1,5 +1,6 @@
 module Panda
   class Video < Resource
+    include ShortStatus
     
     def encodings
       EncodingScope.new(self)
