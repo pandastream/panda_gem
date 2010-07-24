@@ -4,8 +4,12 @@ module Panda
   class Scope < Proxy
     extend Forwardable
     
-    def really_respond_to?(method)
-      !([].methods - non_delegate_methods + ['reload', 'non_delegate_methods']).include?(method.to_s)
+    def respond_to?(method)
+      if ([].methods - non_delegate_methods + ['reload', 'non_delegate_methods']).include?(method.to_s)
+        false
+      else
+        super
+      end
     end
 
     def non_delegate_methods

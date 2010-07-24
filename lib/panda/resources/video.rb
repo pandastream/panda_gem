@@ -9,7 +9,7 @@ module Panda
     class << self
       def method_missing(method_symbol, *args, &block)
         scope = VideoScope.new(self)
-        if scope.really_respond_to?(method_symbol)
+        if scope.respond_to?(method_symbol)
           scope.send(method_symbol, *args, &block)
         else
           super
