@@ -8,15 +8,15 @@ module Panda
     end
     
     def videos
-      @videos_scope ||= VideoScope.new(self)
+      @videos_scope = VideoScope.new(self)
     end
     
     def encodings
-      @encodings_scope ||= EncodingScope.new(self)
+      @encodings_scope = EncodingScope.new(self)
     end
     
     def profiles
-      @profiles_scope ||= Scope.new(self, Profile)
+      @profiles_scope = Scope.new(self, Profile)
     end
     
     class << self
