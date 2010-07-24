@@ -5,7 +5,7 @@ module Panda
     extend Forwardable
     
     def really_respond_to?(method)
-      !([].methods - non_delegate_methods + ['reload']).include?(method.to_s)
+      !([].methods - non_delegate_methods + ['reload', 'non_delegate_methods']).include?(method.to_s)
     end
 
     def non_delegate_methods
