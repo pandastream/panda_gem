@@ -41,6 +41,7 @@ module Panda
     
     def reload
       perform_reload
+      self
     end
     
     def to_json

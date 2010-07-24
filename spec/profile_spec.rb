@@ -91,7 +91,7 @@ describe Panda::Profile do
   it "shoud raise an exeception if it's a new object" do
     profile = Panda::Profile.new(:title => "my_new_profile_title")
     lambda {
-      profile.reload.should == true
+      profile.reload.should == profile
     }.should raise_error("RecordNotFound")
   end
   
