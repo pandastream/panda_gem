@@ -95,5 +95,9 @@ describe Panda::Profile do
     }.should raise_error("RecordNotFound")
   end
   
-  
+  it "should not delegate scope if the method do not really exist in the scope" do
+    lambda {Panda::Profile.reload}.should raise_error(NoMethodError)
+    lambda {Panda::Profile.each}.should raise_error(NoMethodError)
+    lambda {Panda::Profile.size}.should raise_error(NoMethodError)
+  end
 end

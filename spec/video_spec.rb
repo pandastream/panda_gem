@@ -40,7 +40,7 @@ describe Panda::Video do
     videos = Panda::Video.all
     videos.first.id.should == 111
     videos.first.source_url.should == "my_source_url"
-    videos.size.should == 2
+      videos.size.should == 2
   end
   
   it "should find a videos having the correct id" do
@@ -265,4 +265,17 @@ describe Panda::Video do
     encoding.fail?.should == true
   end
   
+  it "should return the most recent updated video" do
+    video_json = "[{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}]"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos.json/).
+      with{|r| r.uri.query =~ /per_page=1/ }.
+        to_return(:body => video_json)
+    Panda::Video.first
+  end
+
+  it "should not delegate scope if the method do not really exist in the scope" do
+    lambda {Panda::Video.reload}.should raise_error(NoMethodError)
+    lambda {Panda::Video.each}.should raise_error(NoMethodError)
+    lambda {Panda::Video.size}.should raise_error(NoMethodError)
+  end
 end

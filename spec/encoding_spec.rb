@@ -189,4 +189,19 @@ describe Panda::Encoding do
     encoding.success?.should == false
     encoding.fail?.should == true
   end
+
+  it "should return the most recent updated encoding" do
+    video_json = "[{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}]"
+    stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+      with{|r| r.uri.query =~ /per_page=1/ }.
+        to_return(:body => video_json)
+    Panda::Encoding.first
+  end
+
+  it "should not delegate scope if the method do not really exist in the scope" do
+    lambda {
+      Panda::Encoding.each
+      Panda::Encoding.size
+    }.should raise_error(NoMethodError)
+  end
 end

@@ -4,6 +4,10 @@ module Panda
   class Scope < Proxy
     extend Forwardable
     
+    def really_respond_to?(method)
+      !([].methods - non_delegate_methods + ['reload']).include?(method.to_s)
+    end
+
     def non_delegate_methods
       %w(nil? send object_id respond_to? class find find_by create create! all)
     end
