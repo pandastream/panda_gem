@@ -199,9 +199,8 @@ describe Panda::Encoding do
   end
 
   it "should not delegate scope if the method do not really exist in the scope" do
-    lambda {
-      Panda::Encoding.each
-      Panda::Encoding.size
-    }.should raise_error(NoMethodError)
+    lambda {Panda::Encoding.reload}.should raise_error(NoMethodError)
+    lambda {Panda::Encoding.each}.should raise_error(NoMethodError)
+    lambda {Panda::Encoding.size}.should raise_error(NoMethodError)
   end
 end

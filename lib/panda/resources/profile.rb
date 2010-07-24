@@ -21,6 +21,18 @@ module Panda
       super
       @encodings = nil
     end
+
+    def preset?
+      !preset_name
+    end
+
+    def command
+      @attributes['command']
+    end
+
+    def preset_name
+      @attributes['preset_name']
+    end
     
   end
 end

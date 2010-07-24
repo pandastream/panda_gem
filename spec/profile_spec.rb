@@ -75,7 +75,7 @@ describe Panda::Profile do
     profile = Panda::Profile.new(:title => "my_source_url", :id => "901")
     profile.encodings.first.id.should ==  456
   end
-  
+
   it "should reload the object" do
     profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
     stub_http_request(:get, /api.example.com:85\/v2\/profiles\/123.json/).
@@ -87,17 +87,22 @@ describe Panda::Profile do
     profile.id.should == "123"
     profile.title.should == "my_profile"
   end
-  
+
   it "shoud raise an exeception if it's a new object" do
     profile = Panda::Profile.new(:title => "my_new_profile_title")
     lambda {
       profile.reload.should == profile
     }.should raise_error("RecordNotFound")
   end
-  
+
   it "should not delegate scope if the method do not really exist in the scope" do
     lambda {Panda::Profile.reload}.should raise_error(NoMethodError)
     lambda {Panda::Profile.each}.should raise_error(NoMethodError)
     lambda {Panda::Profile.size}.should raise_error(NoMethodError)
+  end
+
+  it "should tell if profile is using a preset" do
+    Panda::Profile.new(:title => "abc").preset?.should be_true
+    Panda::Profile.new(:preset_name => "abc").preset?.should be_false
   end
 end
