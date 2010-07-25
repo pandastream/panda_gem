@@ -277,5 +277,10 @@ describe Panda::Video do
     lambda {Panda::Video.reload}.should raise_error(NoMethodError)
     lambda {Panda::Video.each}.should raise_error(NoMethodError)
     lambda {Panda::Video.size}.should raise_error(NoMethodError)
+
+    Panda::Video.respond_to? ("find").should be_true
+    Panda::Video.respond_to? ("each").should be_false
+    Panda::Video.respond_to? ("reload").should be_false
+
   end
 end
