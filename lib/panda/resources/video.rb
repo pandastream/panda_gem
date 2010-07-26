@@ -3,7 +3,7 @@ module Panda
     include ShortStatus
     
     def encodings
-      EncodingScope.new(self)
+      @encodings ||= EncodingScope.new(self)
     end
     
     class << self

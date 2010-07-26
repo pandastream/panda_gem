@@ -229,7 +229,7 @@ describe Panda::Video do
     
     video.encodings.first
     
-    WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).twice
+    WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).once
   end
   
   it "should not call the request twice" do
