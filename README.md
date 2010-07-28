@@ -67,6 +67,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video.created_at
     =>"2010/01/13 16:45:29 +0000"
     
+    video = Panda::Video.first
+    
     video = Panda::Video.find("fake_id")
     => raise: RecordNotFound: Couldn't find Video with ID=fake_id
     
@@ -196,6 +198,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     encoding.video.original_filename
     => "panda.mp4"
+    
+    encoding = Panda::Encoding.first
     
 ##### Find all encodings of a video
 
