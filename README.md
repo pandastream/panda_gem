@@ -21,6 +21,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.cloud_id = "panda_cloud_id"
     end
 
+    or Panda.configure ({:access_key => ....})
+
 ### Creating an instance of the client for EU
 
     Panda.configure do |config|
@@ -40,7 +42,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 #### Find a video
 
-    video = Panda::Video.id("1234")
+    video = Panda::Video.find("1234")
     video.attributes
     => {
       "id"=>"1234",
@@ -65,7 +67,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     video.created_at
     =>"2010/01/13 16:45:29 +0000"
     
-    video = Panda::Video.id("fake_id")
+    video = Panda::Video.find("fake_id")
     => raise: RecordNotFound: Couldn't find Video with ID=fake_id
     
     video.to_json
@@ -84,14 +86,14 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => true
 ##### Find encodings of a video
     
-    video = Panda::Video.id("1234")
+    video = Panda::Video.find("1234")
     video.encodings
     => [...]
     
     video.encodings.profile("3456")
     
     or
-    
+.find(    
     video.encodings.all(:profile_id => "3456")
     => [...]
     
@@ -154,7 +156,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     or
   
-    video = Panda::Video.id("1234")
+    video = Panda::Video.find("1234")
     video.delete
     => true
     
@@ -162,7 +164,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Find an encoding
 
-    encoding = Panda::Encoding.id("4567")
+    encoding = Panda::Encoding.find("4567")
     encoding.attributes
     => {
       "id"=>"4567",
@@ -228,14 +230,14 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     or
     
-    video = Panda::Video.id("1234")
+    video = Panda::Video.find("1234")
     video.encodings.status("success")
 
     status: success | processing | fail
     
 ##### Retrieve the encoding 
 
-    encoding = Panda::Encoding.id("4567")
+    encoding = Panda::Encoding.find("4567")
     encoding.url
     => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
 
@@ -248,7 +250,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     or
     
-    video = Panda::Video.id("123")
+    video = Panda::Video.find("123")
     encoding = video.encodings.create(:profile => "profile_id")
     
 ##### Delete an encoding
@@ -257,7 +259,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     
     or
     
-    encoding = Panda::Encoding.id("4567")
+    encoding = Panda::Encoding.find("4567")
     encoding.delete
     => true
     
@@ -265,7 +267,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Find a profile
 
-    profile = Panda::Profile.id("6789")
+    profile = Panda::Profile.find("6789")
     
 ##### Find all profiles
 
@@ -278,7 +280,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ##### Update a profile
 
-    profile = Panda::Profile.id("6789")
+    profile = Panda::Profile.find("6789")
     profile.width = 320
     profile.height = 280
     profile.save
@@ -297,13 +299,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     or
 
-    profile = Panda::Profile.id("6789")
+    profile = Panda::Profile.find("6789")
     profile.delete
     => true
 
 ##### All encoding of a profile
 
-    profile = Panda::Profile.id("6789")
+    profile = Panda::Profile.find("6789")
     profile.encodings
     => [...]
 
@@ -316,8 +318,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
   By default Cloud.id uses options defined with: Panda.configure do .. end
     
-    cloud_one = Panda::Cloud.id("cloud_id_1")
-    cloud_two = Panda::Cloud.id("cloud_id_2")
+    cloud_one = Panda::Cloud.find("cloud_id_1")
+    cloud_two = Panda::Cloud.find("cloud_id_2")
   
     cloud_one.profiles
     cloud_two.profiles.find("profile_id")
