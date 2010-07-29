@@ -47,8 +47,8 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     encodings = Panda::Video.find("1234").encodings
     => [...]
     
-    mp4_encoding = encodings.profile("h264").first
-    ogg_encoding = encodings.profile("ogg").first
+    mp4_encoding = encodings.profile_name("h264").first
+    ogg_encoding = encodings.profile_name("ogg").first
     
     mp4_encoding.url
     => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
