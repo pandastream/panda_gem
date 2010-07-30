@@ -38,6 +38,32 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.heroku = ENV['PANDASTREAM_URL']
     end
 
+### Typical usage
+
+In most cases you will have used the [panda\_uploader](http://github.com/newbamboo/panda_uploader) jQuery plugin to upload the video (more details about this are in the [Integrating Panda with Ruby on Rails](http://panda-account-staging.heroku.com/docs/integrate_with_rails) tutorial). Then you will want to get the video and screenshots urls of your encoding to display to your users.
+
+The name of the profile can be found in your [Panda account](http://pandastream.com/encoders) when editing an encoding cloud's profiles.
+
+    encodings = Panda::Video.find("1234").encodings
+    => [...]
+    
+    mp4_encoding = encodings.profile_name("h264").first
+    ogg_encoding = encodings.profile_name("ogg").first
+    
+    mp4_encoding.url
+    => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
+
+    mp4_encoding.screenshots[4]
+    => "http://s3.amazonaws.com/my_panda_bucket/4567_4.jpg"
+    
+    ogg_encoding.url
+    => "http://s3.amazonaws.com/my_panda_bucket/9876.ogg"
+
+    ogg_encoding.screenshots[4]
+    => "http://s3.amazonaws.com/my_panda_bucket/9876_4.jpg"
+
+## Complete functionality
+
 ###  Videos
 
 #### Find a video
@@ -93,9 +119,10 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     => [...]
     
     video.encodings.profile("3456")
+    => [...]
     
     or
-.find(    
+     
     video.encodings.all(:profile_id => "3456")
     => [...]
     
