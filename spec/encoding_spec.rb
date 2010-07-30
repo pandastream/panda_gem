@@ -99,6 +99,21 @@ describe Panda::Encoding do
     encoding.profile_id.should == "901"
   end
   
+  it "should filter the profile name after triggering the request" do
+    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+    encodings_json = "[{\"id\":\"456\", \"video_id\":\"123\", \"profile_name\":\"h264\"},{\"id\":\"789\", \"video_id\":\"123\", \"profile_name\":\"h264_2\"}]"
+
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+      to_return(:body => video_json)
+
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).
+          to_return(:body => encodings_json)
+
+    video = Panda::Video.find("123")
+    video.encodings.with_profile("h264").id.should == "456"
+    video.encodings.with_profile("h264_2").id.should == "789"
+  end
+
   it "should create an encoding through the association" do
     video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
     encodings_json = "[{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\", \"profile_id\":\"901\"}]"
