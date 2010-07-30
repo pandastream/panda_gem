@@ -39,7 +39,7 @@ module Panda
       self
     end
 
-    def with_profile(this_profile_name)
+    def find_by_profile_name(this_profile_name)
       proxy_found.select{|p| p.profile_name == this_profile_name}.first
     end
 

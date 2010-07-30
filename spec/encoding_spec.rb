@@ -110,8 +110,8 @@ describe Panda::Encoding do
           to_return(:body => encodings_json)
 
     video = Panda::Video.find("123")
-    video.encodings.with_profile("h264").id.should == "456"
-    video.encodings.with_profile("h264_2").id.should == "789"
+    video.encodings.find_by_profile_name("h264").id.should == "456"
+    video.encodings.find_by_profile_name("h264_2").id.should == "789"
   end
 
   it "should create an encoding through the association" do
