@@ -40,7 +40,8 @@ module Panda
     end
 
     def find_by_profile_name(this_profile_name)
-      proxy_found.select{|p| p.profile_name == this_profile_name}.first
+      @scoped_attributes[:profile_name] = this_profile_name
+      trigger_request.first
     end
 
   end
