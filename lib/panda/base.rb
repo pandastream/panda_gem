@@ -28,7 +28,7 @@ module Panda
     
     def delete
       response = connection.delete(object_url_map(self.class.one_path))
-      response['deleted'] == 'ok'
+      !!response['deleted']
     end
     
     def id

@@ -73,8 +73,7 @@ describe Panda::Video do
 
     video = Panda::Video.new(:source_url => "my_source_url", :id => "123")
     video.cloud
-    # video.new?.should == false
-    # video.delete.should == true
+    video.delete.should == true
   end
   
   it "should delete a video using instance" do
