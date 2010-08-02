@@ -26,8 +26,8 @@ module Panda
     end
 
     def reload
-      super
       @encodings = nil
+      super
     end
 
   end

@@ -91,8 +91,17 @@ describe Panda::Profile do
   it "shoud raise an exeception if it's a new object" do
     profile = Panda::Profile.new(:title => "my_new_profile_title")
     lambda {
-      profile.reload.should == profile
+      profile.reload
     }.should raise_error("RecordNotFound")
+  end
+  
+  it "shoud raise an exeception if it's a new object" do
+    profile_json = "{\"title\":\"my_profile\",\"id\":\"123\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/profiles\/123.json/).
+        to_return(:body => profile_json)
+        
+    profile = Panda::Profile.find(123)
+    profile.reload.should == profile
   end
 
   it "should not delegate scope if the method do not really exist in the scope" do

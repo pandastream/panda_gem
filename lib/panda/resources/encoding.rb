@@ -39,9 +39,9 @@ module Panda
     end
     
     def reload
-      super
       @profile = nil
       @video = nil
+      super
     end
     
   end

@@ -41,6 +41,7 @@ module Panda
 
     def reload
       perform_reload("cloud_id" => cloud_id)
+      self
     end
     
   end

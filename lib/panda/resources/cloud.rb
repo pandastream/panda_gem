@@ -34,10 +34,10 @@ module Panda
     end
 
     def reload
-      super
       @videos_scope = nil
       @encodings_scope = nil
       @profiles_scope = nil
+      super
     end
 
     def method_missing(method_symbol, *arguments)
