@@ -1,4 +1,4 @@
-# ALPHA VERSION -- DO NOT USE!!
+# BETA VERSION
 
 # Panda
 
