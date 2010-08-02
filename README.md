@@ -111,7 +111,8 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     => true
     
     video.reload
-    => true
+    => <Panda::Video:0x1036fd660 ...>
+    
 ##### Find encodings of a video
     
     video = Panda::Video.find("1234")
