@@ -13,7 +13,7 @@ module Panda
     end
 
     def non_delegate_methods
-      %w(nil? send object_id respond_to? class find find_by create create! all)
+      %w(nil? send object_id respond_to? class find find_by create create! all cloud connection)
     end
     
     def initialize(parent, klass)
@@ -58,7 +58,7 @@ module Panda
     def reload
       @found = trigger_request
     end
-    
+     
     private
 
       def initialize_scope_attributes
@@ -84,11 +84,12 @@ module Panda
 
       def trigger_request
         if @parent.is_a?(Resource)
-          has_many_path = build_hash_many_path(many_path, parent_relation_name)
-          klass.find_by_path(has_many_path, @scoped_attributes)
+          path = build_hash_many_path(many_path, parent_relation_name)
         else
-          klass.all(@scoped_attributes)
+          path = many_path
         end
+        
+        find_by_path(path, @scoped_attributes)
       end
 
       def parent_relation_name

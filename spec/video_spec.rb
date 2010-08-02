@@ -2,9 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Panda::Video do
   before(:each) do
-    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
-    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
-      to_return(:body => cloud_json)
 
     Panda.configure do |c|
       c.access_key = "my_access_key"
@@ -110,6 +107,21 @@ describe Panda::Video do
   end
   
   it "should connect to eu" do
+
+
+    Panda.configure do |c|
+      c.access_key = "my_access_key"
+      c.secret_key = "my_secret_key"
+      c.cloud_id = 'my_cloud_id'
+      c.region = "eu"
+    end
+    
+    stub_http_request(:get, /api.eu.pandastream.com:80/).
+      to_return(:body => "{\"id\":\"123\"}")
+    Panda::Video.find "123"
+  end
+  
+  it "should connect to eu and trigger the request" do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
     stub_http_request(:get, /api.eu.pandastream.com:80\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
@@ -281,5 +293,18 @@ describe Panda::Video do
     Panda::Video.respond_to? ("each").should be_false
     Panda::Video.respond_to? ("reload").should be_false
 
+  end
+  
+  it "should lazy load the cloud" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+    
+      video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+      stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+        to_return(:body => video_json)
+        
+    video = Panda::Video.find "123"
+    video.cloud.s3_videos_bucket.should == "my_bucket"
   end
 end

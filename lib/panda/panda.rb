@@ -18,7 +18,7 @@ module Panda
       
       connection.raise_error=true
       connection.format = :hash
-      @cloud = Cloud::find(connection.cloud_id)
+      @cloud = Cloud::new(:id => connection.cloud_id)
     end
     
     def connect!(auth_params, options={})

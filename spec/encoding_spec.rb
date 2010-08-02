@@ -2,9 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Panda::Encoding do
   before(:each) do
-    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
-    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
-      to_return(:body => cloud_json)
 
     Panda.configure do |c|
       c.access_key = "my_access_key"
@@ -66,11 +63,19 @@ describe Panda::Encoding do
   end
   
   it "should return the video_url" do    
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+    
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext"})
     encoding.url.should == "http://s3.amazonaws.com/my_bucket/456.ext"
   end
   
   it "should generate a screenhost array" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :status => "success"})
     encoding.screenshots[0].should == "http://s3.amazonaws.com/my_bucket/456_1.jpg"
   end
