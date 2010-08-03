@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["New Bamboo"]
-  s.date = %q{2010-08-02}
+  s.date = %q{2010-08-03}
   s.description = %q{Panda Client}
   s.email = %q{info@pandastream.com}
   s.extra_rdoc_files = [
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
      "lib/panda/error.rb",
      "lib/panda/modules/associations.rb",
      "lib/panda/modules/builders.rb",
+     "lib/panda/modules/cloud_connection.rb",
      "lib/panda/modules/finders.rb",
      "lib/panda/modules/router.rb",
      "lib/panda/modules/short_status.rb",
