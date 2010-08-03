@@ -29,6 +29,8 @@ module Panda
       !preset_name
     end
 
+    # override attributes command and preset_name
+    # to ovoid <method undefined> when profile is a preset or not
     def command
       @attributes['command']
     end
@@ -36,6 +38,6 @@ module Panda
     def preset_name
       @attributes['preset_name']
     end
-    
+
   end
 end

@@ -15,10 +15,9 @@ module Panda
     def non_delegate_methods
       %w(nil? send object_id respond_to? class find find_by create create! all cloud connection)
     end
-    
+
     def initialize(parent, klass)
-      @parent = parent
-      @klass = klass
+      super
 
       initialize_scope_attributes
       initialize_scopes
@@ -34,7 +33,7 @@ module Panda
         klass.new(object.merge("cloud_id" => cloud.id))
       else
         Error.new(object).raise!
-      end        
+      end
     end
 
     def create(attributes)
@@ -46,15 +45,7 @@ module Panda
       @scoped_attributes.merge!(attributes)
       trigger_request
     end
-    
-    def cloud
-      @parent.is_a?(Cloud) ? @parent : @parent.cloud
-    end
-    
-    def connection
-      cloud.connection
-    end
-    
+        
     def reload
       @found = trigger_request
     end
@@ -67,11 +58,11 @@ module Panda
           @scoped_attributes[parent_relation_name.to_sym] = @parent.id
         end
       end
-      
+
       def proxy_found
         @found ||= trigger_request
       end
-      
+
       def initialize_scopes
         [].methods.each do |m|
           unless m =~ /^__/ || non_delegate_methods.include?(m.to_s)
@@ -95,6 +86,6 @@ module Panda
       def parent_relation_name
         "#{@parent.class.end_class_name.downcase}_id"
       end
-      
+
   end
 end

@@ -22,7 +22,6 @@ module Panda
       def respond_to?(method)
         super || VideoScope.new(self).respond_to?(method)
       end
-
     end
 
     def reload

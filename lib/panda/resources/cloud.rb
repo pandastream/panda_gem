@@ -2,10 +2,11 @@ module Panda
   class Cloud < Base
     include Panda::Updatable
     attr_reader :connection
-    
+
     def initialize(attributes={})
       super(attributes)
-      @connection = Connection.new(Panda.connection.to_hash.merge!(:cloud_id => id, :format => :hash))
+      connection_params = Panda.connection.to_hash.merge!(:cloud_id => id, :format => :hash)
+      @connection = Connection.new(connection_params)
       Panda.clouds[id] = self
     end
 
@@ -22,27 +23,23 @@ module Panda
     end
 
     def videos
-      @videos_scope = VideoScope.new(self)
+      VideoScope.new(self)
     end
 
     def encodings
-      @encodings_scope = EncodingScope.new(self)
+      EncodingScope.new(self)
     end
 
     def profiles
-      @profiles_scope = Scope.new(self, Profile)
+      Scope.new(self, Profile)
     end
 
-    def reload
-      @videos_scope = nil
-      @encodings_scope = nil
-      @profiles_scope = nil
-      super
-    end
-
-    def method_missing(method_symbol, *arguments)
-      # Lazy load the cloud
+    def lazy_load
       @found ||= reload
+    end
+    
+    def method_missing(method_symbol, *arguments)
+      lazy_load
       super
     end
 
