@@ -50,6 +50,6 @@ module Panda
     def object_url_map(url)
       self.class.full_object_url(url.clone.gsub(VAR_PATTERN) {|key| send(key[1..-1].to_sym)})
     end
-    
+
   end
 end

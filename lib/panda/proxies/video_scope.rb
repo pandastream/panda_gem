@@ -23,6 +23,6 @@ module Panda
       @scoped_attributes[:status] = this_status
       self
     end
-    
+
   end
 end

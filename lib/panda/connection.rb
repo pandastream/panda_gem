@@ -35,12 +35,12 @@ module Panda
     def heroku=(url)
       init_from_url(url)
     end
-    
+
     # Raise exception on non JSON parsable response if set
     def raise_error=(bool)
       @raise_error = bool
     end
-    
+
     # Setup respond type JSON / Hash
     def format=(ret_format)
       if ret_format

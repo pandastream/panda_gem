@@ -1,7 +1,7 @@
 module Panda
   class Encoding < Resource
     include ShortStatus
-    
+
     belongs_to :video
     has_one :profile
 
