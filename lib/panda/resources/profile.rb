@@ -4,11 +4,6 @@ module Panda
 
     has_many :encodings
 
-    def reload
-      @encodings = nil
-      super
-    end
-
     def preset?
       !preset_name
     end
