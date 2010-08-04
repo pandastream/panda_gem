@@ -6,17 +6,6 @@ module Panda
       @encodings ||= EncodingScope.new(self)
     end
 
-    class << self
-      def method_missing(method_symbol, *args, &block)
-        scope = ProfileScope.new(self)
-        if scope.respond_to?(method_symbol)
-           scope.send(method_symbol, *args, &block)
-        else
-          super
-        end
-      end
-    end
-
     def reload
       @encodings = nil
       super
