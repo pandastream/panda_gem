@@ -31,7 +31,7 @@ module Panda
     end
 
     def profiles
-      Scope.new(self, Profile)
+      ProfileScope.new(self)
     end
 
     def lazy_load

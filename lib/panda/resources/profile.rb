@@ -8,7 +8,7 @@ module Panda
 
     class << self
       def method_missing(method_symbol, *args, &block)
-        scope = Scope.new(Profile,self)
+        scope = ProfileScope.new(self)
         if scope.respond_to?(method_symbol)
            scope.send(method_symbol, *args, &block)
         else
