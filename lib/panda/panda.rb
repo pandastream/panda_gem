@@ -5,15 +5,15 @@ require 'json' unless defined?(ActiveSupport::JSON)
 module Panda
   class << self
     extend Forwardable
-    
-    attr_accessor :cloud, :clouds
-    attr_writer :connection
 
-    def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket
-    
+    attr_reader :cloud, :clouds
+    attr_reader :connection
+
+    def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
+
     def configure(auth_params=nil, options={})
       @clouds = {}
-      @connection = Panda::Connection.new
+      @connection = Connection.new
 
       if auth_params
         connect!(auth_params, options)
@@ -21,17 +21,13 @@ module Panda
         yield @connection
       end
 
-      connection.raise_error=true
-      connection.format = :hash
-      @cloud = Cloud::new(:id => connection.cloud_id)
+      @connection.raise_error=true
+      @connection.format = :hash
+      @cloud = Cloud::new(:id => @connection.cloud_id)
     end
 
     def connect!(auth_params, options={})
-      self.connection = Connection.new(auth_params, options)
-    end
-
-    def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
-      connection.signed_params(verb, request_uri, params, timestamp_str)
+      @connection = Connection.new(auth_params, options)
     end
 
     def connection

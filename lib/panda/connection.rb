@@ -20,6 +20,7 @@ module Panda
       end
     end
     
+    # Set the correct api_host for US/EU
     def region=(region)
       if(region.to_s == "us")
         self.api_host = US_API_HOST
@@ -30,20 +31,25 @@ module Panda
       end
     end
 
+    # Setup connection for Heroku
     def heroku=(url)
       init_from_url(url)
     end
     
+    # Raise exception on non JSON parsable response if set
     def raise_error=(bool)
       @raise_error = bool
     end
     
+    # Setup respond type JSON / Hash
     def format=(ret_format)
       if ret_format
         raise "Format unknown" if !["json", "hash"].include?(ret_format.to_s)
         @format = ret_format.to_s
       end
     end
+
+    # Authenticated requests
 
     def get(request_uri, params={})
       @connection = RestClient::Resource.new(api_url)
@@ -75,6 +81,7 @@ module Panda
       end
     end
 
+    # Signing methods
     def signed_query(*args)
       ApiAuthentication.hash_to_query(signed_params(*args))
     end
@@ -94,6 +101,7 @@ module Panda
       "http://#{@api_host}:#{@api_port}/#{@prefix}"
     end
 
+    # Shortcut to setup your bucket
     def setup_bucket(params={})
       granting_params = { 
         :s3_videos_bucket => params[:bucket],
