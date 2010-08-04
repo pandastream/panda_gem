@@ -22,8 +22,9 @@ module Panda
     
     class << self
       def method_missing(method_symbol, *args, &block)
-        if respond_to?(method_symbol)
-          EncodingScope.new(self).send(method_symbol, *args, &block)
+        scope = EncodingScope.new(self)
+        if scope.respond_to?(method_symbol)
+          scope.send(method_symbol, *args, &block)
         else
           super
         end
@@ -31,10 +32,6 @@ module Panda
 
       def first
         EncodingScope.new(self).per_page(1).first
-      end
-
-      def respond_to?(method)
-        super || EncodingScope.new(self).respond_to?(method)
       end
     end
     

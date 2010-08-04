@@ -8,8 +8,9 @@ module Panda
     
     class << self
       def method_missing(method_symbol, *args, &block)
-        if respond_to?(method_symbol)
-          VideoScope.new(self).send(method_symbol, *args, &block)
+        scope = VideoScope.new(self)
+        if scope.respond_to?(method_symbol)
+           scope.send(method_symbol, *args, &block)
         else
           super
         end
@@ -17,10 +18,6 @@ module Panda
 
       def first
         VideoScope.new(self).per_page(1).first
-      end
-
-      def respond_to?(method)
-        super || VideoScope.new(self).respond_to?(method)
       end
     end
 

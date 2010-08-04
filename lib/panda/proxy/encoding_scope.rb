@@ -6,7 +6,7 @@ module Panda
     end
 
     def non_delegate_methods
-      super + ['status', 'profile_id', 'profile_name', 'video', 'page', 'per_page']
+      super + [:status, :profile_id, :profile_name, :video, :page, :per_page]
     end
 
     def page(this_page)

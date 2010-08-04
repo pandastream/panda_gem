@@ -5,15 +5,12 @@ module Panda
     extend Forwardable
     
     def respond_to?(method)
-      if ([].methods - non_delegate_methods + ['reload', 'non_delegate_methods']).include?(method.to_s)
-        false
-      else
-        super
-      end
+      scoped_methods = [].methods.map{|i| i.to_sym} - non_delegate_methods + [:reload, :non_delegate_methods]
+      !(scoped_methods).include?(method.to_sym)
     end
 
     def non_delegate_methods
-      %w(nil? send object_id respond_to? class find find_by create create! all cloud connection)
+       [:nil?, :send, :object_id, :respond_to?, :class, :find, :find_by, :create, :create!, :all, :cloud, :connection]
     end
 
     def initialize(parent, klass)
@@ -65,9 +62,9 @@ module Panda
 
       def initialize_scopes
         [].methods.each do |m|
-          unless m =~ /^__/ || non_delegate_methods.include?(m.to_s)
+          unless m.to_s =~ /^__/ || non_delegate_methods.include?(m.to_sym)
             self.class.class_eval do
-              def_delegators :proxy_found, m
+              def_delegators :proxy_found, m.to_sym
             end
           end
         end
