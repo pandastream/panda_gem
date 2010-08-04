@@ -44,10 +44,9 @@ module Panda
     end
 
     def reload
-      reset_associations
       perform_reload("cloud_id" => cloud_id)
+      reset_associations
       self
     end
-
   end
 end

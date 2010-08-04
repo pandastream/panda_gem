@@ -2,7 +2,7 @@ module Panda
   module Router
     DEFAULT_FORMAT = "json"
     VAR_PATTERN = /:\w+/
-    
+
     def self.included(base)
       base.extend(ClassMethods)
     end
@@ -30,11 +30,11 @@ module Panda
         prefix_path = Panda::const_get(relation_class_name).resource_path + "/:" + relation_attr
         prefix_path + end_path
       end
-      
+
       def object_url(url, map)
         full_object_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
       end
-      
+
       def element_params(url, map)
         params = map.clone
         url.clone.scan(VAR_PATTERN).map{|key| params.reject!{|k,v| k==key[1..-1] } }
@@ -44,7 +44,7 @@ module Panda
       def full_object_url(url)
         url + ".#{DEFAULT_FORMAT}"
       end
-      
+
     end
 
     def object_url_map(url)

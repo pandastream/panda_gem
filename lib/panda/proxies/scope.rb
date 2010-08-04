@@ -3,7 +3,7 @@ require 'forwardable'
 module Panda
   class Scope < Proxy
     extend Forwardable
-    
+
     def respond_to?(method)
       scoped_methods = [].methods.map{|i| i.to_sym} - non_delegate_methods + [:reload, :non_delegate_methods]
       !(scoped_methods).include?(method.to_sym)
@@ -42,11 +42,11 @@ module Panda
       @scoped_attributes.merge!(attributes)
       trigger_request
     end
-        
+
     def reload
       @found = trigger_request
     end
-     
+
     private
 
       def initialize_scope_attributes
@@ -76,13 +76,12 @@ module Panda
         else
           path = many_path
         end
-        
+
         find_by_path(path, @scoped_attributes)
       end
 
       def parent_relation_name
         "#{@parent.class.end_class_name.downcase}_id"
       end
-
   end
 end

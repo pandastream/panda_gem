@@ -1,6 +1,6 @@
 module Panda
   class EncodingScope < Scope
-    
+
     def initialize(parent)
       super(parent, Encoding)
     end

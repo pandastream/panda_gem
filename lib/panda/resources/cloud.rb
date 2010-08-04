@@ -16,7 +16,7 @@ module Panda
       def find(id, options=nil)
         super(id)
       end
-      
+
       def connection
         Panda.connection
       end
@@ -37,7 +37,7 @@ module Panda
     def lazy_load
       @found ||= reload
     end
-    
+
     def method_missing(method_symbol, *arguments)
       lazy_load
       super

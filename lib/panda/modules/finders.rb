@@ -2,17 +2,17 @@ module Panda
   module Finders
 
     module FindOne
-      
+
       def find(id)
         find_by_path(one_path, {:id => id})
       end
-      
+
       def find_object_by_path(url, map={})
         full_url = object_url(url, map)
         params = element_params(url, map)
         self.connection.get(full_url, params)
       end
-      
+
       def find_by_path(url, map={})
         object = find_object_by_path(url, map)
         kclass = Panda::const_get("#{end_class_name}")
@@ -25,9 +25,9 @@ module Panda
           Error.new(object).raise!
         end
       end
-      
+
     end
-    
+
     module FindMany
 
       def find_by(map)
@@ -55,8 +55,8 @@ module Panda
           super
         end
       end
-      
+
     end
-    
+
   end
 end
