@@ -26,7 +26,7 @@ module Panda
         # for example creates : @encodings ||= EncodingScope.new(self)
 
         define_method relation_name do
-          model_name = "#{relation_name[0..-2].capitalize}"
+          model_name = "#{relation_name.to_s[0..-2].capitalize}"
           if instance_var = instance_variable_get("@#{relation_name}")
             instance_var
           else
