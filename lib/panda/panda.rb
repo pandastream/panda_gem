@@ -58,5 +58,8 @@ module Panda
       @connection
     end
     
+    def api_url
+      connection.api_url
+    end
   end
 end
