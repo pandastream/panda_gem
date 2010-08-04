@@ -108,10 +108,10 @@ module Panda
         :user_aws_key => params[:access_key],
         :user_aws_secret => params[:secret_key]
       }
-      
+
       put("/clouds/#{@cloud_id}.json", granting_params)
     end
-    
+
     def to_hash
       hash = {}
       [:api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id].each do |a|
