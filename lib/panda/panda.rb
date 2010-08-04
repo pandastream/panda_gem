@@ -11,12 +11,12 @@ module Panda
 
     def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
-    def configure(auth_params=nil, options={})
+    def configure(auth_params=nil)
       @clouds = {}
       @connection = Connection.new
 
       if auth_params
-        connect!(auth_params, options)
+        connect!(auth_params)
       else
         yield @connection
       end
