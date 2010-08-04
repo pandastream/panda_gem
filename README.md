@@ -479,6 +479,11 @@ Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to ret
     })
 
 
+## Use bundler to setup the test environment (1.0)
+
+    bundler install
+    rake spec
+
 Copyright
 ---------
 
