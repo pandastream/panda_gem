@@ -6,7 +6,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ## Installation
 
-    sudo gem install panda -s http://gemcutter.org
+    gem install panda
 
 ## How to use it
 
