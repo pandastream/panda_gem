@@ -13,7 +13,7 @@ module Panda
 
       if auth_params.class == String
         self.format = options[:format] || options["format"]
-        init_from_url(auth_params)
+        init_from_uri(auth_params)
       else
         self.format = auth_params[:format] || auth_params["format"]
         init_from_hash(auth_params)
@@ -33,7 +33,7 @@ module Panda
 
     # Setup connection for Heroku
     def heroku=(url)
-      init_from_url(url)
+      init_from_uri(url)
     end
 
     # Raise exception on non JSON parsable response if set
@@ -163,18 +163,14 @@ module Panda
         end
       end
 
-      def init_from_url(url)
-        params = url.scan(/http:\/\/([^:@]+):([^:@]+)@([^:@]+)(:[\d]+)?\/([^:@]+)$/).flatten
-        @access_key = params[0]
-        @secret_key = params[1]
-        @cloud_id   = params[4]
-        @api_host   = params[2]
-
-        if params[3]
-          @api_port = params[3][1..-1]
-        else
-          @api_port = API_PORT
-        end
+      def init_from_uri(uri)
+        heroku_uri = URI.parse(uri)
+        
+        @access_key = heroku_uri.user
+        @secret_key = heroku_uri.password
+        @cloud_id   = heroku_uri.path[1..-1]
+        @api_host   = heroku_uri.host
+        @api_port   = heroku_uri.port
         @prefix     = "v#{@api_version}"
       end
 
