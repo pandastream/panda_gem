@@ -13,12 +13,11 @@ module Panda
 
     def configure(auth_params=nil)
       @clouds = {}
-      @connection = Connection.new
 
       if auth_params
         connect!(auth_params)
       else
-        yield @connection
+        yield @connection = Connection.new
       end
 
       @connection.raise_error=true
