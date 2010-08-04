@@ -2,9 +2,7 @@ module Panda
   class Profile < Resource
     include Panda::Updatable
 
-    def encodings
-      @encodings ||= EncodingScope.new(self)
-    end
+    has_many :encodings
 
     def reload
       @encodings = nil
