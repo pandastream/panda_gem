@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Panda do
   before(:each) do
-    Time.stub!(:now).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
   end
   
   describe "when not connected" do
@@ -120,14 +119,14 @@ describe Panda do
     before(:each) do
       @panda = Panda.connect!({:access_key => "my_access_key", :secret_key => "my_secret_key", :api_host => "myapihost", :api_port => 85, :cloud_id => 'my_cloud_id', :format => "json" })
     end
+    
    it_should_behave_like "Connected"
   end
 
 
   describe "Panda.connect with PANDASTREAM_URL" do
      before(:each) do
-       Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
-       @panda = Panda
+       @panda = Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
      end
     it_should_behave_like "Connected"
   end
@@ -165,8 +164,22 @@ describe Panda do
 
       ActiveSupport::JSON.should_receive(:decode).with("abc").and_return("blah")
       @panda.get("/videos").should == "blah"
+      
+      Object.send :remove_const, :ActiveSupport
     end
   end
   
-  
+  describe "parsing" do
+    it "should raise an error if the response is not JSON parsable" do
+      @connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      @connection.raise_error=true
+      
+      stub_http_request(:get, //).to_return(:body => "blahblah")
+            
+      lambda {
+        @connection.get("/fake")
+      }.should raise_error(Panda::ServiceNotAvailable)
+    end
+  end
+
 end

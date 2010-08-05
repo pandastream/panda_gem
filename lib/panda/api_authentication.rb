@@ -5,19 +5,19 @@ require 'hmac'
 require 'hmac-sha2'
 require 'base64'
 
-class Panda
+module Panda
   class ApiAuthentication
     def self.generate_signature(verb, request_uri, host, secret_key, params_given={})
       # Ensure all param keys are strings
       params = {}; params_given.each {|k,v| params[k.to_s] = v }
-      
+
       query_string = canonical_querystring(params)
-      
+
       string_to_sign = verb.to_s.upcase + "\n" + 
           host.downcase + "\n" +
           request_uri + "\n" +
           query_string
-      
+
       hmac = HMAC::SHA256.new( secret_key )
       hmac.update( string_to_sign )
       # chomp is important!  the base64 encoded version will have a newline at the end
