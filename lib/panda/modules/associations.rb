@@ -30,7 +30,6 @@ module Panda
           if instance_var = instance_variable_get("@#{relation_name}")
             instance_var
           else
-            # save assocaition to reset it on reload
             @associations ||= []
             @associations << relation_name
             instance_variable_set("@#{relation_name}",

@@ -34,13 +34,15 @@ module Panda
       ProfileScope.new(self)
     end
 
-    def lazy_load
-      @found ||= reload
-    end
-
     def method_missing(method_symbol, *arguments)
       lazy_load
       super
+    end
+
+    private
+
+    def lazy_load
+      @found ||= reload
     end
 
   end

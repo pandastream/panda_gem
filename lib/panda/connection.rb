@@ -19,7 +19,7 @@ module Panda
         init_from_hash(auth_params)
       end
     end
-    
+
     # Set the correct api_host for US/EU
     def region=(region)
       if(region.to_s == "us")
@@ -175,7 +175,7 @@ module Panda
       end
 
       def init_from_hash(hash_params)
-        params      = { :api_host => US_API_HOST, :api_port => API_PORT }.merge(hash_params)
+        params      = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(hash_params)
 
         @cloud_id   = params["cloud_id"]    || params[:cloud_id]
         @access_key = params["access_key"]  || params[:access_key]
