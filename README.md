@@ -1,5 +1,3 @@
-# BETA VERSION
-
 # Panda
 
 Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
