@@ -6,18 +6,12 @@ module Panda
     has_one :profile
 
     def url
-      "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{id}#{extname}"
+      get_url("#{id}#{extname}")
     end
 
     def screenshots
       @screenshots ||=
-        if status == 'success'
-          (1..7).map do |i|
-            "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{id}_#{i}.jpg"
-          end
-        else
-          []
-        end
+          ((1..7).map{|i| get_url("#{id}_#{i}.jpg")} if success?) || []
     end
 
     class << self
@@ -26,5 +20,10 @@ module Panda
       end
     end
 
+    private
+    def get_url(filename)
+      "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{filename}"
+    end
+    
   end
 end
