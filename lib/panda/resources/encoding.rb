@@ -10,8 +10,7 @@ module Panda
     end
 
     def screenshots
-      @screenshots ||=
-          ((1..7).map{|i| get_url("#{id}_#{i}.jpg")} if success?) || []
+      ((1..7).map{|i| get_url("#{id}_#{i}.jpg")} if success?) || []
     end
 
     class << self
