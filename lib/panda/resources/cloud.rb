@@ -22,6 +22,19 @@ module Panda
       end
     end
 
+    def eu?
+      region == "eu"
+    end
+
+    def us?
+      region == "us"
+    end
+
+    def region
+      return "eu" if connection.api_host == Panda::Connection::EU_API_HOST
+      return "us" if connection.api_host == Panda::Connection::US_API_HOST
+    end
+
     def videos
       VideoScope.new(self)
     end

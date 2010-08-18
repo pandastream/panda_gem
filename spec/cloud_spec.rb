@@ -1,6 +1,36 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Panda::Video do
+describe Panda::Cloud do
+  
+  describe "region" do
+    it "should tell the region" do
+      Panda.configure do |c|
+        c.access_key = "my_access_key"
+        c.secret_key = "my_secret_key"
+        c.api_host = "api.pandastream.com"
+        c.cloud_id = 'my_cloud_id'
+        c.api_port = 85
+      end
+      
+      Panda.cloud.region.should == "us"
+      Panda.cloud.us?.should == true
+    end
+    
+    it "should tell the region" do
+      Panda.configure do |c|
+        c.access_key = "my_access_key"
+        c.secret_key = "my_secret_key"
+        c.api_host = "api.eu.pandastream.com"
+        c.cloud_id = 'my_cloud_id'
+        c.api_port = 85
+      end
+      
+      Panda.cloud.region.should == "eu"
+      Panda.cloud.eu?.should == true
+    end
+    
+  end
+  
   describe "Using configure bloc" do
     before(:each) do
       Panda.configure do |c|

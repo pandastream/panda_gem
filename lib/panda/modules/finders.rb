@@ -19,7 +19,7 @@ module Panda
 
         if object.is_a?(Array)
           object.map{|o| kclass.new(o)}
-        elsif object["id"]
+        elsif object['id']
           kclass.new(object)
         else
           Error.new(object).raise!
