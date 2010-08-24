@@ -482,7 +482,5 @@ Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to ret
     bundler install
     rake spec
 
-Copyright
----------
 
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.
