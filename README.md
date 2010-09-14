@@ -29,7 +29,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.access_key = "panda_access_key"
       config.secret_key = "panda_secret_key"
       config.cloud_id = "panda_cloud_id"
-      config.region = "eu"
+      config.api_host = "api.eu.pandastream.com"
     end
 
 ### Creating an instance using Heroku
