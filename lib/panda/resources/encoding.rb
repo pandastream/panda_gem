@@ -22,7 +22,11 @@ module Panda
     private
 
     def get_url(filename)
-      "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{filename}"
+      if cloud.eu?
+        "http://#{cloud.s3_videos_bucket}.s3.amazonaws.com/#{filename}"
+      else
+        "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{filename}"
+      end
     end
 
   end
