@@ -2,6 +2,8 @@
 
 Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
 
+* [Visit panda\_gem on Github](http://github.com/newbamboo/panda_gem)
+
 ## Installation
 
     gem install panda
@@ -19,7 +21,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.cloud_id = "panda_cloud_id"
     end
 
-    or Panda.configure ({:access_key => ....})
+    or Panda.configure({:access_key => ....})
 
 ### Creating an instance of the client for EU
 
@@ -27,14 +29,22 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.access_key = "panda_access_key"
       config.secret_key = "panda_secret_key"
       config.cloud_id = "panda_cloud_id"
-      config.region = "eu"
+      config.api_host = "api.eu.pandastream.com"
     end
 
 ### Creating an instance using Heroku
 
-    Panda.configure do |config|
-      config.heroku = ENV['PANDASTREAM_URL']
-    end
+    Panda.configure(ENV['PANDASTREAM_URL'])
+
+### Inside a Rails app with a main account or using Heroku
+
+Config is stored in `config/panda.yml` or you must set an the PANDASTREAM_URL environment variable in your `/.bashrc` file (see the [Heroku config variable docs](http://docs.heroku.com/config-vars)).
+
+Use the following in your `config/initializers/panda.rb`:
+
+    Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[RAILS_ENV]))
+
+See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
 
 ### Typical usage
 
@@ -482,7 +492,5 @@ Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to ret
     bundler install
     rake spec
 
-Copyright
----------
 
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.
