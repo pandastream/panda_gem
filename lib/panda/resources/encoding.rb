@@ -12,21 +12,17 @@ module Panda
     end
 
     def url
-      get_url("#{id}#{extname}")
+      get_url("#{extname}")
     end
 
     def screenshots
-      ((1..7).map{|i| get_url("#{id}_#{i}.jpg")} if success?) || []
+      ((1..7).map{|i| get_url("_#{i}.jpg")} if success?) || []
     end
 
     private
 
-    def get_url(filename)
-      if cloud.eu?
-        "http://#{cloud.s3_videos_bucket}.s3.amazonaws.com/#{filename}"
-      else
-        "http://s3.amazonaws.com/#{cloud.s3_videos_bucket}/#{filename}"
-      end
+    def get_url(end_path)
+      "#{cloud.url}#{path}#{end_path}"
     end
 
   end
