@@ -78,7 +78,7 @@ describe Panda::Cloud do
         video.id.should == "123"
       end
 
-      it "should find all video with params" do
+      it "should create a video using cloud" do
         videos_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
         stub_http_request(:post, /api.example.com:85\/v2\/videos.json/).
           with{|r| r.body =~ /cloud_id=cloud1/}.
