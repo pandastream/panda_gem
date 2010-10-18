@@ -15,6 +15,10 @@ module Panda
       get_url("#{extname}")
     end
 
+    def error_log
+      get_url(".log") if fail?
+    end
+    
     def screenshots
       ((1..7).map{|i| get_url("_#{i}.jpg")} if success?) || []
     end
