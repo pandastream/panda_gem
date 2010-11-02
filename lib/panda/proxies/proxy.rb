@@ -17,8 +17,8 @@ module Panda
       @parent.is_a?(Cloud) ? @parent : @parent.cloud
     end
 
-    def end_class_name
-      klass.end_class_name
+    def sti_name
+      klass.sti_name
     end
 
   end

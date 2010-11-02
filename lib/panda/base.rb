@@ -13,7 +13,7 @@ module Panda
         find(this_id)
       end
 
-      def end_class_name
+      def sti_name
         "#{name.split('::').last}"
       end
     end

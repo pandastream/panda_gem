@@ -19,7 +19,7 @@ module Panda
 
       # delegate to the scope if the method exists
       def method_missing(method_symbol, *args, &block)
-        scope = Panda::const_get("#{end_class_name}Scope").new(self)
+        scope = Panda::const_get("#{sti_name}Scope").new(self)
         if scope.respond_to?(method_symbol)
            scope.send(method_symbol, *args, &block)
         else
