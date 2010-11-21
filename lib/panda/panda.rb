@@ -1,8 +1,7 @@
-require 'restclient'
 require 'forwardable'
-require 'json' unless defined?(ActiveSupport::JSON)
 
 module Panda
+
   extend self
   extend Forwardable
 
@@ -11,22 +10,23 @@ module Panda
 
   def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
-  def configure(auth_params=nil)
-    @clouds = {}
+  def configure(auth_params=nil, &block)
 
-    if auth_params
-      connect!(auth_params)
-    else
-      yield @connection = Connection.new
+    if !auth_params
+      configure = Config.new
+      configure.instance_eval(&block)
+      auth_params = configure.to_hash
     end
 
-    @connection.raise_error=true
-    @connection.format = :hash
-    @cloud = Cloud::new(:id => @connection.cloud_id)
+    configure_with_auth_params(auth_params)
   end
 
-  def connect!(auth_params, options={})
-    @connection = Connection.new(auth_params, options)
+  def configure_heroku(heroku_url)
+    configure_with_auth_params Config.new.heroku(heroku_url)
+  end
+
+  def connect!(auth_params)
+    @connection = Connection.new(auth_params)
   end
 
   def connection
@@ -40,4 +40,20 @@ module Panda
     }
   end
 
+  def http_client=(http_client_name)
+    @http_client = Panda::HttpClients.const_get("#{http_client_name.to_s.capitalize}Engine").new
+  end
+
+  def http_client
+    @http_client ||= Panda::HttpClients::RestclientEngine.new
+  end
+
+  private
+  
+  def configure_with_auth_params(auth_params)
+    connect!(auth_params)
+    @clouds = {}
+    @cloud = Cloud::new(:id => @connection.cloud_id)
+  end
+  
 end

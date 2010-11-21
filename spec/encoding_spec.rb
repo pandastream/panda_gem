@@ -3,12 +3,12 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Panda::Encoding do
   before(:each) do
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.api_host = "api.example.com"
-      c.cloud_id = 'my_cloud_id'
-      c.api_port = 85
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      api_host "api.example.com"
+      cloud_id 'my_cloud_id'
+      api_port 85
     end
     
   end

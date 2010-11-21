@@ -4,12 +4,12 @@ describe Panda::Cloud do
   
   describe "region" do
     it "should tell the region" do
-      Panda.configure do |c|
-        c.access_key = "my_access_key"
-        c.secret_key = "my_secret_key"
-        c.api_host = "api.pandastream.com"
-        c.cloud_id = 'my_cloud_id'
-        c.api_port = 85
+      Panda.configure do
+        access_key "my_access_key"
+        secret_key "my_secret_key"
+        api_host "api.pandastream.com"
+        cloud_id 'my_cloud_id'
+        api_port 85
       end
       
       Panda.cloud.region.should == "us"
@@ -18,11 +18,11 @@ describe Panda::Cloud do
     
     it "should tell the region" do
       Panda.configure do |c|
-        c.access_key = "my_access_key"
-        c.secret_key = "my_secret_key"
-        c.api_host = "api.eu.pandastream.com"
-        c.cloud_id = 'my_cloud_id'
-        c.api_port = 85
+        access_key "my_access_key"
+        secret_key "my_secret_key"
+        api_host "api.eu.pandastream.com"
+        cloud_id 'my_cloud_id'
+        api_port 85
       end
       
       Panda.cloud.region.should == "eu"
@@ -33,12 +33,12 @@ describe Panda::Cloud do
   
   describe "Using configure bloc" do
     before(:each) do
-      Panda.configure do |c|
-        c.access_key = "my_access_key"
-        c.secret_key = "my_secret_key"
-        c.api_host = "api.example.com"
-        c.cloud_id = 'my_cloud_id'
-        c.api_port = 85
+      Panda.configure do
+        access_key "my_access_key"
+        secret_key "my_secret_key"
+        api_host "api.example.com"
+        cloud_id 'my_cloud_id'
+        api_port 85
       end
     end
 

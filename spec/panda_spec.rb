@@ -19,8 +19,8 @@ describe Panda do
   describe "Connected", :shared => true do
 
     it "should make get request with signed request to panda server" do
-      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "abc")
-      @panda.get("/videos").should == "abc"
+      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "{\"abc\":\"d\"}")
+      @panda.get("/videos").should == {'abc' => 'd'}
     end
 
     it "should create a signed version of the parameters" do
@@ -83,26 +83,11 @@ describe Panda do
         'file' => "symbol_key"
       }
     end
-
-    it "should return a json file for every http code" do
-      stub_http_request(:get, "http://myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "abc")
-      
-      resource = RestClient::Resource.new("http://myapihost:85/v2")
-      RestClient::Resource.stub!(:new).and_return(resource)
-
-      e = RestClient::Exception.new({:body => "abc", :code => 400})
-      e.stub!(:http_body).and_return("abc")
-
-      resource.stub!(:get).and_raise(e)
-
-      panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id', "format" => "json" })
-      panda.get("/videos").should == "abc"
-    end
   end
   
   describe "Connected with a string url" do
     before(:each) do
-      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
+      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
     end
     
     it_should_behave_like "Connected"
@@ -126,7 +111,7 @@ describe Panda do
 
   describe "Panda.connect with PANDASTREAM_URL" do
      before(:each) do
-       @panda = Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id', "format" => "json")
+       @panda = Panda.connect!('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
      end
     it_should_behave_like "Connected"
   end
@@ -172,7 +157,6 @@ describe Panda do
   describe "parsing" do
     it "should raise an error if the response is not JSON parsable" do
       @connection = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
-      @connection.raise_error=true
       
       stub_http_request(:get, //).to_return(:body => "blahblah")
             

@@ -7,8 +7,8 @@ describe Panda::Video do
       to_return(:body => cloud_json)
 
     my_heroku_url = "http://access_key:secret_key@api.example.com:85/my_cloud_id"
-    Panda.configure do |c|
-      c.heroku = my_heroku_url
+    Panda.configure do
+      heroku
     end
   end
   

@@ -3,12 +3,12 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Panda::Video do
   before(:each) do
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.api_host = "api.example.com"
-      c.cloud_id = 'my_cloud_id'
-      c.api_port = 85
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      api_host "api.example.com"
+      cloud_id 'my_cloud_id'
+      api_port 85
     end
     
   end
@@ -109,11 +109,11 @@ describe Panda::Video do
   it "should connect to eu" do
 
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.cloud_id = 'my_cloud_id'
-      c.region = "eu"
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      cloud_id 'my_cloud_id'
+      region "eu"
     end
     
     stub_http_request(:get, /api.eu.pandastream.com:80/).
@@ -127,10 +127,10 @@ describe Panda::Video do
       to_return(:body => cloud_json)
 
     Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.cloud_id = 'my_cloud_id'
-      c.region = "eu"
+      c.access_key "my_access_key"
+      c.secret_key "my_secret_key"
+      c.cloud_id 'my_cloud_id'
+      c.region  "eu"
     end
     
     stub_http_request(:get, /api.eu.pandastream.com:80/).
