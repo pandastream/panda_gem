@@ -11,6 +11,10 @@ module Panda
       define_method "#{attr}" do |value|
         config["#{attr.to_s}"] = value
       end
+
+      define_method "#{attr}=" do |value|
+        config["#{attr.to_s}"] = value
+      end
     end
     
     def to_hash
@@ -18,6 +22,10 @@ module Panda
     end
     
     def http_client(http_client_name)
+      Panda.http_client = http_client_name
+    end
+    
+    def http_client=(http_client_name)
       Panda.http_client = http_client_name
     end
     
