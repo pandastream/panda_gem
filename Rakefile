@@ -21,7 +21,7 @@ end
 
 desc "Run all the specs"
 task :spec do
-  system "bundle exec spec -O spec/spec.opts spec"
+  system "bundle exec rspec spec"
 end
 
 task :default => :spec

@@ -5,7 +5,7 @@ module Panda
 
     def initialize(attributes={})
       super(attributes)
-      connection_params = Panda.connection.to_hash.merge!(:cloud_id => id, :format => :hash)
+      connection_params = Panda.connection.to_hash.merge!(:cloud_id => id)
       @connection = Connection.new(connection_params)
       Panda.clouds[id] = self
     end
@@ -31,8 +31,8 @@ module Panda
     end
 
     def region
-      return "eu" if connection.api_host == Panda::Connection::EU_API_HOST
-      return "us" if connection.api_host == Panda::Connection::US_API_HOST
+      return "eu" if connection.api_host == Panda::EU_API_HOST
+      return "us" if connection.api_host == Panda::US_API_HOST
     end
 
     def videos

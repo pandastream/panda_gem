@@ -6,14 +6,14 @@ module Panda
   extend Forwardable
 
   attr_reader :cloud, :clouds
-  attr_reader :connection
+  attr_reader :connection, :config
 
   def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
   def configure(auth_params=nil, &block)
 
     if !auth_params
-      configure = Config.new
+      @config = configure = Config.new
       if (block.arity > 0)
         block.call(configure)
       else

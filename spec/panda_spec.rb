@@ -16,7 +16,7 @@ describe Panda do
     
   end
 
-  describe "Connected", :shared => true do
+  shared_examples_for "Connected" do
 
     it "should make get request with signed request to panda server" do
       stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "{\"abc\":\"d\"}")

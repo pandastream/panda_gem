@@ -1,10 +1,11 @@
 module Panda
+  
   API_PORT=80
   US_API_HOST="api.pandastream.com"
   EU_API_HOST="api.eu.pandastream.com"
   
   class Connection
-    attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id, :format
+    attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
 
     def initialize(auth_params={})
       @api_version = 2
