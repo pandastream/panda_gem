@@ -14,7 +14,12 @@ module Panda
 
     if !auth_params
       configure = Config.new
-      configure.instance_eval(&block)
+      if (block.arity > 0)
+        block.call(configure)
+      else
+        configure.instance_eval(&block)
+      end
+      
       auth_params = configure.to_hash
     end
 
