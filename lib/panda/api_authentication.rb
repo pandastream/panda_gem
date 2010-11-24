@@ -26,11 +26,9 @@ module Panda
 
     # param keys should be strings, not symbols please. return a string joined
     # by & in canonical order. 
-    def self.canonical_querystring(params)
-      # I hope this built-in sort sorts by byte order, that's what's required. 
-      params.keys.sort.collect {|key| [url_encode(key), url_encode(params[key])].join("=") }.join("&")
+    def self.canonical_querystring(h)
+      _recursion(h).join('&')
     end
-
     # Turns a hash into a query string, returns the query string.
     # url-encodes everything to Amazon's specifications. 
     def self.hash_to_query(hash)
@@ -42,5 +40,26 @@ module Panda
     def self.url_encode(string)
       CGI.escape(string.to_s).gsub("%7E", "~").gsub("+", "%20")
     end
+
+    def self._recursion(h, base = nil)
+      pairs = []
+      h.keys.sort.each do |key|
+        value = h[key]
+        if value.kind_of? Hash
+          pairs += _recursion(value, key)
+        else
+          new_pair = nil
+          if base
+            new_pair = "#{base}[#{url_encode(key)}]=#{url_encode(value)}"
+          else
+            new_pair = "#{url_encode(key)}=#{url_encode(value)}"
+          end
+          pairs << new_pair
+        end
+      end
+      pairs
+    end
+    
+    
   end
 end
