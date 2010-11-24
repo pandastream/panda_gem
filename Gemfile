@@ -6,5 +6,5 @@ gem "json"
 
 gem "jeweler"
 gem "rake"
-gem "rspec"
-gem "webmock"
+gem "rspec", "1.3.1"
+gem "webmock", "1.6.1"

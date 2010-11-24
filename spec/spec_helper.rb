@@ -5,7 +5,7 @@ require 'spec'
 require 'spec/autorun'
 
 require 'webmock/rspec'
-include WebMock
+include WebMock::API
 
 def hputs(*args)
   puts ERB::Util.html_escape(args.join("\n")).gsub(/\r?\n/, '<br/>') + '<br/>'
