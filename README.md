@@ -476,21 +476,9 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     
     Panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
 
-## Hash or JSON
-Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to return JSON do the following:
-
-    Panda.connect!({
-      :cloud_id => 'cloud_id',
-      :access_key => 'access_key',
-      :secret_key => 'secret_key',
-      :format => 'json'
-    })
-
-
 ## Use bundler to setup the test environment (1.0)
 
     bundler install
     rake spec
-
 
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.
