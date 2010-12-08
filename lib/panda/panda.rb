@@ -1,6 +1,6 @@
 require 'restclient'
 require 'forwardable'
-require 'json' unless defined?(ActiveSupport::JSON)
+require 'json' unless defined?(ActiveSupport::JSON) || defined?(JSON::JSON_LOADED)
 
 module Panda
   extend self
