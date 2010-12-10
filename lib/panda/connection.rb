@@ -88,19 +88,23 @@ module Panda
 
     def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
       auth_params = stringify_keys(params)
-      auth_params['cloud_id']   = @cloud_id
-      auth_params['access_key'] = @access_key
+      auth_params['cloud_id']   = cloud_id
+      auth_params['access_key'] = access_key
       auth_params['timestamp']  = timestamp_str || Time.now.iso8601(6)
 
       params_to_sign = auth_params.reject{|k,v| ['file'].include?(k.to_s)}
-      auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params_to_sign)
+      auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, api_host, secret_key, params_to_sign)
       auth_params
     end
 
     def api_url
-      "http://#{@api_host}:#{@api_port}/#{@prefix}"
+      "#{api_protocol}://#{api_host}:#{api_port}/#{prefix}"
     end
 
+    def api_protocol
+      api_port == 443 ? 'https' : 'http'
+    end
+    
     # Shortcut to setup your bucket
     def setup_bucket(params={})
       granting_params = { 
@@ -171,7 +175,7 @@ module Panda
         @cloud_id   = heroku_uri.path[1..-1]
         @api_host   = heroku_uri.host
         @api_port   = heroku_uri.port
-        @prefix     = "v#{@api_version}"
+        @prefix     = "v#{api_version}"
       end
 
       def init_from_hash(hash_params)
@@ -182,7 +186,7 @@ module Panda
         @secret_key = params["secret_key"]  || params[:secret_key]
         @api_host   = params["api_host"]    || params[:api_host]
         @api_port   = params["api_port"]    || params[:api_port]
-        @prefix     = params["prefix_url"]  || "v#{@api_version}"
+        @prefix     = params["prefix_url"]  || "v#{api_version}"
       end
   end
 end
