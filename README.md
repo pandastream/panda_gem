@@ -20,7 +20,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       config.secret_key = "panda_secret_key"
       config.cloud_id = "panda_cloud_id"
       # config.api_host = "api.eu.pandastream.com" ## for EU accounts
-      # config.api_port = 443 ## to use https
+      # config.api_port = 80 ## to use http (default 443)
     end
 
     or Panda.configure({:access_key => ....})
