@@ -98,7 +98,7 @@ module Panda
     end
 
     def api_url
-      "#{api_protocol}://#{api_host}:#{api_port}/#{prefix}"
+      "#{api_protocol}://#{api_host}:#{api_port}/#{@prefix}"
     end
 
     def api_protocol
