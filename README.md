@@ -19,18 +19,11 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       access_key "panda_access_key"
       secret_key "panda_secret_key"
       cloud_id "panda_cloud_id"
+      # api_host "api.eu.pandastream.com" ## for EU accounts
+      # api_port 80 ## to use http (default 443)
     end
 
     or Panda.configure({:access_key => ....})
-
-### Creating an instance of the client for EU
-
-    Panda.configure do
-      access_key "panda_access_key"
-      secret_key "panda_secret_key"
-      cloud_id "panda_cloud_id"
-      api_host "api.eu.pandastream.com"
-    end
 
 ### Creating an instance using Heroku
 

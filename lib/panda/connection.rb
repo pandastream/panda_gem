@@ -40,19 +40,23 @@ module Panda
 
     def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
       auth_params = stringify_keys(params)
-      auth_params['cloud_id']   = @cloud_id
-      auth_params['access_key'] = @access_key
+      auth_params['cloud_id']   = cloud_id
+      auth_params['access_key'] = access_key
       auth_params['timestamp']  = timestamp_str || Time.now.utc.iso8601(6)
 
       params_to_sign = auth_params.reject{|k,v| ['file'].include?(k.to_s)}
-      auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, @api_host, @secret_key, params_to_sign)
+      auth_params['signature']  = ApiAuthentication.generate_signature(verb, request_uri, api_host, secret_key, params_to_sign)
       auth_params
     end
 
     def api_url
-      "http://#{@api_host}:#{@api_port}/#{@prefix}"
+      "#{api_protocol}://#{api_host}:#{api_port}/#{@prefix}"
     end
 
+    def api_protocol
+      api_port == 443 ? 'https' : 'http'
+    end
+    
     # Shortcut to setup your bucket
     def setup_bucket(params={})
       granting_params = { 
@@ -84,14 +88,13 @@ module Panda
     def init_from_hash(hash_params)
       params      = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(hash_params)
 
-      @cloud_id   = params["cloud_id"]    || params[:cloud_id]
-      @access_key = params["access_key"]  || params[:access_key]
-      @secret_key = params["secret_key"]  || params[:secret_key]
-      @api_host   = params["api_host"]    || params[:api_host]
-      @api_port   = params["api_port"]    || params[:api_port]
-      @prefix     = params["prefix_url"]  || "v#{@api_version}"
+        @cloud_id   = params["cloud_id"]    || params[:cloud_id]
+        @access_key = params["access_key"]  || params[:access_key]
+        @secret_key = params["secret_key"]  || params[:secret_key]
+        @api_host   = params["api_host"]    || params[:api_host]
+        @api_port   = params["api_port"]    || params[:api_port]
+        @prefix     = params["prefix_url"]  || "v#{api_version}"
     end
-    
   end
 end
 

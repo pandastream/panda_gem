@@ -116,7 +116,7 @@ describe Panda::Video do
       region "eu"
     end
     
-    stub_http_request(:get, /api.eu.pandastream.com:80/).
+    stub_http_request(:get, /api.eu.pandastream.com:443/).
       to_return(:body => "{\"id\":\"123\"}")
     Panda::Video.find "123"
   end
@@ -133,7 +133,7 @@ describe Panda::Video do
       c.region  "eu"
     end
     
-    stub_http_request(:get, /api.eu.pandastream.com:80/).
+    stub_http_request(:get, /api.eu.pandastream.com:443/).
       to_return(:body => "{\"id\":\"123\"}")
     Panda::Video.find "123"
   end

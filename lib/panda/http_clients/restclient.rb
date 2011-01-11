@@ -1,5 +1,5 @@
 require 'restclient'
-require 'json' unless defined?(ActiveSupport::JSON)
+require 'json' unless defined?(ActiveSupport::JSON) || defined?(JSON::JSON_LOADED)
 
 module Panda
   module HttpClients

@@ -1,15 +1,16 @@
 source :rubygems
 
-gem "ruby-hmac",">= 0.3.2"
+group :development, :test do
 
-gem "rest-client"
-gem "json"
+  gem "ruby-hmac",">= 0.3.2"
+  gem "rest-client"
+  gem "json"
+  gem "yajl-ruby"
+  gem "faraday"
 
-gem "yajl-ruby"
-gem "faraday"
+  gem "jeweler"
+  gem "rake"
+  gem "rspec", "2.1.0"
+  gem "webmock"
 
-
-gem "jeweler"
-gem "rake"
-gem "rspec", "2.1.0"
-gem "webmock"
+end
