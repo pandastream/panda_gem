@@ -17,8 +17,9 @@ Gem::Specification.new do |s|
   s.add_dependency "json"
   s.add_dependency "yajl-ruby"
   s.add_dependency "faraday"
-  
+
   s.add_development_dependency "rake"
+  s.add_development_dependency "timecop"
   s.add_development_dependency "rspec", "2.4.0"
   s.add_development_dependency "webmock"
   
