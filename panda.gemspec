@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "faraday"
   
   s.add_development_dependency "rake"
-  s.add_development_dependency "rspec", "2.1.0"
+  s.add_development_dependency "rspec", "2.4.0"
   s.add_development_dependency "webmock"
   
   s.rubyforge_project = "panda"
