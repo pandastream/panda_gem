@@ -1,6 +1,6 @@
 module Panda
   
-  API_PORT=80
+  API_PORT=443
   US_API_HOST="api.pandastream.com"
   EU_API_HOST="api.eu.pandastream.com"
   

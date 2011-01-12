@@ -40,13 +40,15 @@ module Panda
     end
     
     # Setup connection for Heroku
-    def heroku(heroku_url)
+    def heroku(heroku_url=nil)
       heroku_uri = URI.parse(heroku_url || ENV['PANDASTREAM_URL'])
+
       config['access_key'] = heroku_uri.user
       config['secret_key'] = heroku_uri.password
       config['cloud_id']   = heroku_uri.path[1..-1]
       config['api_host']   = heroku_uri.host
       config['api_port']   = heroku_uri.port
+      config
     end
     
     # Set the correct api_host for US/EU
