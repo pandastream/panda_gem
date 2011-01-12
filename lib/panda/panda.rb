@@ -39,12 +39,6 @@ module Panda
     @connection
   end
 
-  def version
-    open(File.join(File.dirname(__FILE__), '../../VERSION')) { |f|
-      f.read.strip
-    }
-  end
-
   def http_client=(http_client_name)
     @http_client = Panda::HttpClients.const_get("#{http_client_name.to_s.capitalize}Engine").new
   end

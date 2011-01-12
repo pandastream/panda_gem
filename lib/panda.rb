@@ -1,3 +1,4 @@
+require 'panda/version'
 require 'panda/api_authentication'
 require 'panda/connection'
 require 'panda/config'
