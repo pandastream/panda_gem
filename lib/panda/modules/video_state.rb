@@ -1,5 +1,5 @@
 module Panda
-  module ShortStatus
+  module VideoState
     def success?
       @attributes['status'] == 'success'
     end
@@ -11,5 +11,14 @@ module Panda
     def fail?
       @attributes['status'] == 'fail'
     end
+    
+    def error_message
+      @attributes['error_message']
+    end
+   
+    def error_class
+      @attributes['error_class']
+    end
+    
   end
 end

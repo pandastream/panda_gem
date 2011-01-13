@@ -1,6 +1,6 @@
 module Panda
   class Encoding < Resource
-    include ShortStatus
+    include VideoState
     include Viewable
     
     belongs_to :video

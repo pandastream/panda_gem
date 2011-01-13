@@ -34,6 +34,8 @@ module Panda
         end.body
       end
       
+      private
+      
       def init_connection(url)
         Faraday::Connection.new(:url => url) do |builder|
           builder.adapter Faraday.default_adapter

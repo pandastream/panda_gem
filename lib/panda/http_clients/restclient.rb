@@ -35,6 +35,8 @@ module Panda
         end
       end
 
+      private
+      
       def hash_response(response)
         begin
           if defined?(ActiveSupport::JSON)
