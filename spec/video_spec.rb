@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Panda::Video do
   before(:each) do
-
+    
     Panda.configure do
       access_key "my_access_key"
       secret_key "my_secret_key"

@@ -22,7 +22,7 @@ describe Panda do
   shared_examples_for "Connected" do
 
     it "should make get request with signed request to panda server" do
-      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=DYpg2K6d7kGo/uWPO/aQgtQmY3BPtFEtQgdQhVe8teM=&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "{\"abc\":\"d\"}")
+      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"abc\":\"d\"}")
       @panda.get("/videos").should == {'abc' => 'd'}
     end
 
@@ -35,7 +35,7 @@ describe Panda do
         'access_key' => "my_access_key",
         'timestamp' => "20010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o=',
+        'signature' => 'aTgBGPeMrRk2Pnc13RxhK/ctWjDsL33vOFEC9qKLWV0=',
         'param1' => 'one',
         'param2' => 'two'
       }
@@ -46,7 +46,7 @@ describe Panda do
         'access_key' => "my_access_key",
         'timestamp' => "20010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'TI2n/dsSllxFhxcEShRGKWtDSqxu+kuJUPs335NavMo='
+        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o='
       }
     end
 
@@ -60,7 +60,7 @@ describe Panda do
         'access_key' => "my_access_key",
         'timestamp' => "20010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'w5P9+xPpQpRlweTh0guFYqQOmF+ZuTKXCmaKpUP3sH0=',
+        'signature' => 'G6LUFGIseRyDrqnj55t+CDrAGdRWtUWSqZwMmIsuW40=',
         'tilde' => '~',
         'space' => ' '
       }
@@ -72,7 +72,7 @@ describe Panda do
         'access_key' => "my_access_key",
         'timestamp' => "20010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'TI2n/dsSllxFhxcEShRGKWtDSqxu+kuJUPs335NavMo=',
+        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o=',
         'file' => "my_file"
       }
     end
@@ -117,23 +117,23 @@ describe Panda do
     end
     
     it "should make get request" do
-      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "{\"key\":\"value\"}")
+      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"key\":\"value\"}")
       @panda.get("/videos").should == {'key' => 'value'}
     end
     
   end
-
+  
   describe "ActiveSupport::JSON parsing" do
-
+  
     it "should use active support if it has been defined" do
-      @panda = Panda::Connection.new('http://my_access_key:my_secret_key@myapihost:85/my_cloud_id')
-      stub_http_request(:get, "myapihost:85/v2/videos?timestamp=2009-11-04T17%3A54%3A11%2B00%3A00&signature=CxSYPM65SeeWH4CE%2FLcq7Ny2NtwxlpS8QOXG2BKe4p8%3D&access_key=my_access_key&cloud_id=my_cloud_id").to_return(:body => "abc")
-
-
+      @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
+      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "abc")
+  
+  
       module ActiveSupport
         class JSON; end
       end
-
+  
       ActiveSupport::JSON.should_receive(:decode).with("abc").and_return("blah")
       @panda.get("/videos").should == "blah"
       
