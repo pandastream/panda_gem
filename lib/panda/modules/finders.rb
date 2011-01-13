@@ -4,6 +4,7 @@ module Panda
     module FindOne
 
       def find(id)
+        raise 'find method requires a correct value' if id.nil? || id == ''
         find_by_path(one_path, {:id => id})
       end
 

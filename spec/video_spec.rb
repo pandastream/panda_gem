@@ -50,6 +50,13 @@ describe Panda::Video do
     video.source_url.should == "my_source_url"
   end
   
+  it "should raise exception if id is nil" do
+    
+    lambda {
+      Panda::Video.find(nil)
+    }.should raise_error('find method requires a correct value')
+
+  end
   
   it "should list all video's encodings" do
     video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
