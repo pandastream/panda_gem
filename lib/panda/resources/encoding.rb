@@ -1,7 +1,8 @@
 module Panda
   class Encoding < Resource
     include ShortStatus
-
+    include Viewable
+    
     belongs_to :video
     has_one :profile
 
@@ -11,23 +12,7 @@ module Panda
       end
     end
 
-    def url
-      get_url("#{extname}")
-    end
-
-    def error_log
-      get_url(".log") if fail?
-    end
+    def screenshots_size; 7 end
     
-    def screenshots
-      ((1..7).map{|i| get_url("_#{i}.jpg")} if success?) || []
-    end
-
-    private
-
-    def get_url(end_path)
-      "#{cloud.url}#{path}#{end_path}"
-    end
-
   end
 end

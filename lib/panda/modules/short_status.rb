@@ -1,13 +1,15 @@
-module ShortStatus
-  def success?
-    @attributes['status'] == 'success'
-  end
+module Panda
+  module ShortStatus
+    def success?
+      @attributes['status'] == 'success'
+    end
 
-  def processing?
-    @attributes['status'] == 'processing'
-  end
+    def processing?
+      @attributes['status'] == 'processing'
+    end
 
-  def fail?
-    @attributes['status'] == 'fail'
+    def fail?
+      @attributes['status'] == 'fail'
+    end
   end
 end

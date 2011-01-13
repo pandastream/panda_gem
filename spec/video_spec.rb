@@ -232,6 +232,24 @@ describe Panda::Video do
     WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).once
   end
   
+  it "should return the video url" do    
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+    
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda"})
+    video.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
+  end
+  
+  it "should generate a screenhost array" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :status => "success", :path => "abc/panda"})
+    video.screenshots[0].should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
+  end
+  
   it "should call the request if the scope has changed" do
     video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)

@@ -1,6 +1,7 @@
 module Panda
   class Video < Resource
     include ShortStatus
+    include Viewable
     has_many :encodings
 
     class << self
@@ -9,5 +10,7 @@ module Panda
       end
     end
 
+    def screenshots_size; 1 end
+    
   end
 end
