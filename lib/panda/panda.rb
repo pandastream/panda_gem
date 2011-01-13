@@ -40,14 +40,20 @@ module Panda
   end
 
   def http_client=(http_client_name)
+    require "panda/http_clients/#{http_client_name}"
     @http_client = Panda::HttpClients.const_get("#{http_client_name.to_s.capitalize}Engine").new
   end
 
   def http_client
-    @http_client ||= Panda::HttpClients::RestclientEngine.new
+    @http_client ||= default_engine
   end
-
+  
   private
+
+  def default_engine
+    require "panda/http_clients/restclient"
+    Panda::HttpClients::RestclientEngine.new
+  end
   
   def configure_with_auth_params(auth_params)
     connect!(auth_params)

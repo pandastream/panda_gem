@@ -37,7 +37,7 @@ module Panda
       private
       
       def init_connection(url)
-        Faraday::Connection.new(:url => url) do |builder|
+        @conn ||= Faraday::Connection.new(:url => url) do |builder|
           builder.adapter Faraday.default_adapter
           builder.response :yajl
         end
