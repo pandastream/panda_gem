@@ -184,6 +184,20 @@ describe Panda::Video do
     video.id.should == "123"
   end
   
+  it "should create a video using class method and a block" do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    
+    stub_http_request(:post, /api.example.com:85\/v2\/videos.json/).
+      with(:body => /source_url=url_panda.mp4/).
+        to_return(:body => video_json)
+    
+    video = Panda::Video.create do |v|
+      v.source_url = "url_panda.mp4"
+    end
+    
+    video.id.should == "123"
+  end
+  
   it "should return a json on attributes" do
     video = Panda::Video.new(:attr => "value")
     video.to_json.should == video.attributes.to_json
