@@ -1,7 +1,12 @@
+require 'forwardable'
+
 module Panda
   class Base    
     attr_accessor :attributes, :errors
+    extend Forwardable
+    
     include Panda::Router
+    def_delegators :attributes, :to_json
 
     def initialize(attributes = {})
       init_load
@@ -42,10 +47,6 @@ module Panda
     def reload
       perform_reload
       self
-    end
-
-    def to_json
-      attributes.to_json
     end
 
     private

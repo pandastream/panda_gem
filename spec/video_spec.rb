@@ -246,7 +246,18 @@ describe Panda::Video do
     WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).once
   end
   
-  it "should return the video url" do    
+  it 'should generate json of encodings' do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    video = Panda::Video.find("123")
+
+    encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
+
+    video.encodings.to_json.should == "[{\"abc\":\"my_source_url\",\"id\":\"456\",\"cloud_id\":\"my_cloud_id\"}]"
+  end
+  
+  it "should return the video url" do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)

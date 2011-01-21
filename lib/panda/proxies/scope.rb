@@ -19,7 +19,7 @@ module Panda
       initialize_scope_attributes
       initialize_scopes
     end
-
+    
     # Overide the function to set the cloud_id as the same as the scope
     def find_by_path(url, map={})
       object = find_object_by_path(url, map)
@@ -46,7 +46,7 @@ module Panda
     def reload
       @found = trigger_request
     end
-
+    
     private
 
       def initialize_scope_attributes
