@@ -8,14 +8,18 @@ module Panda
 
     module CreateBuilder
 
-      def create(attributes)       
+      def create(attributes={})
        resource = build_resource(attributes)
+       yield resource if block_given?
+
        resource.create
        resource
       end
 
-      def create!(attributes)
+      def create!(attributes={})
         resource = build_resource(attributes)
+        yield resource if block_given?
+
         resource.create!
         resource
       end
