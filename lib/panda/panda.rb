@@ -40,8 +40,12 @@ module Panda
   end
 
   def http_client=(http_client_name)
-    require "panda/http_clients/#{http_client_name}"
-    @http_client = Panda::HttpClients.const_get("#{http_client_name.to_s.capitalize}Engine").new
+    if File.exists?((local_lib=
+        "#{File.dirname(__FILE__)}/http_clients/#{http_client_name}") + '.rb')
+      require local_lib
+    end
+    
+    @http_client = Panda::HttpClient.const_get("#{http_client_name.to_s.capitalize}Engine").new
   end
 
   def http_client
