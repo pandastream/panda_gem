@@ -38,6 +38,11 @@ module Panda
       super(scoped_attrs)
     end
 
+    def create!(attributes)
+      scoped_attrs = attributes.merge(@scoped_attributes)
+      super(scoped_attrs)
+    end
+
     def all(attributes={})
       @scoped_attributes.merge!(attributes)
       trigger_request
