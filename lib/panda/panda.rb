@@ -22,10 +22,12 @@ module Panda
     end
 
     configure_with_auth_params(auth_params)
+    true
   end
 
   def configure_heroku(heroku_url=nil)
     configure_with_auth_params Config.new.heroku(heroku_url)
+    true
   end
 
   def connect!(auth_params)
