@@ -302,4 +302,25 @@ describe Panda::Video do
     video = Panda::Video.find "123"
     video.cloud.s3_videos_bucket.should == "my_bucket"
   end
+
+  it "should generate a screenshot" do
+    cloud_json = "{\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:status => "success", :path => "abc/panda"})
+    video.screenshot.should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
+  end
+
+  it "should generate a nil screenshot if non-success" do
+    cloud_json = "{\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:status => "fail"})
+    video.screenshot.should == nil
+
+    video = Panda::Video.new({:status => "processing"})
+    video.screenshot.should == nil
+  end
 end

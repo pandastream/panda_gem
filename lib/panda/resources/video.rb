@@ -9,5 +9,9 @@ module Panda
       end
     end
 
+    def screenshot
+      "#{cloud.url}#{path}_1.jpg" if success? || nil
+    end
+
   end
 end
