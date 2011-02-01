@@ -16,7 +16,7 @@ module Panda
       def find_object_by_path(url, map={})
         full_url = object_url(url, map)
         params = element_params(url, map)
-        self.connection.get(full_url, params)
+        connection.get(full_url, params)
       end
 
       def find_by_path(url, map={})
