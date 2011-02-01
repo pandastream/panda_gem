@@ -19,6 +19,8 @@ module Panda
       end
       
       auth_params = configure.to_hash
+    elsif auth_params.is_a?(String)
+      auth_params = Config.new.heroku(auth_params)
     end
 
     configure_with_auth_params(auth_params)

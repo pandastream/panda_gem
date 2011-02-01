@@ -8,14 +8,25 @@ describe Panda::Video do
 
     my_heroku_url = "http://access_key:secret_key@api.example.com:85/my_cloud_id"
     ENV['PANDASTREAM_URL']= my_heroku_url
-    Panda.configure_heroku
   end
   
   it "should get all videos" do
+    Panda.configure_heroku
+    
     videos_json = "[]"
     stub_http_request(:get, /api.example.com:85\/v2\/videos.json/).to_return(:body => videos_json)
     
     Panda::Video.all.should be_empty
   end
+  
+  it "should get all videos" do
+    Panda.configure ENV['PANDASTREAM_URL']
+    
+    videos_json = "[]"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos.json/).to_return(:body => videos_json)
+    
+    Panda::Video.all.should be_empty
+  end
+  
   
 end
