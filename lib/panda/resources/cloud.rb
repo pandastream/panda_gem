@@ -61,6 +61,8 @@ module Panda
       super
     end
 
+    private 
+    
     def lazy_load
       reload unless @loaded
     end

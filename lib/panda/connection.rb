@@ -40,7 +40,7 @@ module Panda
 
     def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
       auth_params = stringify_keys(params)
-      auth_params['cloud_id']   = cloud_id
+      auth_params['cloud_id']   = cloud_id unless request_uri =~ /^\/clouds/
       auth_params['access_key'] = access_key
       auth_params['timestamp']  = timestamp_str || Time.now.utc.iso8601(6)
 
