@@ -28,7 +28,7 @@ module Panda
         elsif object['id']
           kclass.new(object)
         else
-          Error.new(object).raise!
+          raise APIError.new(object)
         end
       end
 

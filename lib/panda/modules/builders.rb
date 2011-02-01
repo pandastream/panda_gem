@@ -38,7 +38,7 @@ module Panda
     end
 
     def create!
-      create || errors.last.raise!
+      create || raise(errors.last)
     end
 
   end

@@ -86,7 +86,7 @@ module Panda
     end
 
     def init_from_hash(hash_params)
-      params      = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(hash_params)
+      params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(hash_params)
 
         @cloud_id   = params["cloud_id"]    || params[:cloud_id]
         @access_key = params["access_key"]  || params[:access_key]

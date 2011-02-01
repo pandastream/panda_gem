@@ -29,7 +29,7 @@ module Panda
       elsif object['id']
         klass.new(object.merge('cloud_id' => cloud.id))
       else
-        Error.new(object).raise!
+        raise APIError.new(object)
       end
     end
 

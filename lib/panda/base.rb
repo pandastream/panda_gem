@@ -74,7 +74,7 @@ module Panda
 
     def load_response(response)
       if response['error'] || response['id'].nil?
-        @errors << Error.new(response)
+        @errors << APIError.new(response)
         @loaded = false
       else
         clear_attributes

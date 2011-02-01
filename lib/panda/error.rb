@@ -1,26 +1,14 @@
 module Panda
-  class Error
-    attr_reader :message
-    attr_reader :error_class
-    attr_reader :original_hash
-
+  
+  class Error < StandardError; end
+  
+  class APIError < Panda::Error
     def initialize(options)
-     @original_hash = options
-     @message = options['message']
-     @error_class = options['error']
+      super("#{options['error']}: #{options['message']}")
     end
-
-    def raise!
-      raise(self.to_s)
-    end
-
-    def to_s
-      "#{@error_class}: #{@message}"
-    end
-
   end
 
-  class ServiceNotAvailable < StandardError
+  class ServiceNotAvailable < Panda::Error
     def initialize
       super("ServiceNotAvailable")
     end

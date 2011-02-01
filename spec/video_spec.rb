@@ -94,7 +94,7 @@ describe Panda::Video do
     
     lambda {
         Panda::Video.find "abc"
-    }.should raise_error("error-abc: no-abc")
+    }.should raise_error(Panda::APIError, "error-abc: no-abc")
   end
   
   it "should have an error object if something goes wrong" do
@@ -107,8 +107,7 @@ describe Panda::Video do
     obj.save
     
     obj.errors.size.should == 1
-    obj.errors.first.message.should == "no-abc"
-    obj.errors.first.error_class.should == "error-abc"
+    obj.errors.first.to_s.should == "error-abc: no-abc"
     obj.attributes.should == original_attrs
     
   end
