@@ -28,15 +28,17 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Inside a Rails app with a main account or using Heroku
 
-Config is stored in `config/panda.yml` or you must set an the PANDASTREAM_URL environment variable in your `/.bashrc` file (see the [Heroku config variable docs](http://docs.heroku.com/config-vars)).
+Heroku will store your credentials as an environment variable called PANDASTREAM_URL. You can find more information on [Heroku config variable docs](http://docs.heroku.com/config-vars)
 
-Use the following in your `config/initializers/panda.rb`:
+If you use a config file like `config/panda.yml` to support multiple environments, do the following in your `config/initializers/panda.rb` :
 
     Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[RAILS_ENV]))
 
 See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
 
 ### Creating an instance using ONLY Heroku
+
+If you don't use a config file and want to simply be setup, do the following (works only on heroku):
 
     Panda.configure_heroku
 
