@@ -19,13 +19,17 @@ module Panda
       end
       
       auth_params = configure.to_hash
+    elsif auth_params.is_a?(String)
+      auth_params = Config.new.heroku(auth_params)
     end
 
     configure_with_auth_params(auth_params)
+    true
   end
 
   def configure_heroku(heroku_url=nil)
     configure_with_auth_params Config.new.heroku(heroku_url)
+    true
   end
 
   def connect!(auth_params)
@@ -33,13 +37,17 @@ module Panda
   end
 
   def connection
-    raise "Not connected. Please connect! first." unless @connection
+    raise "Panda is not configured!" unless @connection
     @connection
   end
 
   def http_client=(http_client_name)
-    require "panda/http_clients/#{http_client_name}"
-    @http_client = Panda::HttpClients.const_get("#{http_client_name.to_s.capitalize}Engine").new
+    if File.exists?((local_lib=
+        "#{File.dirname(__FILE__)}/http_clients/#{http_client_name}") + '.rb')
+      require local_lib
+    end
+    
+    @http_client = Panda::HttpClient.const_get("#{http_client_name.to_s.capitalize}Engine").new
   end
 
   def http_client
@@ -50,7 +58,7 @@ module Panda
 
   def default_engine
     require "panda/http_clients/restclient"
-    Panda::HttpClients::RestclientEngine.new
+    Panda::HttpClient::RestclientEngine.new
   end
   
   def configure_with_auth_params(auth_params)

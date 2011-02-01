@@ -1,7 +1,8 @@
 require 'faraday'
+require 'yajl'
 
 module Panda
-  module HttpClients
+  module HttpClient
     class FaradayEngine
       
       def get(api_url, request_uri, params)

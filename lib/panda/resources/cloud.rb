@@ -1,6 +1,9 @@
 module Panda
   class Cloud < Base
+    
     include Panda::Updatable
+    include Panda::Finders
+    
     attr_reader :connection
 
     def initialize(attributes={})
@@ -11,7 +14,7 @@ module Panda
     end
 
     class << self
-      include Panda::Finders::FindOne
+      include Panda::Builders::CreateBuilder
 
       def find(id, options=nil)
         super(id)
@@ -20,6 +23,13 @@ module Panda
       def connection
         Panda.connection
       end
+      
+      private
+
+      def build_resource(attributes)
+        resource = Panda::Cloud.new(attributes)
+      end
+      
     end
 
     def eu?
@@ -52,10 +62,10 @@ module Panda
       super
     end
 
-    private
-
+    private 
+    
     def lazy_load
-      @found ||= reload
+      reload unless @loaded
     end
 
   end
