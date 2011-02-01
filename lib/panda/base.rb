@@ -70,7 +70,6 @@ module Panda
 
       url = self.class.object_url(self.class.one_path, :id => id)
       response = connection.get(url)
-      init_load
       load_response(response.merge(args))
     end
 
@@ -92,7 +91,7 @@ module Panda
       if response['error'] || response['id'].nil?
         !(@errors << Error.new(response))
       else
-        @errors=[]
+        init_load
         @loaded = true
         load(response)
       end
