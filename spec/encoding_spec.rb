@@ -67,7 +67,7 @@ describe Panda::Encoding do
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
     
-    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda"})
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
     encoding.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
   end
   

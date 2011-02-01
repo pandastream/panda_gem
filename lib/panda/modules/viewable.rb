@@ -6,7 +6,7 @@ module Panda
     end
   
     def url
-      get_url("#{extname}")
+      get_url("#{extname}") if success?
     end
 
     private

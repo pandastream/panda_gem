@@ -262,7 +262,7 @@ describe Panda::Video do
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
     
-    video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda"})
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
     video.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
   end
   
