@@ -37,7 +37,7 @@ module Panda
   end
 
   def connection
-    raise "Not connected. Please connect! first." unless @connection
+    raise "Panda is not configured!" unless @connection
     @connection
   end
 

@@ -13,7 +13,7 @@ describe Panda do
       it "should raise error for #{method}" do
         lambda {
           Panda.send(method, nil, nil)
-        }.should raise_error("Not connected. Please connect! first.")
+        }.should raise_error("Panda is not configured!")
       end
     end
     
