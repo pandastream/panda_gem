@@ -1,7 +1,7 @@
 require 'forwardable'
 
 module Panda
-  class Base    
+  class Base
     attr_accessor :attributes, :errors
     extend Forwardable
     
@@ -9,7 +9,7 @@ module Panda
     def_delegators :attributes, :to_json
 
     def initialize(attributes = {})
-      init_load
+      clear_attributes
       load(attributes)
     end
 
@@ -62,7 +62,7 @@ module Panda
     private
 
     def load_and_reset(response)
-      load_response(response) ? (@changed_attributes = {}; true) : false
+      load_response(response)
     end
     
     def perform_reload(args={})
@@ -73,27 +73,30 @@ module Panda
       load_response(response.merge(args))
     end
 
-    def init_load
+    def clear_attributes
       @attributes = {}
       @changed_attributes = {}
       @errors = []
     end
 
     def load(attributes)
+      not_a_response = !(attributes['id'] || attributes[:id])
       attributes.each do |key, value|
         @attributes[key.to_s] = value
-        @changed_attributes[key.to_s] = value if !(attributes['id'] || attributes[:id])
+        @changed_attributes[key.to_s] = value if not_a_response
       end
       true
     end
 
     def load_response(response)
       if response['error'] || response['id'].nil?
-        !(@errors << Error.new(response))
+        @errors << Error.new(response)
+        @loaded = false
       else
-        init_load
-        @loaded = true
+        clear_attributes
         load(response)
+        @changed_attributes = {};
+        @loaded = true
       end
     end
 

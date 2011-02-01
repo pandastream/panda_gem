@@ -66,7 +66,7 @@ module Panda
     end
 
     def initialize_scopes
-      [].methods.each do |m|
+      ([].methods + [:to_json]).each do |m|
         unless m.to_s =~ /^__/ || non_delegate_methods.include?(m.to_sym)
           self.class.class_eval do
             def_delegators :proxy_found, m.to_sym
