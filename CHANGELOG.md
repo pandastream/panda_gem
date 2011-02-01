@@ -1,0 +1,52 @@
+## 1.4.0 (...)
+
+Features:
+
+  - Httpclient option, default is `restclient`
+  - Added Cloud.create, Cloud.all
+  - Https support for heroku account
+  - Simpler heroku configure method
+  - Simpler configure method
+  - Url and screenshots method for video
+  - Faraday Httpclient
+  - `create` method accepts a block
+  
+Bugfixes:
+
+  - `to_json` method
+  - `create!` on associations was wrong
+
+## 1.3.0 (January 10, 2011)
+
+Features:
+
+  - Added support for https
+
+## 1.2.2 (December 08, 2010)
+
+Bugfixes:
+
+  - No more warnings about already initialized constants for JSON
+
+## 1.2.0 (November 25, 2010)
+
+Features:
+
+  - Added support for the notification api.
+  - Added support for path and url
+  
+## 1.1.0 (October 19, 2010)
+
+Bugfixes:
+
+  - Do not cache screenshot array anymore
+
+## 1.0.0 (August 05, 2010)
+
+- Simpler and smarter gem
+
+
+    
+    
+    
+    August 05, 2010
