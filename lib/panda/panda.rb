@@ -4,14 +4,14 @@ module Panda
   extend Forwardable
 
   attr_reader :cloud, :clouds
-  attr_reader :connection, :config
+  attr_reader :connection
 
   def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
   def configure(auth_params=nil, &block)
 
     if !auth_params
-      @config = configure = Config.new
+      configure = Config.new
       if (block.arity > 0)
         block.call(configure)
       else
@@ -20,15 +20,15 @@ module Panda
       
       auth_params = configure.to_hash
     elsif auth_params.is_a?(String)
-      auth_params = Config.new.heroku(auth_params)
+      auth_params = Config.new.load_url(auth_params)
     end
 
     configure_with_auth_params(auth_params)
     true
   end
 
-  def configure_heroku(heroku_url=nil)
-    configure_with_auth_params Config.new.heroku(heroku_url)
+  def configure_heroku
+    configure_with_auth_params Config.new.load_url(ENV['PANDASTREAM_URL'])
     true
   end
 
