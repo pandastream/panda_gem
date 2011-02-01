@@ -25,9 +25,6 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
     or Panda.configure({:access_key => ....})
 
-### Creating an instance using Heroku
-
-    Panda.configure_heroku
 
 ### Inside a Rails app with a main account or using Heroku
 
@@ -38,6 +35,10 @@ Use the following in your `config/initializers/panda.rb`:
     Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[RAILS_ENV]))
 
 See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
+
+### Creating an instance using ONLY Heroku
+
+    Panda.configure_heroku
 
 ### Typical usage
 

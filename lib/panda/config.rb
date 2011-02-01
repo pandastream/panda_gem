@@ -30,17 +30,7 @@ module Panda
     def http_client=(http_client_name)
       Panda.http_client = http_client_name
     end
-    
-    #shortcuts
-    
-    def key(val)
-      config['access_key'] = val
-    end
-    
-    def secret(val)
-      config['secret_key'] = val
-    end
-    
+        
     # Setup connection for Heroku
     def heroku(heroku_url=nil)
       heroku_uri = URI.parse(heroku_url || ENV['PANDASTREAM_URL'])
