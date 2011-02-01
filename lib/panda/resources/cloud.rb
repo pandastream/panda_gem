@@ -1,8 +1,6 @@
 module Panda
   class Cloud < Base
-    
     include Panda::Updatable
-    include Panda::Finders
     
     attr_reader :connection
 
@@ -14,11 +12,6 @@ module Panda
     end
 
     class << self
-      include Panda::Builders::CreateBuilder
-
-      def find(id, options=nil)
-        super(id)
-      end
 
       def connection
         Panda.connection
@@ -29,7 +22,6 @@ module Panda
       def build_resource(attributes)
         resource = Panda::Cloud.new(attributes)
       end
-      
     end
 
     def eu?

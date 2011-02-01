@@ -214,7 +214,7 @@ describe Panda::Encoding do
     stub_http_request(:get, /api.example.com:85\/v2\/encodings\/456.json/).
       to_return(:body => encoding_json)
     
-    Panda::Encoding.id("456")
+    Panda::Encoding.find("456")
   end
   
   it "should tell if the encoding is success" do

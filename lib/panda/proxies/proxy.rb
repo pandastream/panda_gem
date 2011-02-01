@@ -3,7 +3,7 @@ module Panda
     include Panda::Router::ClassMethods
     include Panda::Finders::FindMany
     include Panda::Finders::FindOne
-    include Panda::Builders::CreateBuilder
+    include Panda::Builders::ClassMethods
     include Panda::CloudConnection
 
     attr_accessor :parent, :klass

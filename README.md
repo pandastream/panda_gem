@@ -368,10 +368,6 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     cloud_two.profiles
     cloud_two.profiles.create(:preset_name => "h264")
     cloud_one.videos.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
-
-  You can also connect directly using Cloud.find
-    
-    cloud = Panda::Cloud.find("cloud_id_1", {:access_key => ..., :secret_key => ... })
     
 
 ## Generating signatures

@@ -101,25 +101,6 @@ describe Panda::Cloud do
       end
     end
     
-
-    describe "Using options on find" do
-      
-      it "should find a cloud" do
-        cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}"
-        stub_http_request(:get, /http:\/\/api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
-          to_return(:body => cloud_json)
-        
-        @cloud = Panda::Cloud.find "my_cloud_id", {
-          "access_key" => "my_access_key", 
-          "secret_key" => "my_secret_key", 
-          "api_host" => "api.example.com", 
-          "api_port" => 85
-        }
-        
-        @cloud.s3_videos_bucket.should == "my_bucket"
-      end
-    end
-    
     
     it "should create a cloud" do
       cloud_json = "{\"s3_videos_bucket\":\"videobucket\",\"id\":\"my_cloud_id\"}"

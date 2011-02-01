@@ -6,6 +6,9 @@ module Panda
     extend Forwardable
     
     include Panda::Router
+    include Panda::Builders
+    include Panda::Finders
+
     def_delegators :attributes, :to_json
 
     def initialize(attributes = {})
@@ -14,10 +17,6 @@ module Panda
     end
 
     class << self
-      def id(this_id)
-        find(this_id)
-      end
-
       def sti_name
         "#{name.split('::').last}"
       end
@@ -31,27 +30,12 @@ module Panda
       id.nil?
     end
 
-    def delete
-      response = connection.delete(object_url_map(self.class.one_path))
-      !!response['deleted']
-    end
-
     def id
       attributes['id']
     end
 
     def id=(id)
       attributes['id'] = id
-    end
-
-    def create
-      raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
-      response = connection.post(object_url_map(self.class.many_path), attributes)
-      load_and_reset(response)
-    end
-
-    def create!
-      create || errors.last.raise!
     end
 
     def reload

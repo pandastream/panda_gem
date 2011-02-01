@@ -1,6 +1,6 @@
 module Panda
   class Resource < Base
-    include Panda::Builders
+    include Panda::Destroyers
     include Panda::Associations
     include Panda::CloudConnection
 
