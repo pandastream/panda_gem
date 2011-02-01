@@ -11,14 +11,6 @@ module Panda
     def fail?
       @attributes['status'] == 'fail'
     end
-    
-    def error_message
-      @attributes['error_message']
-    end
-   
-    def error_class
-      @attributes['error_class']
-    end
-    
+
   end
 end
