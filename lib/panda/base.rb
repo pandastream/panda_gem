@@ -44,6 +44,16 @@ module Panda
       attributes['id'] = id
     end
 
+    def create
+      raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
+      response = connection.post(object_url_map(self.class.many_path), attributes)
+      load_and_reset(response)
+    end
+
+    def create!
+      create || errors.last.raise!
+    end
+
     def reload
       perform_reload
       self
@@ -51,6 +61,10 @@ module Panda
 
     private
 
+    def load_and_reset(response)
+      load_response(response) ? (@changed_attributes = {}; true) : false
+    end
+    
     def perform_reload(args={})
       raise "RecordNotFound" if new?
 
@@ -79,6 +93,7 @@ module Panda
         !(@errors << Error.new(response))
       else
         @errors=[]
+        @loaded = true
         load(response)
       end
     end

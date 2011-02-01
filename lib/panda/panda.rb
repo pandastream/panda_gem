@@ -56,7 +56,7 @@ module Panda
 
   def default_engine
     require "panda/http_clients/restclient"
-    Panda::HttpClients::RestclientEngine.new
+    Panda::HttpClient::RestclientEngine.new
   end
   
   def configure_with_auth_params(auth_params)

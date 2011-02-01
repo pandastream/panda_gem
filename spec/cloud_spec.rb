@@ -98,13 +98,26 @@ describe Panda::Cloud do
           "access_key" => "my_access_key", 
           "secret_key" => "my_secret_key", 
           "api_host" => "api.example.com", 
-          "api_port" => 85, 
-          "format" => "json" 
+          "api_port" => 85
         }
         
         @cloud.s3_videos_bucket.should == "my_bucket"
       end
     end
     
+    
+    it "should create a cloud" do
+      cloud_json = "{\"s3_videos_bucket\":\"videobucket\",\"id\":\"my_cloud_id\"}"
+      stub_http_request(:post, /http:\/\/api.example.com:85\/v2\/clouds.json/).
+        with{|r| r.body =~ /s3_videos_bucket=videobucket/ &&  r.body =~ /user_aws_key=myaccesskey/ &&  r.body =~ /user_aws_secret=mysecretkey/ }.
+        to_return(:body => cloud_json)
+      
+      @cloud = Panda::Cloud.create(:s3_videos_bucket => 'videobucket', :user_aws_key => 'myaccesskey', :user_aws_secret => 'mysecretkey')
+      @cloud.s3_videos_bucket.should == "videobucket"
+    end
+
   end
+  
+  
+  
 end
