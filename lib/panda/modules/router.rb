@@ -7,7 +7,7 @@ module Panda
     end
 
     module ClassMethods
-      
+
       def resource_path
         @url || "/#{sti_name.downcase}s"
       end
@@ -34,6 +34,8 @@ module Panda
         new_url = replace_pattern_with_variables(url, map)
         json_path(new_url)
       end
+      
+      private
 
       def replace_pattern_with_variables(url, map)
         new_url = url.clone
