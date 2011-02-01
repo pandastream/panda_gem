@@ -31,6 +31,9 @@ describe Panda::Cloud do
     
   end
   
+  
+
+  
   describe "Using configure bloc" do
     before(:each) do
       Panda.configure do
@@ -85,8 +88,20 @@ describe Panda::Cloud do
           to_return(:body => videos_json)
         @cloud.videos.create(:source_url => "my_source_url")
       end
+      
+      it "should find return all cloud" do
+        clouds_json = "[{\"s3_videos_bucket\":\"my_bucket1\",\"id\":\"cloud1\"},{\"s3_videos_bucket\":\"my_bucket2\",\"id\":\"cloud2\"}]"
+
+        stub_http_request(:get, /api.example.com:85\/v2\/clouds.json/).to_return(:body => clouds_json)
+
+        cloud = Panda::Cloud.all
+        cloud.first.id.should == 'cloud1'
+        cloud.first.s3_videos_bucket.should == "my_bucket1"
+        cloud.size.should == 2
+      end
     end
     
+
     describe "Using options on find" do
       
       it "should find a cloud" do

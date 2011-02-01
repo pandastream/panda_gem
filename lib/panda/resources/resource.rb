@@ -10,8 +10,6 @@ module Panda
     end
 
     class << self
-      
-      include Panda::Finders::FindMany
       include Panda::CloudConnection
 
       def cloud

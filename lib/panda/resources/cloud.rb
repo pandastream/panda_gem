@@ -2,6 +2,8 @@ module Panda
   class Cloud < Base
     
     include Panda::Updatable
+    include Panda::Finders
+    
     attr_reader :connection
 
     def initialize(attributes={})
@@ -13,7 +15,6 @@ module Panda
 
     class << self
       include Panda::Builders::CreateBuilder
-      include Panda::Finders::FindOne
 
       def find(id, options=nil)
         super(id)

@@ -1,6 +1,11 @@
 module Panda
   module Finders
 
+    def self.included(base)
+      base.extend(FindOne)
+      base.extend(FindMany)
+    end
+    
     module FindOne
 
       def find(id)
