@@ -8,14 +8,16 @@ module Panda
     module ClassMethods
 
       def delete(id)
-        response = connection.delete(full_object_url(object_url(one_path,{:id =>id})))
+        uri = json_path(create_rest_url(one_path,{:id =>id}))
+        response = connection.delete(uri)
         response['deleted'] == 'ok'
       end
       
     end
 
     def delete
-      response = connection.delete(object_url_map(self.class.one_path))
+      uri = replace_pattern_with_self_variables(self.class.one_path)
+      response = connection.delete(uri)
       !!response['deleted']
     end
 

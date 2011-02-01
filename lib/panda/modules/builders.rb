@@ -32,7 +32,8 @@ module Panda
 
     def create
       raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
-      response = connection.post(object_url_map(self.class.many_path), attributes)
+      uri = replace_pattern_with_self_variables(self.class.many_path)
+      response = connection.post(uri, attributes)
       load_and_reset(response)
     end
 

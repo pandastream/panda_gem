@@ -52,7 +52,7 @@ module Panda
     def perform_reload(args={})
       raise "RecordNotFound" if new?
 
-      url = self.class.object_url(self.class.one_path, :id => id)
+      url = self.class.create_rest_url(self.class.one_path, :id => id)
       response = connection.get(url)
       load_response(response.merge(args))
     end

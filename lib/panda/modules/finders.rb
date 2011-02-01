@@ -14,9 +14,9 @@ module Panda
       end
 
       def find_object_by_path(url, map={})
-        full_url = object_url(url, map)
-        params = element_params(url, map)
-        connection.get(full_url, params)
+        rest_url = create_rest_url(url, map)
+        params = extract_unmapped_variables(url, map)
+        connection.get(rest_url, params)
       end
 
       def find_by_path(url, map={})
