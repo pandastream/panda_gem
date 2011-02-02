@@ -350,17 +350,25 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     profile.encodings.all(:status => "success")
     => [...]
 
-### Find all clouds
+### Clouds
 
-  clouds = Panda::Cloud.all
-  clouds.size
-  => 2
+#### Find a cloud
+
+    cloud = Panda::Cloud.find(234324)
+    cloud.id
+    => 234324
+
+##### Find all clouds
+
+    clouds = Panda::Cloud.all
+    clouds.size
+    => 2
   
-### Create Cloud
+##### Create a cloud
 
-  cloud = Panda::Cloud.create :user_aws_key => 's3key', :user_aws_secret => 's3secret', :s3_videos_bucket => 'myexistingbucket'
-  cloud.id
-  => 1234
+    cloud = Panda::Cloud.create :user_aws_key => 's3key', :user_aws_secret => 's3secret', :s3_videos_bucket => 'myexistingbucket'
+    cloud.id
+    => 1234
   
 ###  Using multiple clouds
 
