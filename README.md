@@ -26,7 +26,7 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     or Panda.configure({:access_key => ....})
 
 
-### Inside a Rails app with a main account or using Heroku
+### Inside a Rails app with a main account or using Heroku Addon
 
 Heroku will store your credentials as an environment variable called PANDASTREAM_URL. You can find more information on [Heroku config variable docs](http://docs.heroku.com/config-vars)
 
@@ -36,7 +36,7 @@ If you use a config file like `config/panda.yml` to support multiple environment
 
 See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
 
-### Creating an instance using ONLY Heroku
+### Creating an instance using ONLY with Heroku Addon
 
 If you don't use a config file and want to simply be setup, do the following (works only on heroku):
 
