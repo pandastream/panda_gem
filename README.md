@@ -349,7 +349,19 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     or
     profile.encodings.all(:status => "success")
     => [...]
-    
+
+### Find all clouds
+
+  clouds = Panda::Cloud.all
+  clouds.size
+  => 2
+  
+### Create Cloud
+
+  cloud = Panda::Cloud.create :user_aws_key => 's3key', :user_aws_secret => 's3secret', :s3_videos_bucket => 'myexistingbucket'
+  cloud.id
+  => 1234
+  
 ###  Using multiple clouds
 
   By default Cloud.id uses options defined with: Panda.configure do .. end
