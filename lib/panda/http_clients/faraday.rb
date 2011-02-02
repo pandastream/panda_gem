@@ -1,5 +1,5 @@
 require 'faraday'
-require 'yajl'
+require 'yajl/json_gem'
 
 module Panda
   module HttpClient
