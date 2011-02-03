@@ -10,9 +10,10 @@ Features:
   - Url and screenshots method for video
   - Faraday Httpclient
   - `create` method accepts a block
+  - Removed support for JSON format
   
 Bugfixes:
-
+  - timestamp is UTC
   - `to_json` method
   - `create!` on associations was wrong
 
