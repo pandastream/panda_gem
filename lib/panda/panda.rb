@@ -57,8 +57,8 @@ module Panda
   private
 
   def default_engine
-    require "panda/http_clients/restclient"
-    Panda::HttpClient::RestclientEngine.new
+    require "panda/http_clients/faraday"
+    Panda::HttpClient::FaradayEngine.new
   end
   
   def configure_with_auth_params(auth_params)

@@ -6,7 +6,7 @@ module Panda
     class RestclientEngine
 
       def get(api_url, request_uri, params)
-        rescue_restclient_exception do
+        rescue_json_parsing do
           connection = RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].get
@@ -14,21 +14,21 @@ module Panda
       end
 
       def post(api_url, request_uri, params)
-        rescue_restclient_exception do
+        rescue_json_parsing do
           connection = RestClient::Resource.new(api_url)
           hash_response connection[request_uri].post(params)
         end
       end
 
       def put(api_url, request_uri, params)
-        rescue_restclient_exception do
+        rescue_json_parsing do
           connection = RestClient::Resource.new(api_url)
           hash_response connection[request_uri].put(params)
         end
       end
 
       def delete(api_url, request_uri, params)
-        rescue_restclient_exception do
+        rescue_json_parsing do
           connection = RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].delete
@@ -49,7 +49,7 @@ module Panda
         end
       end
       
-      def rescue_restclient_exception(&block)
+      def rescue_json_parsing(&block)
         begin
           yield
         rescue RestClient::Exception => e

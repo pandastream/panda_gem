@@ -8,7 +8,7 @@ Features:
   - Simpler heroku configure method
   - Simpler configure method
   - Url and screenshots method for video
-  - Faraday Httpclient
+  - Replaced Restclient+json by Faraday + Yajl
   - `create` method accepts a block
   - Removed support for JSON format
   
