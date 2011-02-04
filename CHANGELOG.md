@@ -2,13 +2,12 @@
 
 Features:
 
-  - Httpclient option, default is `restclient`
+  - Replaced Restclient/json by Faraday/Yajl
   - Added Cloud.create, Cloud.all
   - Https support for heroku account
   - Simpler heroku configure method
   - Simpler configure method
   - Url and screenshots method for video
-  - Replaced Restclient+json by Faraday + Yajl
   - `create` method accepts a block
   - Removed support for JSON format
   
