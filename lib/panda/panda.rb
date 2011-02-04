@@ -41,24 +41,19 @@ module Panda
     @connection
   end
 
-  def http_client=(http_client_name)
-    if File.exists?((local_lib=
-        "#{File.dirname(__FILE__)}/http_clients/#{http_client_name}") + '.rb')
-      require local_lib
-    end
-    
-    @http_client = Panda::HttpClient.const_get("#{http_client_name.to_s.capitalize}Engine").new
+  def http_client=(klass)
+    @adapter = klass.new
   end
 
   def http_client
-    @http_client ||= default_engine
+    @adapter ||= default_http_client.new
   end
   
   private
 
-  def default_engine
+  def default_http_client
     require "panda/http_clients/faraday"
-    Panda::HttpClient::FaradayEngine.new
+    Panda::HttpClient::Faraday
   end
   
   def configure_with_auth_params(auth_params)

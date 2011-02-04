@@ -3,11 +3,11 @@ require 'json' unless defined?(ActiveSupport::JSON) || defined?(JSON::JSON_LOADE
 
 module Panda
   module HttpClient
-    class RestclientEngine
+    class RestClient
 
       def get(api_url, request_uri, params)
         rescue_json_parsing do
-          connection = RestClient::Resource.new(api_url)
+          connection = ::RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].get
         end
@@ -15,21 +15,21 @@ module Panda
 
       def post(api_url, request_uri, params)
         rescue_json_parsing do
-          connection = RestClient::Resource.new(api_url)
+          connection = ::RestClient::Resource.new(api_url)
           hash_response connection[request_uri].post(params)
         end
       end
 
       def put(api_url, request_uri, params)
         rescue_json_parsing do
-          connection = RestClient::Resource.new(api_url)
+          connection = ::RestClient::Resource.new(api_url)
           hash_response connection[request_uri].put(params)
         end
       end
 
       def delete(api_url, request_uri, params)
         rescue_json_parsing do
-          connection = RestClient::Resource.new(api_url)
+          connection = ::RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].delete
         end
@@ -52,7 +52,7 @@ module Panda
       def rescue_json_parsing(&block)
         begin
           yield
-        rescue RestClient::Exception => e
+        rescue ::RestClient::Exception => e
           hash_response(e.http_body)
         end
       end

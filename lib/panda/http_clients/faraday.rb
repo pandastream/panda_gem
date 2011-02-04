@@ -3,7 +3,7 @@ require 'yajl/json_gem'
 
 module Panda
   module HttpClient
-    class FaradayEngine
+    class Faraday
       
       def get(api_url, request_uri, params)
         connection = init_connection(api_url)
@@ -16,6 +16,12 @@ module Panda
 
       def post(api_url, request_uri, params)
         connection = init_connection(api_url)
+
+        # multipart upload
+        if (f=params['file']) && f.is_a?(File)
+          params['file'] = ::Faraday::UploadIO.new(f.path, 'multipart/form-data')
+        end
+
         rescue_json_parsing do
           connection.post do |req|
             req.url File.join(connection.path_prefix, request_uri)
@@ -46,22 +52,25 @@ module Panda
       private
       
       def init_connection(url)
-        Faraday::Connection.new(:url => url) do |builder|
+        @conn = ::Faraday::Connection.new(:url => url) do |builder|
           builder.adapter faraday_adapter
-          builder.response :yajl
+          builder.response faraday_response
         end
       end
       
       def faraday_adapter
-        Faraday.default_adapter
+        :net_http
       end
       
+      def faraday_response
+        :yajl
+      end
       
       def rescue_json_parsing(&block)
         begin
-          yield
-        rescue Faraday::Error::ParsingError => e
-          raise ServiceNotAvailable.new
+          yield || raise(ServiceNotAvailable)
+        rescue ::Faraday::Error::ParsingError => e
+          raise(ServiceNotAvailable)
         end
       end
       
