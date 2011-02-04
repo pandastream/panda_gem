@@ -47,10 +47,15 @@ module Panda
       
       def init_connection(url)
         Faraday::Connection.new(:url => url) do |builder|
-          builder.adapter Faraday.default_adapter
+          builder.adapter faraday_adapter
           builder.response :yajl
         end
       end
+      
+      def faraday_adapter
+        Faraday.default_adapter
+      end
+      
       
       def rescue_json_parsing(&block)
         begin
