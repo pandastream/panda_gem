@@ -38,7 +38,7 @@ module Panda
       private
       
       def connection
-        @conn ||= ::RestClient::Resource.new(api_url)
+        @conn ||= ::RestClient::Resource.new(@api_url)
       end
       
       def hash_response(response)
