@@ -50,10 +50,10 @@ module Panda
     end
 
     def api_url
-      "#{api_protocol}://#{api_host}:#{api_port}/#{@prefix}"
+      "#{api_scheme}://#{api_host}:#{api_port}/#{@prefix}"
     end
 
-    def api_protocol
+    def api_scheme
       api_port == 443 ? 'https' : 'http'
     end
     
