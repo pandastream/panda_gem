@@ -365,7 +365,7 @@ The name of the profile can be found in your [Panda account](http://pandastream.
   
 ##### Create a cloud
 
-    cloud = Panda::Cloud.create :user_aws_key => 's3key', :user_aws_secret => 's3secret', :s3_videos_bucket => 'myexistingbucket'
+    cloud = Panda::Cloud.create :aws_access_key => 'mys3key', :aws_secret_key => 'mys3secret', :s3_videos_bucket => 'myexistingbucket'
     cloud.id
     => 1234
   
