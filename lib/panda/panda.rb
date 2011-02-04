@@ -52,7 +52,7 @@ module Panda
   private
 
   def default_adapter
-    Panda::Adapter::Faraday
+    Panda::Adapter::RestClient
   end
   
   def configure_with_auth_params(auth_params)

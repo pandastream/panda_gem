@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.description = %q{Panda Client}
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
-  s.add_dependency "yajl-ruby"
-  s.add_dependency "faraday"
+  s.add_dependency "rest-client"
+  s.add_dependency "json"
 
   s.add_development_dependency "timecop"
   s.add_development_dependency "rspec", "2.4.0"

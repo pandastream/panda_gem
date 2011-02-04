@@ -1,4 +1,10 @@
-## 1.4.0 (...)
+## 1.4.1 (February 4, 2011)
+
+Features:
+
+    - Fallback to RestClient (dependency pbs with heroku and faraday)
+
+## 1.4.0 (February 4, 2011)
 
 Features:
 
