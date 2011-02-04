@@ -4,6 +4,7 @@ require 'yajl/json_gem'
 module Panda
   module HttpClient
     class Faraday
+      
       def initialize(api_url)
         @api_url = api_url
       end

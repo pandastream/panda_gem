@@ -65,8 +65,8 @@ module Panda
     def setup_bucket(params={})
       granting_params = { 
         :s3_videos_bucket => params[:bucket],
-        :user_aws_key => params[:access_key],
-        :user_aws_secret => params[:secret_key]
+        :aws_access_key => params[:access_key],
+        :aws_secret_key => params[:secret_key]
       }
 
       put("/clouds/#{@cloud_id}.json", granting_params)
