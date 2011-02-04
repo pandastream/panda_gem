@@ -52,7 +52,6 @@ module Panda
   private
 
   def default_http_client
-    require "panda/http_clients/faraday"
     Panda::HttpClient::Faraday
   end
   
