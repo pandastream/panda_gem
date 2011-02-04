@@ -10,12 +10,15 @@ module Panda
     end
 
     def update_attribute(name, value)
-      self.send("#{name}=".to_sym, value)
-      self.save
+      send("#{name}=".to_sym, value) && save
     end
 
     def update_attributes(attributes)
       load(attributes) && save
+    end
+
+    def update_attributes!(attributes)
+      update_attributes(attributes) || raise(errors.last)
     end
 
     def update
