@@ -32,7 +32,7 @@ module Panda
     end
         
     # Setup connection for Heroku
-    def load_url(panda_url)
+    def parse_panda_url(panda_url)
       panda_uri = URI.parse(panda_url)
 
       config['access_key'] = panda_uri.user

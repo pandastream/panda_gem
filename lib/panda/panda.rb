@@ -20,7 +20,7 @@ module Panda
       
       auth_params = configure.to_hash
     elsif auth_params.is_a?(String)
-      auth_params = Config.new.load_url(auth_params)
+      auth_params = Config.new.parse_panda_url(auth_params)
     end
 
     configure_with_auth_params(auth_params)
@@ -28,7 +28,7 @@ module Panda
   end
 
   def configure_heroku
-    configure_with_auth_params Config.new.load_url(ENV['PANDASTREAM_URL'])
+    configure_with_auth_params Config.new.parse_panda_url(ENV['PANDASTREAM_URL'])
     true
   end
 
@@ -42,11 +42,11 @@ module Panda
   end
 
   def adapter=(klass)
-    @adapter = klass
+    @adapter_class = klass
   end
 
   def adapter
-    @adapter ||= default_adapter
+    @adapter_class ||= default_adapter
   end
   
   private
