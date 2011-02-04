@@ -1,18 +1,22 @@
+require 'forwardable'
+
 module Panda
-  class Base    
+  class Base
     attr_accessor :attributes, :errors
+    extend Forwardable
+    
     include Panda::Router
+    include Panda::Builders
+    include Panda::Finders
+
+    def_delegators :attributes, :to_json
 
     def initialize(attributes = {})
-      init_load
+      clear_attributes
       load(attributes)
     end
 
     class << self
-      def id(this_id)
-        find(this_id)
-      end
-
       def sti_name
         "#{name.split('::').last}"
       end
@@ -24,11 +28,6 @@ module Panda
 
     def new?
       id.nil?
-    end
-
-    def delete
-      response = connection.delete(object_url_map(self.class.one_path))
-      !!response['deleted']
     end
 
     def id
@@ -44,41 +43,44 @@ module Panda
       self
     end
 
-    def to_json
-      attributes.to_json
-    end
-
     private
 
+    def load_and_reset(response)
+      load_response(response)
+    end
+    
     def perform_reload(args={})
       raise "RecordNotFound" if new?
 
-      url = self.class.object_url(self.class.one_path, :id => id)
+      url = self.class.create_rest_url(self.class.one_path, :id => id)
       response = connection.get(url)
-      init_load
       load_response(response.merge(args))
     end
 
-    def init_load
+    def clear_attributes
       @attributes = {}
       @changed_attributes = {}
       @errors = []
     end
 
     def load(attributes)
+      not_a_response = !(attributes['id'] || attributes[:id])
       attributes.each do |key, value|
         @attributes[key.to_s] = value
-        @changed_attributes[key.to_s] = value if !(attributes['id'] || attributes[:id])
+        @changed_attributes[key.to_s] = value if not_a_response
       end
       true
     end
 
     def load_response(response)
       if response['error'] || response['id'].nil?
-        !(@errors << Error.new(response))
+        @errors << APIError.new(response)
+        @loaded = false
       else
-        @errors=[]
+        clear_attributes
         load(response)
+        @changed_attributes = {};
+        @loaded = true
       end
     end
 

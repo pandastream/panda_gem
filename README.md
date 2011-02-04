@@ -15,29 +15,31 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
 
 ### Creating an instance of the client
 
-    Panda.configure do |config|
-      config.access_key = "panda_access_key"
-      config.secret_key = "panda_secret_key"
-      config.cloud_id = "panda_cloud_id"
-      # config.api_host = "api.eu.pandastream.com" ## for EU accounts
-      # config.api_port = 80 ## to use http (default 443)
+    Panda.configure do
+      access_key "panda_access_key"
+      secret_key "panda_secret_key"
+      cloud_id "panda_cloud_id"
+      # api_host "api.eu.pandastream.com" ## for EU accounts
+      # api_port 80 ## to use http (default 443)
     end
 
     or Panda.configure({:access_key => ....})
 
-### Creating an instance using Heroku
+### Inside a Rails app with a main account or using Heroku Addon
 
-    Panda.configure(ENV['PANDASTREAM_URL'])
+Heroku will store your credentials as an environment variable called PANDASTREAM_URL. You can find more information on [Heroku config variable docs](http://docs.heroku.com/config-vars)
 
-### Inside a Rails app with a main account or using Heroku
-
-Config is stored in `config/panda.yml` or you must set an the PANDASTREAM_URL environment variable in your `/.bashrc` file (see the [Heroku config variable docs](http://docs.heroku.com/config-vars)).
-
-Use the following in your `config/initializers/panda.rb`:
+If you use a config file like `config/panda.yml` to support multiple environments, do the following in your `config/initializers/panda.rb` :
 
     Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[RAILS_ENV]))
 
 See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
+
+### Creating an instance using ONLY with Heroku Addon
+
+If you don't use a config file and want to simply be setup, do the following (works only on heroku):
+
+    Panda.configure_heroku
 
 ### Typical usage
 
@@ -346,7 +348,27 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     or
     profile.encodings.all(:status => "success")
     => [...]
-    
+
+### Clouds
+
+#### Find a cloud
+
+    cloud = Panda::Cloud.find(234324)
+    cloud.id
+    => 234324
+
+##### Find all clouds
+
+    clouds = Panda::Cloud.all
+    clouds.size
+    => 2
+  
+##### Create a cloud
+
+    cloud = Panda::Cloud.create :user_aws_key => 's3key', :user_aws_secret => 's3secret', :s3_videos_bucket => 'myexistingbucket'
+    cloud.id
+    => 1234
+  
 ###  Using multiple clouds
 
   By default Cloud.id uses options defined with: Panda.configure do .. end
@@ -368,17 +390,13 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     cloud_two.profiles
     cloud_two.profiles.create(:preset_name => "h264")
     cloud_one.videos.create(:command => "ffmpeg -i $input_file$ -y $output_file$", ....)
-
-  You can also connect directly using Cloud.find
-    
-    cloud = Panda::Cloud.find("cloud_id_1", {:access_key => ..., :secret_key => ... })
     
 
 ## Generating signatures
 
-    All requests to your Panda cloud are signed using HMAC-SHA256, based on a timestamp and your Panda secret key. This is handled transparently. However, sometimes you will want to generate only this signature, in order to make a request by means other than this library. This is the case when using the [JavaScript panda_uploader](http://github.com/newbamboo/panda_uploader).
+  All requests to your Panda cloud are signed using HMAC-SHA256, based on a timestamp and your Panda secret key. This is handled transparently. However, sometimes you will want to generate only this signature, in order to make a request by means other than this library. This is the case when using the [JavaScript panda_uploader](http://github.com/newbamboo/panda_uploader).
 
-    To do this, a method `signed_params()` is supported:
+  To do this, a method `signed_params()` is supported:
 
         Panda.signed_params('POST', '/videos.json')
         # => {'access_key' => '8df50af4-074f-11df-b278-1231350015b1',
@@ -469,21 +487,9 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     
     Panda.delete('/videos/0ee6b656-0063-11df-a433-1231390041c1.json')
 
-## Hash or JSON
-Since Panda 0.6, PandaGem returns a Hash by default. If you want PandaGem to return JSON do the following:
-
-    Panda.connect!({
-      :cloud_id => 'cloud_id',
-      :access_key => 'access_key',
-      :secret_key => 'secret_key',
-      :format => 'json'
-    })
-
-
 ## Use bundler to setup the test environment (1.0)
 
     bundler install
     rake spec
-
 
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.

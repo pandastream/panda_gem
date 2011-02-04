@@ -2,13 +2,13 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Panda::Video do
   before(:each) do
-
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.api_host = "api.example.com"
-      c.cloud_id = 'my_cloud_id'
-      c.api_port = 85
+    
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      api_host "api.example.com"
+      cloud_id 'my_cloud_id'
+      api_port 85
     end
     
   end
@@ -50,6 +50,13 @@ describe Panda::Video do
     video.source_url.should == "my_source_url"
   end
   
+  it "should raise exception if id is nil" do
+    
+    lambda {
+      Panda::Video.find(nil)
+    }.should raise_error('find method requires a correct value')
+
+  end
   
   it "should list all video's encodings" do
     video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
@@ -87,7 +94,7 @@ describe Panda::Video do
     
     lambda {
         Panda::Video.find "abc"
-    }.should raise_error("error-abc: no-abc")
+    }.should raise_error(Panda::APIError, "error-abc: no-abc")
   end
   
   it "should have an error object if something goes wrong" do
@@ -100,8 +107,7 @@ describe Panda::Video do
     obj.save
     
     obj.errors.size.should == 1
-    obj.errors.first.message.should == "no-abc"
-    obj.errors.first.error_class.should == "error-abc"
+    obj.errors.first.to_s.should == "error-abc: no-abc"
     obj.attributes.should == original_attrs
     
   end
@@ -109,11 +115,11 @@ describe Panda::Video do
   it "should connect to eu" do
 
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.cloud_id = 'my_cloud_id'
-      c.region = "eu"
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      cloud_id 'my_cloud_id'
+      region "eu"
     end
     
     stub_http_request(:get, /api.eu.pandastream.com:443/).
@@ -127,10 +133,10 @@ describe Panda::Video do
       to_return(:body => cloud_json)
 
     Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.cloud_id = 'my_cloud_id'
-      c.region = "eu"
+      c.access_key "my_access_key"
+      c.secret_key "my_secret_key"
+      c.cloud_id 'my_cloud_id'
+      c.region  "eu"
     end
     
     stub_http_request(:get, /api.eu.pandastream.com:443/).
@@ -174,6 +180,20 @@ describe Panda::Video do
         to_return(:body => video_json)
     
     video = Panda::Video.create(:source_url => "url_panda.mp4")
+    video.id.should == "123"
+  end
+  
+  it "should create a video using class method and a block" do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    
+    stub_http_request(:post, /api.example.com:85\/v2\/videos.json/).
+      with(:body => /source_url=url_panda.mp4/).
+        to_return(:body => video_json)
+    
+    video = Panda::Video.create do |v|
+      v.source_url = "url_panda.mp4"
+    end
+    
     video.id.should == "123"
   end
   
@@ -223,6 +243,35 @@ describe Panda::Video do
     encodings.first
     
     WebMock.should have_requested(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).once
+  end
+  
+  it 'should generate json of encodings' do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    video = Panda::Video.find("123")
+
+    encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
+
+    video.encodings.to_json.should == "[{\"abc\":\"my_source_url\",\"id\":\"456\",\"cloud_id\":\"my_cloud_id\"}]"
+  end
+  
+  it "should return the video url" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+    
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
+    video.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
+  end
+  
+  it "should generate a screenhost array" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :status => "success", :path => "abc/panda"})
+    video.screenshots[0].should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
   end
   
   it "should call the request if the scope has changed" do

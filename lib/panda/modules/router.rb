@@ -1,6 +1,5 @@
 module Panda
   module Router
-    DEFAULT_FORMAT = "json"
     VAR_PATTERN = /:\w+/
 
     def self.included(base)
@@ -31,24 +30,31 @@ module Panda
         prefix_path + end_path
       end
 
-      def object_url(url, map)
-        full_object_url(url.clone.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]})
+      def create_rest_url(url, map)
+        new_url = replace_pattern_with_variables(url, map)
+        json_path(new_url)
       end
+      
+      private
 
-      def element_params(url, map)
+      def replace_pattern_with_variables(url, map)
+        new_url = url.clone
+        new_url.gsub(VAR_PATTERN){|key| map[key[1..-1].to_sym] || map[key[1..-1].to_s]}
+      end
+      
+      def extract_unmapped_variables(url, map)
         params = map.clone
-        url.clone.scan(VAR_PATTERN).map{|key| params.reject!{|k,v| k==key[1..-1] } }
+        url.scan(VAR_PATTERN).map{|key| params.reject!{|k,v| k==key[1..-1] } }
         params
       end
 
-      def full_object_url(url)
-        url + ".#{DEFAULT_FORMAT}"
+      def json_path(uri)
+        uri + ".json"
       end
-
     end
 
-    def object_url_map(url)
-      self.class.full_object_url(url.clone.gsub(VAR_PATTERN) {|key| send(key[1..-1].to_sym)})
+    def replace_pattern_with_self_variables(url)
+      self.class.create_rest_url(url, attributes)
     end
 
   end

@@ -1,6 +1,6 @@
 module Panda
   class Resource < Base
-    include Panda::Builders
+    include Panda::Destroyers
     include Panda::Associations
     include Panda::CloudConnection
 
@@ -10,7 +10,6 @@ module Panda
     end
 
     class << self
-      include Panda::Finders::FindMany
       include Panda::CloudConnection
 
       def cloud
@@ -33,20 +32,11 @@ module Panda
       Panda.clouds[cloud_id]
     end
 
-    def create
-      raise "Can't create attribute. Already have an id=#{attributes['id']}" if attributes['id']
-      response = connection.post(object_url_map(self.class.many_path), attributes)
-      load_response(response) ? (@changed_attributes = {}; true) : false
-    end
-
-    def create!
-      create || errors.last.raise!
-    end
-
     def reload
       perform_reload("cloud_id" => cloud_id)
       reset_associations
       self
     end
+
   end
 end

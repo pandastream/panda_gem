@@ -24,6 +24,8 @@ module Panda
       Base64.encode64(hmac.digest).chomp
     end
 
+    private
+
     # param keys should be strings, not symbols please. return a string joined
     # by & in canonical order. 
     def self.canonical_querystring(h)

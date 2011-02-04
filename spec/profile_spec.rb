@@ -6,12 +6,12 @@ describe Panda::Profile do
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.api_host = "api.example.com"
-      c.cloud_id = 'my_cloud_id'
-      c.api_port = 85
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      api_host "api.example.com"
+      cloud_id 'my_cloud_id'
+      api_port 85
     end
     
   end

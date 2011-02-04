@@ -3,12 +3,12 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Panda::Encoding do
   before(:each) do
 
-    Panda.configure do |c|
-      c.access_key = "my_access_key"
-      c.secret_key = "my_secret_key"
-      c.api_host = "api.example.com"
-      c.cloud_id = 'my_cloud_id'
-      c.api_port = 85
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      api_host "api.example.com"
+      cloud_id 'my_cloud_id'
+      api_port 85
     end
     
   end
@@ -62,12 +62,12 @@ describe Panda::Encoding do
     encodings.first.id.should == "456"
   end
   
-  it "should return the video_url" do    
+  it "should return the encoding url" do    
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
     
-    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda"})
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
     encoding.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
   end
   
@@ -103,6 +103,25 @@ describe Panda::Encoding do
     encoding.id.should == "456"
     encoding.profile_id.should == "901"
   end
+  
+  it "should create an encoding through the association" do
+    video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+    encoding_json = "{\"abc\":\"efg\",\"id\":\"456\", \"video_id\":\"123\", \"profile_id\":\"901\"}"
+
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+      to_return(:body => video_json)
+
+    stub_http_request(:post, /api.example.com:85\/v2\/encodings.json/).
+        with{|r| r.body =~ /video_id=123/ && r.body =~ /profile_id=901/}.
+          to_return(:body => encoding_json)
+
+    video = Panda::Video.find("123")
+    
+    encoding = video.encodings.create!(:profile_id => "901")
+    encoding.id.should == "456"
+    encoding.profile_id.should == "901"
+  end
+  
   
   it "should filter the profile name after triggering the request" do
     video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
@@ -195,7 +214,7 @@ describe Panda::Encoding do
     stub_http_request(:get, /api.example.com:85\/v2\/encodings\/456.json/).
       to_return(:body => encoding_json)
     
-    Panda::Encoding.id("456")
+    Panda::Encoding.find("456")
   end
   
   it "should tell if the encoding is success" do

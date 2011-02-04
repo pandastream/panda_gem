@@ -1,16 +1,22 @@
 module Panda
   module Finders
 
+    def self.included(base)
+      base.extend(FindOne)
+      base.extend(FindMany)
+    end
+    
     module FindOne
 
       def find(id)
+        raise 'find method requires a correct value' if id.nil? || id == ''
         find_by_path(one_path, {:id => id})
       end
 
       def find_object_by_path(url, map={})
-        full_url = object_url(url, map)
-        params = element_params(url, map)
-        self.connection.get(full_url, params)
+        rest_url = create_rest_url(url, map)
+        params = extract_unmapped_variables(url, map)
+        connection.get(rest_url, params)
       end
 
       def find_by_path(url, map={})
@@ -22,7 +28,7 @@ module Panda
         elsif object['id']
           kclass.new(object)
         else
-          Error.new(object).raise!
+          raise APIError.new(object)
         end
       end
 

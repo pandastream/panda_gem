@@ -19,7 +19,7 @@ module Panda
       initialize_scope_attributes
       initialize_scopes
     end
-
+    
     # Overide the function to set the cloud_id as the same as the scope
     def find_by_path(url, map={})
       object = find_object_by_path(url, map)
@@ -29,11 +29,16 @@ module Panda
       elsif object['id']
         klass.new(object.merge('cloud_id' => cloud.id))
       else
-        Error.new(object).raise!
+        raise APIError.new(object)
       end
     end
 
     def create(attributes)
+      scoped_attrs = attributes.merge(@scoped_attributes)
+      super(scoped_attrs)
+    end
+
+    def create!(attributes)
       scoped_attrs = attributes.merge(@scoped_attributes)
       super(scoped_attrs)
     end
@@ -46,42 +51,43 @@ module Panda
     def reload
       @found = trigger_request
     end
-
+    
     private
 
-      def initialize_scope_attributes
-        @scoped_attributes={}
-        if @parent.is_a?(Panda::Resource)
-          @scoped_attributes[parent_relation_name.to_sym] = @parent.id
-        end
+    def initialize_scope_attributes
+      @scoped_attributes={}
+      if @parent.is_a?(Panda::Resource)
+        @scoped_attributes[parent_relation_name.to_sym] = @parent.id
       end
+    end
 
-      def proxy_found
-        @found ||= trigger_request
-      end
+    def proxy_found
+      @found ||= trigger_request
+    end
 
-      def initialize_scopes
-        [].methods.each do |m|
-          unless m.to_s =~ /^__/ || non_delegate_methods.include?(m.to_sym)
-            self.class.class_eval do
-              def_delegators :proxy_found, m.to_sym
-            end
+    def initialize_scopes
+      ([].methods + [:to_json]).each do |m|
+        unless m.to_s =~ /^__/ || non_delegate_methods.include?(m.to_sym)
+          self.class.class_eval do
+            def_delegators :proxy_found, m.to_sym
           end
         end
       end
+    end
 
-      def trigger_request
-        if @parent.is_a?(Resource)
-          path = build_hash_many_path(many_path, parent_relation_name)
-        else
-          path = many_path
-        end
-
-        find_by_path(path, @scoped_attributes)
+    def trigger_request
+      if @parent.is_a?(Resource)
+        path = build_hash_many_path(many_path, parent_relation_name)
+      else
+        path = many_path
       end
 
-      def parent_relation_name
-        "#{@parent.class.sti_name.downcase}_id"
-      end
+      find_by_path(path, @scoped_attributes)
+    end
+
+    def parent_relation_name
+      "#{@parent.class.sti_name.downcase}_id"
+    end
+    
   end
 end

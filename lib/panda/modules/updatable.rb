@@ -19,8 +19,9 @@ module Panda
     end
 
     def update
-      response = connection.put(object_url_map(self.class.one_path), @changed_attributes)
-      load_response(response) ? (@changed_attributes = {}; true) : false
+      uri = replace_pattern_with_self_variables(self.class.one_path)
+      response = connection.put(uri, @changed_attributes)
+      load_and_reset(response)
     end
 
   end

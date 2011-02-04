@@ -1,24 +1,26 @@
 module Panda
   class Cloud < Base
     include Panda::Updatable
+    
     attr_reader :connection
 
     def initialize(attributes={})
       super(attributes)
-      connection_params = Panda.connection.to_hash.merge!(:cloud_id => id, :format => :hash)
+      connection_params = Panda.connection.to_hash.merge!(:cloud_id => id)
       @connection = Connection.new(connection_params)
       Panda.clouds[id] = self
     end
 
     class << self
-      include Panda::Finders::FindOne
-
-      def find(id, options=nil)
-        super(id)
-      end
 
       def connection
         Panda.connection
+      end
+      
+      private
+
+      def build_resource(attributes)
+        resource = Panda::Cloud.new(attributes)
       end
     end
 
@@ -31,8 +33,8 @@ module Panda
     end
 
     def region
-      return "eu" if connection.api_host == Panda::Connection::EU_API_HOST
-      return "us" if connection.api_host == Panda::Connection::US_API_HOST
+      return "eu" if connection.api_host == Panda::EU_API_HOST
+      return "us" if connection.api_host == Panda::US_API_HOST
     end
 
     def videos
@@ -52,10 +54,10 @@ module Panda
       super
     end
 
-    private
-
+    private 
+    
     def lazy_load
-      @found ||= reload
+      reload unless @loaded
     end
 
   end
