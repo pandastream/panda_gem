@@ -6,7 +6,7 @@ module Panda
     end
 
     def save!
-      save || raise("Resource invalid")
+      save || raise(errors.last)
     end
 
     def update_attribute(name, value)
