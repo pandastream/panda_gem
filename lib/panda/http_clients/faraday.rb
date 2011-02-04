@@ -4,9 +4,11 @@ require 'yajl/json_gem'
 module Panda
   module HttpClient
     class Faraday
+      def initialize(api_url)
+        @api_url = api_url
+      end
       
-      def get(api_url, request_uri, params)
-        connection = init_connection(api_url)
+      def get(request_uri, params)
         rescue_json_parsing do
           response = connection.get do |req|
             req.url File.join(connection.path_prefix, request_uri), params
@@ -14,9 +16,7 @@ module Panda
         end
       end
 
-      def post(api_url, request_uri, params)
-        connection = init_connection(api_url)
-
+      def post(request_uri, params)
         # multipart upload
         if (f=params['file']) && f.is_a?(File)
           params['file'] = ::Faraday::UploadIO.new(f.path, 'multipart/form-data')
@@ -30,8 +30,7 @@ module Panda
         end
       end
 
-      def put(api_url, request_uri, params)
-        connection = init_connection(api_url)
+      def put(request_uri, params)
         rescue_json_parsing do
           connection.put do |req|
             req.url File.join(connection.path_prefix, request_uri)
@@ -40,8 +39,7 @@ module Panda
         end
       end
 
-      def delete(api_url, request_uri, params)
-        connection = init_connection(api_url)
+      def delete(request_uri, params)
         rescue_json_parsing do
           connection.delete do |req|
             req.url File.join(connection.path_prefix, request_uri), params
@@ -51,8 +49,8 @@ module Panda
       
       private
       
-      def init_connection(url)
-        @conn = ::Faraday::Connection.new(:url => url) do |builder|
+      def connection
+        @conn ||= ::Faraday::Connection.new(:url => @api_url) do |builder|
           builder.adapter faraday_adapter
           builder.response faraday_response
         end

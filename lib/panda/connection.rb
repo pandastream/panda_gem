@@ -12,25 +12,29 @@ module Panda
       init_from_hash(auth_params)
     end
 
+    def adapter
+      @adapter ||= Panda.http_client.new(api_url)
+    end
+    
     # Authenticated requests
     def get(request_uri, params={})
       sp = signed_params("GET", request_uri, params)
-      Panda.http_client.get(api_url, request_uri, sp)
+      adapter.get(request_uri, sp)
     end
 
     def post(request_uri, params={})
       sp = signed_params("POST", request_uri, params)
-      Panda.http_client.post(api_url, request_uri, sp)
+      adapter.post(request_uri, sp)
     end
 
     def put(request_uri, params={})
       sp = signed_params("PUT", request_uri, params)
-      Panda.http_client.put(api_url, request_uri, sp)
+      adapter.put(request_uri, sp)
     end
 
     def delete(request_uri, params={})
       sp = signed_params("DELETE", request_uri, params)
-      Panda.http_client.delete(api_url, request_uri, sp)
+      adapter.delete(request_uri, sp)
     end
 
     # Signing methods

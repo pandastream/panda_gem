@@ -42,11 +42,11 @@ module Panda
   end
 
   def http_client=(klass)
-    @adapter = klass.new
+    @adapter = klass
   end
 
   def http_client
-    @adapter ||= default_http_client.new
+    @adapter ||= default_http_client
   end
   
   private

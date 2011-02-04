@@ -4,38 +4,42 @@ require 'json' unless defined?(ActiveSupport::JSON) || defined?(JSON::JSON_LOADE
 module Panda
   module HttpClient
     class RestClient
-
-      def get(api_url, request_uri, params)
+      
+      def initialize(api_url)
+        @api_url = api_url
+      end
+      
+      def get(request_uri, params)
         rescue_json_parsing do
-          connection = ::RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].get
         end
       end
 
-      def post(api_url, request_uri, params)
+      def post(request_uri, params)
         rescue_json_parsing do
-          connection = ::RestClient::Resource.new(api_url)
           hash_response connection[request_uri].post(params)
         end
       end
 
-      def put(api_url, request_uri, params)
+      def put(request_uri, params)
         rescue_json_parsing do
-          connection = ::RestClient::Resource.new(api_url)
           hash_response connection[request_uri].put(params)
         end
       end
 
-      def delete(api_url, request_uri, params)
+      def delete(request_uri, params)
         rescue_json_parsing do
-          connection = ::RestClient::Resource.new(api_url)
           query = ApiAuthentication.hash_to_query(params)
           hash_response connection[request_uri + '?' + query].delete
         end
       end
 
       private
+      
+      def connection
+        @conn ||= ::RestClient::Resource.new(api_url)
+      end
       
       def hash_response(response)
         begin
