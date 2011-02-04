@@ -41,18 +41,18 @@ module Panda
     @connection
   end
 
-  def http_client=(klass)
-    @http_client = klass
+  def adapter=(klass)
+    @adapter = klass
   end
 
-  def http_client
-    @http_client ||= default_http_client
+  def adapter
+    @adapter ||= default_adapter
   end
   
   private
 
-  def default_http_client
-    Panda::HttpClient::Faraday
+  def default_adapter
+    Panda::Adapter::Faraday
   end
   
   def configure_with_auth_params(auth_params)

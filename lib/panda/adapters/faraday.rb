@@ -2,7 +2,7 @@ require 'faraday'
 require 'yajl/json_gem'
 
 module Panda
-  module HttpClient
+  module Adapter
     class Faraday
       
       def initialize(api_url)

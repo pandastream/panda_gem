@@ -23,12 +23,12 @@ module Panda
       config
     end
     
-    def http_client(http_client_name)
-      Panda.http_client = http_client_name
+    def adapter(adapter_name)
+      Panda.adapter = adapter_name
     end
     
-    def http_client=(http_client_name)
-      Panda.http_client = http_client_name
+    def adapter=(adapter_name)
+      Panda.adapter = adapter_name
     end
         
     # Setup connection for Heroku

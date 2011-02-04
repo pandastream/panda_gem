@@ -13,7 +13,7 @@ module Panda
     end
 
     def adapter
-      @adapter ||= Panda.http_client.new(api_url)
+      @adapter ||= Panda.adapter.new(api_url)
     end
     
     # Authenticated requests

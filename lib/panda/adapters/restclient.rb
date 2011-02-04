@@ -2,7 +2,7 @@ require 'restclient'
 require 'json' unless defined?(ActiveSupport::JSON) || defined?(JSON::JSON_LOADED)
 
 module Panda
-  module HttpClient
+  module Adapter
     class RestClient
       
       def initialize(api_url)
