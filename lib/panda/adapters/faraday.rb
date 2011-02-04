@@ -52,17 +52,9 @@ module Panda
       
       def connection
         @conn ||= ::Faraday::Connection.new(:url => @api_url) do |builder|
-          builder.adapter faraday_adapter
-          builder.response faraday_response
+          builder.adapter :net_http
+          builder.response :yajl
         end
-      end
-      
-      def faraday_adapter
-        :net_http
-      end
-      
-      def faraday_response
-        :yajl
       end
       
       def rescue_json_parsing(&block)
