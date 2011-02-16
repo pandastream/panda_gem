@@ -26,7 +26,7 @@ module Panda
       private
       
       def build_resource(attributes)
-        Panda::const_get("#{sti_name}").new(attributes.merge(:cloud_id => cloud.id))
+        Panda::const_get("#{sti_name}").new(attributes.merge('cloud_id' => cloud.id))
       end
     end
 

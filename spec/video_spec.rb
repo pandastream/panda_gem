@@ -183,6 +183,19 @@ describe Panda::Video do
     video.id.should == "123"
   end
   
+  it "should create a video and reload" do
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+    
+    stub_http_request(:post, /api.example.com:85\/v2\/videos.json/).
+      with(:body => /source_url=url_panda.mp4/).
+        to_return(:body => video_json)
+    
+    stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).to_return(:body => video_json)
+    
+    video = Panda::Video.create(:source_url => "url_panda.mp4")
+    video.reload.should == video
+  end
+  
   it "should create a video using class method and a block" do
     video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
     

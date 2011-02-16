@@ -38,5 +38,11 @@ module Panda
       self
     end
 
+    private
+    
+    def load_and_reset(response)
+      load_response(response.merge('cloud_id' => cloud.id))
+    end
+      
   end
 end

@@ -48,7 +48,7 @@ module Panda
     def load_and_reset(response)
       load_response(response)
     end
-    
+
     def perform_reload(args={})
       raise "RecordNotFound" if new?
 

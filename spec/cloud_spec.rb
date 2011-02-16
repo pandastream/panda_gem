@@ -111,6 +111,19 @@ describe Panda::Cloud do
       @cloud = Panda::Cloud.create(:s3_videos_bucket => 'videobucket', :user_aws_key => 'myaccesskey', :user_aws_secret => 'mysecretkey')
       @cloud.s3_videos_bucket.should == "videobucket"
     end
+    
+    
+    it "should create a cloud and reload" do
+      cloud_json = "{\"s3_videos_bucket\":\"videobucket\",\"id\":\"my_new_cloud_id\"}"
+      stub_http_request(:post, /http:\/\/api.example.com:85\/v2\/clouds.json/).
+        to_return(:body => cloud_json)
+
+      stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_new_cloud_id.json/).
+        to_return(:body => cloud_json)
+
+      @cloud = Panda::Cloud.create(:s3_videos_bucket => 'videobucket', :user_aws_key => 'myaccesskey', :user_aws_secret => 'mysecretkey')
+      @cloud.reload.should == @cloud
+    end
 
   end
   
