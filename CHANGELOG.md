@@ -1,3 +1,14 @@
+## 1.4.2 (February 16, 2011)
+
+Features:
+
+    - Raises the api message on `save!`
+    - Added `update_attributes!` method
+
+Bugfixes:
+
+    - `reload` method was raising after `create`
+
 ## 1.4.1 (February 4, 2011)
 
 Features:
