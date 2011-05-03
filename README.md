@@ -45,7 +45,7 @@ If you don't use a config file and want to simply be setup, do the following (wo
 
 In most cases you will have used the [panda\_uploader](http://github.com/newbamboo/panda_uploader) jQuery plugin to upload the video (more details about this are in the [Integrating Panda with Ruby on Rails](http://pandastream.com/docs/integrate_with_rails) tutorial). Then you will want to get the video and screenshots urls of your encoding to display to your users.
 
-The name of the profile can be found in your [Panda account](http://pandastream.com/encoders) when editing an encoding cloud's profiles.
+The name of the profile can be found in your [Panda account](http://pandastream.com/profiles) when editing an encoding cloud's profiles.
 
     encodings = Panda::Video.find("1234").encodings
     => [...]
