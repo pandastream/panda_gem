@@ -3,7 +3,7 @@ require 'timecop'
 
 describe Panda do
   before(:each) do
-    new_time = Time.local(20010, 1, 12, 1, 0, 0)
+    new_time = Time.utc(20010, 1, 12, 1, 0, 0)
     Timecop.freeze(new_time)
   end
   
