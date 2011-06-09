@@ -14,4 +14,10 @@ module Panda
     end
   end
 
+  class ConfigurationError < Panda::Error
+    def initialize
+      super("ConfigurationError")
+    end
+  end
+
 end
