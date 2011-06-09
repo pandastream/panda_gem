@@ -155,4 +155,28 @@ describe Panda do
     end
   end
 
+  describe "configuration" do
+    it "should raise a configuration error if there are no auth params and a configuration block is not passed" do
+      lambda {
+        Panda.configure
+      }.should raise_error(Panda::ConfigurationError)
+    end
+
+    it "allows configuration by auth params" do
+      lambda {
+        Panda.configure({"access_key"=>"access", "cloud_id"=>"cloud", "secret_key"=>"secret"})
+      }
+    end
+
+    it "allows configuration by block" do
+      lambda {
+        Panda.configure do
+          access_key = "access"
+          cloud_id = "cloud"
+          secret_key = "secret"
+        end
+      }
+    end
+  end
+
 end

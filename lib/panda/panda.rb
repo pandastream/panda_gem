@@ -9,6 +9,7 @@ module Panda
   def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
   def configure(auth_params=nil, &block)
+    raise ConfigurationError unless !auth_params.blank? || block_given?
 
     if !auth_params
       configure = Config.new
