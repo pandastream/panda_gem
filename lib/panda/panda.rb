@@ -9,26 +9,27 @@ module Panda
   def_delegators :connection, :get, :post, :put, :delete, :api_url, :setup_bucket, :signed_params
 
   def configure(auth_params=nil, &block)
+    raise ArgumentError, "missing auth params or block" unless auth_params || block_given?
 
     if !auth_params
-      configure = Config.new
+      config = Config.new
       if (block.arity > 0)
-        block.call(configure)
+        block.call(config)
       else
-        configure.instance_eval(&block)
+        config.instance_eval(&block)
       end
-      
-      auth_params = configure.to_hash
     elsif auth_params.is_a?(String)
-      auth_params = Config.new.parse_panda_url(auth_params)
+      config = Config.from_panda_url(auth_params)
+    else
+      config = Config.from_hash(auth_params)
     end
 
-    configure_with_auth_params(auth_params)
+    configure_with_auth_params(config)
     true
   end
 
   def configure_heroku
-    configure_with_auth_params Config.new.parse_panda_url(ENV['PANDASTREAM_URL'])
+    configure_with_auth_params Config.from_panda_url(ENV['PANDASTREAM_URL'])
     true
   end
 
@@ -37,7 +38,7 @@ module Panda
   end
 
   def connection
-    raise "Panda is not configured!" unless @connection
+    raise Panda::ConfigurationError, "Panda is not configured!" unless @connection
     @connection
   end
 
@@ -55,8 +56,9 @@ module Panda
     Panda::Adapter::RestClient
   end
   
-  def configure_with_auth_params(auth_params)
-    connect!(auth_params)
+  def configure_with_auth_params(config)
+    config.validate!
+    connect!(config.to_hash)
     @clouds = {}
     @cloud = Cloud::new(:id => @connection.cloud_id)
   end

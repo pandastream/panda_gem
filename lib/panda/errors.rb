@@ -14,4 +14,7 @@ module Panda
     end
   end
 
+  class ConfigurationError < Panda::Error
+  end
+
 end

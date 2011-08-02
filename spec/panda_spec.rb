@@ -13,10 +13,58 @@ describe Panda do
       it "should raise error for #{method}" do
         lambda {
           Panda.send(method, nil, nil)
-        }.should raise_error("Panda is not configured!")
+        }.should raise_error(Panda::ConfigurationError, "Panda is not configured!")
       end
     end
     
+  end
+
+  describe "root configuration with hash" do
+    it "should not fail is access_key and secret_key are given" do
+      proc do
+        Panda.configure({:access_key => "bar", :secret_key => "baz"})
+      end.should_not raise_error(Panda::ConfigurationError)
+    end
+
+    it "should fail if access_key or secret_key are missing" do
+      proc do
+        Panda.configure({:secret_key => "baz"})
+      end.should raise_error(Panda::ConfigurationError)
+      proc do
+        Panda.configure({:access_key => "bar"})
+      end.should raise_error(Panda::ConfigurationError)
+      proc do
+        Panda.configure({})
+      end.should raise_error(Panda::ConfigurationError)
+    end
+  end
+
+  describe "root configuration with block" do
+    it "should not fail is access_key and secret_key are given" do
+      proc do
+        Panda.configure do
+          access_key "bar"
+          secret_key "baz"
+        end
+      end.should_not raise_error(Panda::ConfigurationError)
+    end
+
+    it "should fail if access_key or secret_key are missing" do
+      proc do
+        Panda.configure do
+          secret_key "baz"
+        end
+      end.should raise_error(Panda::ConfigurationError)
+      proc do
+        Panda.configure do
+          access_key "bar"
+        end
+      end.should raise_error(Panda::ConfigurationError)
+      proc do
+        Panda.configure do
+        end
+      end.should raise_error(Panda::ConfigurationError)
+    end
   end
 
   shared_examples_for "Connected" do
