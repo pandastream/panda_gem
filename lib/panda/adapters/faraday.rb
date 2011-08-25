@@ -1,5 +1,6 @@
 require 'faraday'
 require 'yajl/json_gem'
+require 'typhoeus'
 
 module Panda
   module Adapter
@@ -51,16 +52,15 @@ module Panda
       private
       
       def connection
-        @conn ||= ::Faraday::Connection.new(:url => @api_url) do |builder|
-          builder.adapter :net_http
-          builder.response :yajl
+        @conn ||= ::Faraday.new(:url => @api_url) do |builder|
+          builder.adapter :typhoeus
         end
       end
       
       def rescue_json_parsing(&block)
         begin
-          yield || raise(ServiceNotAvailable)
-        rescue ::Faraday::Error::ParsingError => e
+          Yajl::Parser.parse(yield)
+        rescue Yajl::ParseError => e
           raise(ServiceNotAvailable)
         end
       end
