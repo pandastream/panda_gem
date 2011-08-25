@@ -53,6 +53,7 @@ module Panda
       
       def connection
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
+          builder.request  :url_encoded
           builder.adapter :typhoeus
         end
       end
