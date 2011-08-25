@@ -2,7 +2,7 @@ module Panda
   
   API_PORT=443
   US_API_HOST="api.pandastream.com"
-  EU_API_HOST="api.eu.pandastream.com"
+  EU_API_HOST="api-eu.pandastream.com"
   
   class Connection
     attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
@@ -58,7 +58,7 @@ module Panda
     end
 
     def api_scheme
-      api_port == 443 ? 'https' : 'http'
+      api_port.to_i == 443 ? 'https' : 'http'
     end
     
     # Shortcut to setup your bucket

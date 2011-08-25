@@ -122,14 +122,27 @@ describe Panda::Video do
       region "eu"
     end
     
-    stub_http_request(:get, /api.eu.pandastream.com:443/).
+    stub_http_request(:get, /api-eu.pandastream.com:443/).
+      to_return(:body => "{\"id\":\"123\"}")
+    Panda::Video.find "123"
+  end
+  
+  it "should accept a string as a port" do
+    Panda.configure do
+      access_key "my_access_key"
+      secret_key "my_secret_key"
+      cloud_id 'my_cloud_id'
+      api_port '443'
+    end
+    
+    stub_http_request(:get, /https:\/\/api.pandastream.com:443/).
       to_return(:body => "{\"id\":\"123\"}")
     Panda::Video.find "123"
   end
   
   it "should connect to eu and trigger the request" do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\"}" 
-    stub_http_request(:get, /api.eu.pandastream.com:80\/v2\/clouds\/my_cloud_id.json/).
+    stub_http_request(:get, /api-eu.pandastream.com:80\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
 
     Panda.configure do |c|
@@ -139,7 +152,7 @@ describe Panda::Video do
       c.region  "eu"
     end
     
-    stub_http_request(:get, /api.eu.pandastream.com:443/).
+    stub_http_request(:get, /api-eu.pandastream.com:443/).
       to_return(:body => "{\"id\":\"123\"}")
     Panda::Video.find "123"
   end

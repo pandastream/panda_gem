@@ -20,7 +20,7 @@ describe Panda::Cloud do
       Panda.configure do
         access_key "my_access_key"
         secret_key "my_secret_key"
-        api_host "api.eu.pandastream.com"
+        api_host "api-eu.pandastream.com"
         cloud_id 'my_cloud_id'
         api_port 85
       end
