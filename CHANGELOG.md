@@ -1,3 +1,13 @@
+## 1.4.4 (August 25, 2011)
+
+Features:
+    Updated the faraday interface to use typhoeus and recent faraday
+
+## 1.4.3 (August 18, 2011)
+
+Features:
+    Validates credentials on configure
+    
 ## 1.4.2 (February 16, 2011)
 
 Features:
