@@ -6,15 +6,16 @@ Gem::Specification.new do |s|
   s.name        = "panda"
   s.version     = Panda::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["New Bamboo"]
+  s.authors     = ["Pandastream"]
   s.email       = ["info@pandastream.com"]
-  s.homepage    = "http://github.com/newbamboo/panda_gem"
+  s.homepage    = "http://github.com/pandastream/panda_gem"
   s.summary     = %q{Panda Client}
   s.description = %q{Panda Client}
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
-  s.add_dependency "rest-client"
-  s.add_dependency "json"
+  s.add_dependency "faraday"
+  s.add_dependency "typhoeus"
+  s.add_dependency "yajl-ruby"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "timecop"
