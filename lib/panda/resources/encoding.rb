@@ -12,6 +12,10 @@ module Panda
       end
     end
 
+    def urls
+      files.map {|f| cloud.url + f}
+    end
+    
     def screenshots_size; 7 end
     
   end

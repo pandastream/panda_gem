@@ -6,7 +6,7 @@ module Panda
     end
 
     def non_delegate_methods
-      super + [:status, :profile_id, :profile_name, :video, :page, :per_page]
+      super + [:status, :profile_id, :profile_name, :video, :page, :per_page, :[]]
     end
 
     def page(this_page)
@@ -42,6 +42,14 @@ module Panda
     def find_by_profile_name(this_profile_name)
       @scoped_attributes[:profile_name] = this_profile_name
       trigger_request.first
+    end
+
+    def [](index)
+      if(index.is_a? String)
+        proxy_found.select{|e| e.profile_name == index}[0]
+      else
+        proxy_found[index]
+      end
     end
 
   end
