@@ -43,6 +43,11 @@ module Panda
       self
     end
 
+    def inspect
+      attributes_as_nice_string = self.attributes.map {|k,v| "#{k}: #{v.inspect}"}.compact.join(", ")
+      "#<#{self.class} #{attributes_as_nice_string}>"
+    end
+
     private
 
     def load_and_reset(response)
