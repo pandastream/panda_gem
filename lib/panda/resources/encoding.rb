@@ -24,6 +24,16 @@ module Panda
       ((1..7).map{|i| get_url("#{path}_#{i}.jpg")} if success?) || []
     end
 
+    def cancel
+      connection.post("/encodings/#{id}/cancel.json")
+      true
+    end
+
+    def retry
+      connection.post("/encodings/#{id}/retry.json")
+      true
+    end
+
     private
 
     def get_url(end_path)
