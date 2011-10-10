@@ -1,8 +1,7 @@
 module Panda
   class Encoding < Resource
     include VideoState
-    include Viewable
-    
+
     belongs_to :video
     has_one :profile
 
@@ -12,11 +11,23 @@ module Panda
       end
     end
 
-    def urls
-      files.map {|f| cloud.url + f}
+    def url
+      full_path = "#{path}#{extname}"
+      get_url(full_path) if files.include?(full_path)
     end
     
-    def screenshots_size; 7 end
-    
+    def urls
+      files.map {|f| "#{cloud.url}#{f}"}
+    end
+
+    def screenshots
+      ((1..7).map{|i| get_url("#{path}_#{i}.jpg")} if success?) || []
+    end
+
+    private
+
+    def get_url(end_path)
+      "#{cloud.url}#{end_path}"
+    end
   end
 end

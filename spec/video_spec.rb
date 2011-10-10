@@ -297,7 +297,7 @@ describe Panda::Video do
       to_return(:body => cloud_json)
 
     video = Panda::Video.new({:id => "456", :extname => ".ext", :status => "success", :path => "abc/panda"})
-    video.screenshots[0].should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
+    video.preview_url.should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
   end
   
   it "should call the request if the scope has changed" do
