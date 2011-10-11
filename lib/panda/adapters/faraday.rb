@@ -22,7 +22,6 @@ module Panda
         # multipart upload
         if (f=params['file']) && f.is_a?(File)
           params['file'] = ::Faraday::UploadIO.new(f.path, 'multipart/form-data')
-          connection = multipart_connection
         end
 
         rescue_json_parsing do
@@ -54,14 +53,8 @@ module Panda
       
       def connection
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
-          builder.request :url_encoded
-          builder.adapter :typhoeus
-        end
-      end
-      
-      def multipart_connection
-        @multipart_conn ||= ::Faraday.new(:url => @api_url) do |builder|
           builder.request :multipart
+          builder.request :url_encoded
           builder.adapter :typhoeus
         end
       end
