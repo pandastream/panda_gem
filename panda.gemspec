@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Panda Client}
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
-  s.add_dependency "faraday"
+  s.add_dependency "faraday", ">= 0.7.0"
   s.add_dependency "typhoeus"
   s.add_dependency "yajl-ruby"
 
