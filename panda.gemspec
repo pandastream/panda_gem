@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.add_dependency "faraday", ">= 0.7.0"
   s.add_dependency "typhoeus"
   s.add_dependency "multi_json"
-  s.add_dependency "yajl-ruby"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "timecop"

@@ -1,5 +1,4 @@
 require 'restclient'
-MultiJson.engine = :yajl
 
 module Panda
   module Adapter

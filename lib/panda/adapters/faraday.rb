@@ -1,8 +1,5 @@
 require 'faraday'
-require 'yajl'
 require 'typhoeus'
-
-MultiJson.engine = :yajl
 
 module Panda
   module Adapter

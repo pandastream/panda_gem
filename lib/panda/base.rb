@@ -45,8 +45,8 @@ module Panda
       "#<#{self.class} #{attributes_as_nice_string}>"
     end
 
-    def to_json
-      MultiJson.encode(attributes)
+    def to_json(*args)
+      MultiJson.encode(self.attributes)
     end
 
     private
