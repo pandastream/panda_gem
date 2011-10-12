@@ -1,6 +1,8 @@
 require 'faraday'
-require 'yajl/json_gem'
+require 'yajl'
 require 'typhoeus'
+
+MultiJson.engine = :yajl
 
 module Panda
   module Adapter
@@ -61,8 +63,8 @@ module Panda
 
       def rescue_json_parsing(&block)
         begin
-          Yajl::Parser.parse(yield)
-        rescue Yajl::ParseError => e
+          MultiJson.decode(yield)
+        rescue MultiJson::DecodeError => e
           raise(ServiceNotAvailable)
         end
       end

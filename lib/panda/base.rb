@@ -1,5 +1,4 @@
 require 'forwardable'
-
 module Panda
   class Base
     attr_accessor :attributes, :errors
@@ -8,8 +7,6 @@ module Panda
     include Panda::Router
     include Panda::Builders
     include Panda::Finders
-
-    def_delegators :attributes, :to_json
 
     def initialize(attributes = {})
       clear_attributes
@@ -46,6 +43,10 @@ module Panda
     def inspect
       attributes_as_nice_string = self.attributes.map {|k,v| "#{k}: #{v.inspect}"}.compact.join(", ")
       "#<#{self.class} #{attributes_as_nice_string}>"
+    end
+
+    def to_json
+      MultiJson.encode(attributes)
     end
 
     private

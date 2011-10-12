@@ -225,7 +225,7 @@ describe Panda::Video do
   
   it "should return a json on attributes" do
     video = Panda::Video.new(:attr => "value")
-    video.to_json.should == video.attributes.to_json
+    video.to_json.should == "{\"attr\":\"value\",\"cloud_id\":\"my_cloud_id\"}"
   end
   
   it "should create an encoding using video scope" do

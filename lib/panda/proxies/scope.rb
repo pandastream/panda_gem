@@ -10,7 +10,7 @@ module Panda
     end
 
     def non_delegate_methods
-       [:nil?, :send, :object_id, :respond_to?, :class, :find, :find_by, :create, :create!, :all, :cloud, :connection]
+       [:nil?, :send, :object_id, :respond_to?, :class, :find, :find_by, :create, :create!, :all, :cloud, :connection, :to_json]
     end
 
     def initialize(parent, klass)
@@ -20,6 +20,9 @@ module Panda
       initialize_scopes
     end
     
+    def to_json
+      MultiJson.encode(proxy_found)
+    end
     # Overide the function to set the cloud_id as the same as the scope
     def find_by_path(url, map={})
       object = find_object_by_path(url, map)
