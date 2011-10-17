@@ -1,7 +1,19 @@
+## 1.5.0 (October 17, 2011)
+
+Features:
+
+    - Faraday and Typhoeus by default
+    - MultiJson
+    - Added `urls`
+    - Removed `screenshots` on video replaced by preview_url
+    - Nicer inspect on resources
+    - Added `metadata` on video and `cancel` and `retry` on encoding
+    - Added direct access to a specific encoding using video.encodings['h264'] (if profile_name is h264)
+
 ## 1.4.4 (August 25, 2011)
 
 Features:
-    Updated the faraday interface to use typhoeus and recent faraday
+    - Updated the faraday interface to use Typhoeus and recent Faraday
 
 ## 1.4.3 (August 18, 2011)
 
