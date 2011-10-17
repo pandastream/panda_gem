@@ -9,10 +9,14 @@ module Panda
       end
     end
 
+    def metadata
+      connection.get("/videos/#{id}/metadata.json")
+    end
+
     def preview_url
       get_url("#{path}_1.jpg") if success?
     end
-  
+
     def url
       get_url("#{path}#{extname}") if success?
     end
