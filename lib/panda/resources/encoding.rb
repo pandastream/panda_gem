@@ -25,13 +25,11 @@ module Panda
     end
 
     def cancel
-      connection.post("/encodings/#{id}/cancel.json")
-      true
+      connection.post("/encodings/#{id}/cancel.json")['canceled']
     end
 
     def retry
-      connection.post("/encodings/#{id}/retry.json")
-      true
+      connection.post("/encodings/#{id}/retry.json")['retried']
     end
 
     private

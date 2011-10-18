@@ -225,7 +225,12 @@ describe Panda::Video do
   
   it "should return a json on attributes" do
     video = Panda::Video.new(:attr => "value")
-    video.to_json.should == "{\"attr\":\"value\",\"cloud_id\":\"my_cloud_id\"}"
+    
+    if(RUBY_VERSION >= "1.9")
+      video.to_json.should == "{\"attr\":\"value\",\"cloud_id\":\"my_cloud_id\"}"
+    else
+      video.to_json.should == "{\"cloud_id\":\"my_cloud_id\",\"attr\":\"value\"}"
+    end
   end
   
   it "should create an encoding using video scope" do
@@ -279,7 +284,7 @@ describe Panda::Video do
     encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
 
-    video.encodings.to_json.should == "[{\"abc\":\"my_source_url\",\"id\":\"456\",\"cloud_id\":\"my_cloud_id\"}]"
+    video.encodings.first.to_json.should == "{\"abc\":\"my_source_url\",\"id\":\"456\",\"cloud_id\":\"my_cloud_id\"}"
   end
   
   it "should return the video url" do
