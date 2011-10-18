@@ -19,8 +19,8 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
       access_key "panda_access_key"
       secret_key "panda_secret_key"
       cloud_id "panda_cloud_id"
-      # api_host "api-eu.pandastream.com" ## for EU accounts
-      # api_port 80 ## to use http (default 443)
+      # Uncomment below if you have register for an EU account
+      # api_host "api-eu.pandastream.com" 
     end
 
     or Panda.configure({:access_key => ....})
@@ -50,8 +50,8 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     encodings = Panda::Video.find("1234").encodings
     => [...]
     
-    mp4_encoding = encodings.find_by_profile_name("h264")
-    ogg_encoding = encodings.find_by_profile_name("ogg")
+    mp4_encoding = encodings["h264"]
+    ogg_encoding = encodings["ogg"]
     
     mp4_encoding.url
     => "http://s3.amazonaws.com/my_panda_bucket/4567.mp4"
