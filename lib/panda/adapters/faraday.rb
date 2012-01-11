@@ -69,3 +69,5 @@ module Panda
     end
   end
 end
+
+Panda.adapter = Panda::Adapter::Faraday

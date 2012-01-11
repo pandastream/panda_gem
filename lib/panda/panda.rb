@@ -47,15 +47,11 @@ module Panda
   end
 
   def adapter
-    @adapter_class ||= default_adapter
+    @adapter_class || raise("No HTTP adapter initialized")
   end
   
   private
 
-  def default_adapter
-    Panda::Adapter::Faraday
-  end
-  
   def configure_with_auth_params(config)
     config.validate!
     connect!(config.to_hash)
