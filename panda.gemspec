@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
   s.add_dependency "faraday", ">= 0.7.0"
-  s.add_dependency "typhoeus"
   s.add_dependency "multi_json"
 
   s.add_development_dependency "rake"
