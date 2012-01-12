@@ -54,7 +54,7 @@ module Panda
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
           builder.request :multipart
           builder.request :url_encoded
-          builder.adapter :net_http
+          builder.adapter :typhoeus
         end
       end
 
