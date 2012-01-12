@@ -11,7 +11,7 @@ module Panda
       
       def get(request_uri, params)
         rescue_json_parsing do
-          response = connection.get do |req|
+          connection.get do |req|
             req.url File.join(connection.path_prefix, request_uri), params
           end.body
         end
@@ -61,7 +61,7 @@ module Panda
       def rescue_json_parsing(&block)
         begin
           MultiJson.decode(yield)
-        rescue MultiJson::DecodeError => e
+        rescue MultiJson::DecodeError
           raise(ServiceNotAvailable)
         end
       end

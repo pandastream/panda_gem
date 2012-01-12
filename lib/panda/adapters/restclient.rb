@@ -43,7 +43,7 @@ module Panda
       def rescue_json_parsing(&block)
         begin
           MultiJson.decode(yield)
-        rescue MultiJson::DecodeError => e
+        rescue MultiJson::DecodeError
           raise(ServiceNotAvailable)
         end
       end
