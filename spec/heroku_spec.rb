@@ -6,7 +6,7 @@ describe Panda::Video do
     stub_http_request(:get, /api.example.com:443\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
 
-    my_heroku_url = "http://access_key:secret_key@api.example.com:85/my_cloud_id"
+    my_heroku_url = "http://access_key:secret_key@api.example.com:443/my_cloud_id"
     ENV['PANDASTREAM_URL']= my_heroku_url
   end
   

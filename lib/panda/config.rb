@@ -11,7 +11,7 @@ module Panda
       config.secret_key = panda_uri.password
       config.cloud_id   = panda_uri.path[1..-1]
       config.api_host   = panda_uri.host
-      config.api_port   = API_PORT
+      config.api_port   = panda_uri.port
       config
     end
 
@@ -49,19 +49,6 @@ module Panda
     
     def adapter=(adapter_name)
       Panda.adapter = adapter_name
-    end
-        
-    # Setup connection for Heroku
-    # @deprecated: use Config.from_panda_url(panda_url)
-    def parse_panda_url(panda_url)
-      panda_uri = URI.parse(panda_url)
-
-      config['access_key'] = panda_uri.user
-      config['secret_key'] = panda_uri.password
-      config['cloud_id']   = panda_uri.path[1..-1]
-      config['api_host']   = panda_uri.host
-      config['api_port']   = API_PORT
-      config
     end
     
     # Set the correct api_host for US/EU

@@ -7,9 +7,16 @@ module Panda
   class Connection
     attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
 
-    def initialize(auth_params={})
+    def initialize(auth_params={}) 
+      params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(auth_params)
       @api_version = 2
-      init_from_hash(auth_params)
+
+      @cloud_id   = params["cloud_id"]    || params[:cloud_id]
+      @access_key = params["access_key"]  || params[:access_key]
+      @secret_key = params["secret_key"]  || params[:secret_key]
+      @api_host   = params["api_host"]    || params[:api_host]
+      @api_port   = params["api_port"]    || params[:api_port]
+      @prefix     = params["prefix_url"]  || "v#{api_version}"
     end
 
     def adapter
@@ -89,16 +96,6 @@ module Panda
       end
     end
 
-    def init_from_hash(hash_params)
-      params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(hash_params)
-
-        @cloud_id   = params["cloud_id"]    || params[:cloud_id]
-        @access_key = params["access_key"]  || params[:access_key]
-        @secret_key = params["secret_key"]  || params[:secret_key]
-        @api_host   = params["api_host"]    || params[:api_host]
-        @api_port   = params["api_port"]    || params[:api_port]
-        @prefix     = params["prefix_url"]  || "v#{api_version}"
-    end
   end
 end
 
