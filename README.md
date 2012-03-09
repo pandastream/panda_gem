@@ -2,7 +2,7 @@
 
 Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
 
-* [Visit panda\_gem on Github](http://github.com/newbamboo/panda_gem)
+* [Visit panda\_gem on Github](http://github.com/pandastream/panda_gem)
 * [![Build
   Status](https://secure.travis-ci.org/pandastream/panda_gem.png?branch=master)](http://travis-ci.org/pandastream/panda_gem)
 
@@ -45,7 +45,7 @@ If you don't use a config file and want to simply be setup, do the following (wo
 
 ### Typical usage
 
-In most cases you will have used the [panda\_uploader](http://github.com/newbamboo/panda_uploader) jQuery plugin to upload the video (more details about this are in the [Integrating Panda with Ruby on Rails](http://pandastream.com/docs/integrate_with_rails) tutorial). Then you will want to get the video and screenshots urls of your encoding to display to your users.
+In most cases you will have used the [panda\_uploader](http://github.com/pandastream/panda_uploader) jQuery plugin to upload the video (more details about this are in the [Integrating Panda with Ruby on Rails](http://pandastream.com/docs/integrate_with_rails) tutorial). Then you will want to get the video and screenshots urls of your encoding to display to your users.
 
 The name of the profile can be found in your [Panda account](http://pandastream.com/profiles) when editing an encoding cloud's profiles.
 
@@ -396,7 +396,7 @@ The name of the profile can be found in your [Panda account](http://pandastream.
 
 ## Generating signatures
 
-  All requests to your Panda cloud are signed using HMAC-SHA256, based on a timestamp and your Panda secret key. This is handled transparently. However, sometimes you will want to generate only this signature, in order to make a request by means other than this library. This is the case when using the [JavaScript panda_uploader](http://github.com/newbamboo/panda_uploader).
+  All requests to your Panda cloud are signed using HMAC-SHA256, based on a timestamp and your Panda secret key. This is handled transparently. However, sometimes you will want to generate only this signature, in order to make a request by means other than this library. This is the case when using the [JavaScript panda_uploader](http://github.com/pandastream/panda_uploader).
 
   To do this, a method `signed_params()` is supported:
 
