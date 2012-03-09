@@ -3,6 +3,8 @@
 Panda gem provides an interface to access the [Panda](http://pandastream.com) API from Ruby.
 
 * [Visit panda\_gem on Github](http://github.com/newbamboo/panda_gem)
+* [![Build
+  Status](https://secure.travis-ci.org/pandastream/panda_gem.png?branch=master)](http://travis-ci.org/pandastream/panda_gem)
 
 ## Installation
 
