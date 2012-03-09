@@ -3,7 +3,7 @@ require 'timecop'
 
 describe Panda do
   before(:each) do
-    new_time = Time.utc(20010, 1, 12, 1, 0, 0)
+    new_time = Time.utc(2010, 1, 12, 1, 0, 0)
     Timecop.freeze(new_time)
   end
   
@@ -70,7 +70,7 @@ describe Panda do
   shared_examples_for "Connected" do
 
     it "should make get request with signed request to panda server" do
-      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"abc\":\"d\"}")
+      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=kAiCpkP52a2XKISJjRCBWzWCN5CaeLK3Nj1AT25S/Go=&timestamp=2010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"abc\":\"d\"}")
       @panda.get("/videos").should == {'abc' => 'd'}
     end
 
@@ -81,9 +81,9 @@ describe Panda do
                                            )
       signed_params.should == {
         'access_key' => "my_access_key",
-        'timestamp' => "20010-01-12T01:00:00.000000Z",
+        'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'aTgBGPeMrRk2Pnc13RxhK/ctWjDsL33vOFEC9qKLWV0=',
+        'signature' => '/Yu4CqImbYNXWwpNSIfHzdWeMsR5J7O6tfbSHXQO0aA=',
         'param1' => 'one',
         'param2' => 'two'
       }
@@ -92,9 +92,9 @@ describe Panda do
     it "should create a signed version of the parameters without additional arguments" do
       @panda.signed_params('POST', '/videos.json').should == {
         'access_key' => "my_access_key",
-        'timestamp' => "20010-01-12T01:00:00.000000Z",
+        'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o='
+        'signature' => 'QpQQm0guSLSEXmQ+EP2qnKT0av5llLWBUylEk9NEStU='
       }
     end
 
@@ -106,9 +106,9 @@ describe Panda do
                                            )
       signed_params.should == {
         'access_key' => "my_access_key",
-        'timestamp' => "20010-01-12T01:00:00.000000Z",
+        'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'G6LUFGIseRyDrqnj55t+CDrAGdRWtUWSqZwMmIsuW40=',
+        'signature' => 'v7++pgmzztwOWzZ+MoflgD1TT8Jxnqzl1v8gNnEbhX8=',
         'tilde' => '~',
         'space' => ' '
       }
@@ -118,9 +118,9 @@ describe Panda do
     it "should not include file inside the signature" do
       @panda.signed_params('POST', '/videos.json', { "file" => "my_file" }).should == {
         'access_key' => "my_access_key",
-        'timestamp' => "20010-01-12T01:00:00.000000Z",
+        'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o=',
+        'signature' => 'QpQQm0guSLSEXmQ+EP2qnKT0av5llLWBUylEk9NEStU=',
         'file' => "my_file"
       }
     end
@@ -128,9 +128,9 @@ describe Panda do
     it "should stringify keys" do
       @panda.signed_params('POST', '/videos.json', { :file => "symbol_key" }).should == {
         'access_key' => "my_access_key",
-        'timestamp' => "20010-01-12T01:00:00.000000Z",
+        'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'g5lAh0cPC/qyUyTQb125vosvZwubQ+HgB04ORt+iw7o=',
+        'signature' => 'QpQQm0guSLSEXmQ+EP2qnKT0av5llLWBUylEk9NEStU=',
         'file' => "symbol_key"
       }
     end
@@ -165,7 +165,7 @@ describe Panda do
     end
     
     it "should make get request" do
-      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"key\":\"value\"}")
+      stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=kAiCpkP52a2XKISJjRCBWzWCN5CaeLK3Nj1AT25S/Go=&timestamp=2010-01-12T01%3A00%3A00.000000Z").to_return(:body => "{\"key\":\"value\"}")
       @panda.get("/videos").should == {'key' => 'value'}
     end
     
@@ -177,7 +177,7 @@ describe Panda do
   #     @panda = Panda::Connection.new({"access_key" => "my_access_key", "secret_key" => "my_secret_key", "api_host" => "myapihost", "api_port" => 85, "cloud_id" => 'my_cloud_id' })
   #     Panda.adapter = 'restclient'
   #     
-  #     stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=20010-01-12T01%3A00%3A00.000000Z").to_return(:body => "abc")
+  #     stub_http_request(:get, "http://myapihost:85/v2/videos?access_key=my_access_key&cloud_id=my_cloud_id&signature=DYpg2K6d7kGo%2FuWPO%2FaQgtQmY3BPtFEtQgdQhVe8teM%3D&timestamp=2010-01-12T01%3A00%3A00.000000Z").to_return(:body => "abc")
   # 
   # 
   #     module ActiveSupport
