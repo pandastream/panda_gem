@@ -14,6 +14,5 @@ RSpec.configure do |config|
   config.before(:each) do
     Panda.instance_variable_set("@connection", nil)
     Panda.instance_variable_set("@cloud", nil)
-    Time.now.stub!(:utc).and_return(mock("time", :iso8601 => "2009-11-04T17:54:11+00:00"))
   end
 end
