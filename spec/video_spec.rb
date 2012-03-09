@@ -284,7 +284,7 @@ describe Panda::Video do
     encodings_json = "[{\"abc\":\"my_source_url\",\"id\":\"456\"}]"
     stub_http_request(:get, /api.example.com:85\/v2\/videos\/123\/encodings.json/).to_return(:body => encodings_json)
 
-    video.encodings.first.to_json.should == "{\"abc\":\"my_source_url\",\"id\":\"456\",\"cloud_id\":\"my_cloud_id\"}"
+    MultiJson.decode(video.encodings.first.to_json).should == {"abc" => "my_source_url", "id" => "456", "cloud_id" => "my_cloud_id"}
   end
   
   it "should return the video url" do
