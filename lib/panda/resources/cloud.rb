@@ -24,6 +24,12 @@ module Panda
       end
     end
 
+    def https_url
+      uri = URI.parse(url)
+      uri.scheme = "https"
+      uri.to_s
+    end
+
     def eu?
       region == "eu"
     end

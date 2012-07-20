@@ -70,8 +70,17 @@ describe Panda::Encoding do
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda", "files" => ["abc/panda.ext"], :status => 'success'})
     encoding.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
   end
+
+  it "should return the secure encoding url" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my-bucket.s3.amazonaws.com/\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :path => "abc/panda", "files" => ["abc/panda.ext"], :status => 'success'})
+    encoding.url(:https => true).should == "https://my-bucket.s3.amazonaws.com/abc/panda.ext"
+  end
   
-  it "should generate a screenhost array" do
+  it "should generate a screenshot array" do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
@@ -80,7 +89,7 @@ describe Panda::Encoding do
     encoding.screenshots[0].should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
   end
 
-  it "should generate a screenhost array" do
+  it "should generate a screenshot array" do
     encoding = Panda::Encoding.new({:id => "456", :extname => ".ext", :status => "fail"})
     encoding.screenshots.should == []
   end

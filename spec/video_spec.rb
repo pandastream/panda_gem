@@ -291,14 +291,32 @@ describe Panda::Video do
     video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
     video.url.should == "http://my_bucket.s3.amazonaws.com/abc/panda.ext"
   end
+
+  it "should return the secure video url" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my-bucket.s3.amazonaws.com/\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :path => "abc/panda", :status => 'success'})
+    video.url(:https => true).should == "https://my-bucket.s3.amazonaws.com/abc/panda.ext"
+  end
   
-  it "should generate a screenhost array" do
+  it "should generate a screenshot url" do
     cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my_bucket.s3.amazonaws.com/\"}" 
     stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
       to_return(:body => cloud_json)
 
     video = Panda::Video.new({:id => "456", :extname => ".ext", :status => "success", :path => "abc/panda"})
     video.preview_url.should == "http://my_bucket.s3.amazonaws.com/abc/panda_1.jpg"
+  end
+
+  it "should generate a secure screenshot url" do
+    cloud_json = "{\"s3_videos_bucket\":\"my_bucket\",\"id\":\"my_cloud_id\", \"url\":\"http://my-bucket.s3.amazonaws.com/\"}"
+    stub_http_request(:get, /api.example.com:85\/v2\/clouds\/my_cloud_id.json/).
+      to_return(:body => cloud_json)
+
+    video = Panda::Video.new({:id => "456", :extname => ".ext", :status => "success", :path => "abc/panda"})
+    video.preview_url(:https => true).should == "https://my-bucket.s3.amazonaws.com/abc/panda_1.jpg"
   end
   
   it "should call the request if the scope has changed" do
