@@ -13,18 +13,22 @@ module Panda
       connection.get("/videos/#{id}/metadata.json")
     end
 
-    def preview_url
-      get_url("#{path}_1.jpg") if success?
+    def preview_url(options={})
+      default_options = {:https => false}
+      options = default_options.merge(options)
+      get_url("#{path}_1.jpg", options[:https]) if success?
     end
 
-    def url
-      get_url("#{path}#{extname}") if success?
+    def url(options={})
+      default_options = {:https => false}
+      options = default_options.merge(options)
+      get_url("#{path}#{extname}", options[:https]) if success?
     end
 
     private
 
-    def get_url(end_path)
-      "#{cloud.url}#{end_path}"
+    def get_url(end_path, https)
+      "#{https ? cloud.https_url : cloud.url}#{end_path}"
     end
 
   end
