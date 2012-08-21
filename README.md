@@ -33,7 +33,7 @@ Heroku will store your credentials as an environment variable called PANDASTREAM
 
 If you use a config file like `config/panda.yml` to support multiple environments, do the following in your `config/initializers/panda.rb` :
 
-    Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[RAILS_ENV]))
+    Panda.configure((ENV['PANDASTREAM_URL'] || YAML::load_file(File.join(File.dirname(__FILE__),"..", "panda.yml"))[Rails.env]))
 
 See the [Rails How-to](http://www.pandastream.com/docs/integrate_with_rails) for more details.
 
