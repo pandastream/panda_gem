@@ -9,9 +9,6 @@ module Panda
   end
 
   class ServiceNotAvailable < Panda::Error
-    def initialize
-      super("ServiceNotAvailable")
-    end
   end
 
   class ConfigurationError < Panda::Error
