@@ -19,9 +19,7 @@ module Panda
 
       def post(request_uri, params)
         # multipart upload
-        if (f=params['file']) && f.is_a?(File)
-          params['file'] = ::Faraday::UploadIO.new(f.path, 'multipart/form-data')
-        end
+        params['file'] = ::Faraday::UploadIO.new(params['file'], 'multipart/form-data') if params['file']
 
         rescue_json_parsing do
           connection.post do |req|
@@ -69,4 +67,12 @@ module Panda
       
     end
   end
+end
+
+if defined?(Typhoeus)
+  Faraday.default_adapter = :typhoeus
+elsif defined?(Excon)
+  Faraday.default_adapter = :excon
+elsif defined?(Patron)
+  Faraday.default_adapter = :patron
 end
