@@ -14,13 +14,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
   s.add_dependency "faraday", ">= 0.7.0"
-  s.add_dependency "typhoeus", "~> 0.3.3"
   s.add_dependency "multi_json", ">= 1.3.2"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "timecop"
-  s.add_development_dependency "rspec", "2.8.0"
-  s.add_development_dependency "webmock", "1.8.2"
+  s.add_development_dependency "rspec", ">= 2.8.0"
+  s.add_development_dependency "webmock", ">= 1.8.2"
   
   s.rubyforge_project = "panda"
 

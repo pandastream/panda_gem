@@ -1,8 +1,8 @@
 require 'faraday'
-require 'typhoeus'
+require 'multi_json'
 
 module Panda
-  module Adapter
+  module HttpClient
     class Faraday
       
       def initialize(api_url)
@@ -70,6 +70,3 @@ module Panda
     end
   end
 end
-
-::Faraday.default_adapter = :typhoeus
-Panda.adapter = Panda::Adapter::Faraday

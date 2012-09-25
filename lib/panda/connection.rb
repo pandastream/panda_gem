@@ -19,29 +19,29 @@ module Panda
       @prefix     = params["prefix_url"]  || "v#{api_version}"
     end
 
-    def adapter
-      @adapter ||= Panda.adapter.new(api_url)
+    def http_client
+      Panda::HttpClient::Faraday.new(api_url)
     end
     
     # Authenticated requests
     def get(request_uri, params={})
       sp = signed_params("GET", request_uri, params)
-      adapter.get(request_uri, sp)
+      http_client.get(request_uri, sp)
     end
 
     def post(request_uri, params={})
       sp = signed_params("POST", request_uri, params)
-      adapter.post(request_uri, sp)
+      http_client.post(request_uri, sp)
     end
 
     def put(request_uri, params={})
       sp = signed_params("PUT", request_uri, params)
-      adapter.put(request_uri, sp)
+      http_client.put(request_uri, sp)
     end
 
     def delete(request_uri, params={})
       sp = signed_params("DELETE", request_uri, params)
-      adapter.delete(request_uri, sp)
+      http_client.delete(request_uri, sp)
     end
 
     # Signing methods
