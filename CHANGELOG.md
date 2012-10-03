@@ -1,3 +1,10 @@
+## 1.6.0 (October 3, 2012)
+    - Removed RestClient adapter
+    - Removed Typhoeus gem dependency
+
+      You can use any Faraday adapter by requiring the gem in your Gemfile before panda
+      (ex: require 'typhoeus')
+
 ## 1.5.0 (October 17, 2011)
 
 Features:
