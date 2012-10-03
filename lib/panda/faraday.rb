@@ -52,7 +52,7 @@ module Panda
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
           builder.request :multipart
           builder.request :url_encoded
-          builder.adapter ::Faraday.default_adapter
+          builder.adapter Panda.default_adapter
         end
       end
 
@@ -70,9 +70,13 @@ module Panda
 end
 
 if defined?(Typhoeus)
-  Faraday.default_adapter = :typhoeus
+  Panda.default_adapter = :typhoeus
 elsif defined?(Excon)
-  Faraday.default_adapter = :excon
+  Panda.default_adapter = :excon
 elsif defined?(Patron)
-  Faraday.default_adapter = :patron
+  Panda.default_adapter = :patron
+elsif defined?(NetHttpPersistent)
+  Panda.default_adapter = :net_http_persisten
+else
+  Panda.default_adapter = :net_http
 end

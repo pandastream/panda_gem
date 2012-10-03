@@ -42,12 +42,12 @@ module Panda
     @connection
   end
 
-  def adapter=(klass)
-    @adapter_class = klass
+  def default_adapter=(adapter_name)
+    @adapter = adapter_name.to_sym
   end
 
-  def adapter
-    @adapter_class || raise("No HTTP adapter initialized")
+  def default_adapter
+    @adapter
   end
   
   private
@@ -58,5 +58,4 @@ module Panda
     @clouds = {}
     @cloud = Cloud::new(:id => @connection.cloud_id)
   end
-  
 end

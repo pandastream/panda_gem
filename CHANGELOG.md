@@ -2,8 +2,8 @@
     - Removed RestClient adapter
     - Removed Typhoeus gem dependency
 
-      You can use any Faraday adapter by requiring the gem in your Gemfile before panda
-      (ex: require 'typhoeus')
+      You can use any Faraday adapter by setting the default_adapter
+      Panda.default_adapter = :excon
 
 ## 1.5.0 (October 17, 2011)
 

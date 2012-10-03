@@ -15,6 +15,12 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     require 'rubygems'
     require 'panda'
 
+## Faraday Adapter
+    The gem automatically detects http libraries and sets the default adapter
+    You can just set the default Panda adapter if you are not happy with the current one.
+
+    Panda.default_adapter = :excon
+
 ### Creating an instance of the client
 
     Panda.configure do
