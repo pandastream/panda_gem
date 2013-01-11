@@ -46,7 +46,7 @@ module Panda
     end
 
     def to_json(*args)
-      MultiJson.dump(self.attributes)
+      MultiJson.encode(self.attributes)
     end
 
     private
