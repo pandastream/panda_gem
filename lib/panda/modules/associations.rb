@@ -16,8 +16,13 @@ module Panda
           else
             @associations ||= []
             @associations << relation_name
-            instance_variable_set("@#{relation_name}",
-              Panda::const_get(relation_name.to_s.capitalize).find(send(param_id.to_sym)))
+            rel_logic =
+              if Panda.connection.cloud_id # if a `cloud_id` has been passed into `Panda.configure` use that Cloud
+                Panda::const_get(relation_name.to_s.capitalize).find(send(param_id.to_sym))
+              else # otherwise, attempt to grab the `cloud_id` out of the `resource`'s attributes
+                Panda::Cloud.find(cloud_id).send("#{relation_name.to_s}s".to_sym).find(send(param_id.to_sym))
+              end
+            instance_variable_set "@#{relation_name}", rel_logic
           end
         end
       end
