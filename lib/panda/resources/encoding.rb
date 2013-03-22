@@ -2,7 +2,7 @@ module Panda
   class Encoding < Resource
     include VideoState
 
-    belongs_to :video
+    has_one :video
     has_one :profile
 
     class << self

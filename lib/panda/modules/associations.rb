@@ -34,8 +34,6 @@ module Panda
         end
       end
 
-      alias :belongs_to :has_one
-
     end
 
     private
