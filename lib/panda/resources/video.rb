@@ -42,6 +42,10 @@ module Panda
       uri =  URI.parse(url)
       uploader = Panda::HttpClient.new("#{uri.scheme}://#{uri.host}:#{uri.port}")
       uploader.put(uri.path, body, uri.query, {'Content-Type' => 'application/octet-stream'})
+    rescue
+      Excon.delete(url)
+
+      raise
     end
 
     def create_upload_session(session)

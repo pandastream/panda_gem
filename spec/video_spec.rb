@@ -244,6 +244,30 @@ describe Panda::Video do
     video.id.should == "123"
   end
 
+  it "should delete upload session if an error occurs during upload" do
+
+    upload_json = "{\"location\":\"http://upload.api.example.com/session?id=123\"}"
+    response = "{\"message\":\"no-abc\",\"error\":\"error-abc\"}"
+
+    stub_http_request(:post, /api.example.com:85\/v2\/videos\/upload.json/).
+      with{|r| r.body =~ /file_name=panda.mp4/ && r.body =~ /file_size=1234/}.
+        to_return(:body => upload_json)
+
+    stub_request(:put, "http://upload.api.example.com/session?id=123").
+      with(:body => "abc",
+          :headers => {'Content-Type'=>'application/octet-stream', 'Host'=>'upload.api.example.com:80'}).
+        to_return(:status => 400, :headers => {}, :body => response)
+
+
+    stub_request(:delete, "http://upload.api.example.com/session?id=123").
+        to_return(:status => 200, :headers => {}, :body => "")
+
+    lambda {
+        Panda::Video.create!(:file => OpenStruct.new(:read => "abc", :path => '/tmp/panda.mp4', :size => 1234))
+    }.should raise_error(Panda::APIError, "error-abc: no-abc")
+
+  end
+
   it "should return a json on attributes" do
     video = Panda::Video.new(:attr => "value")
     
