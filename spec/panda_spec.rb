@@ -113,24 +113,13 @@ describe Panda do
         'space' => ' '
       }
     end
-    
-    
-    it "should not include file inside the signature" do
-      @panda.signed_params('POST', '/videos.json', { "file" => "my_file" }).should == {
-        'access_key' => "my_access_key",
-        'timestamp' => "2010-01-12T01:00:00.000000Z",
-        'cloud_id' => 'my_cloud_id',
-        'signature' => 'QpQQm0guSLSEXmQ+EP2qnKT0av5llLWBUylEk9NEStU=',
-        'file' => "my_file"
-      }
-    end
 
     it "should stringify keys" do
       @panda.signed_params('POST', '/videos.json', { :file => "symbol_key" }).should == {
         'access_key' => "my_access_key",
         'timestamp' => "2010-01-12T01:00:00.000000Z",
         'cloud_id' => 'my_cloud_id',
-        'signature' => 'QpQQm0guSLSEXmQ+EP2qnKT0av5llLWBUylEk9NEStU=',
+        'signature' => 'Hy4Yat+26vLcRBy3hdFwR3o1iyGZiXLEsiIJNQ7NUkE=',
         'file' => "symbol_key"
       }
     end
