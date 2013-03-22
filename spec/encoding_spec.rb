@@ -257,4 +257,29 @@ describe Panda::Encoding do
     lambda {Panda::Encoding.each}.should raise_error(NoMethodError)
     lambda {Panda::Encoding.size}.should raise_error(NoMethodError)
   end
+
+  context "no `cloud_id` set in Panda.configure" do
+    before do
+      Panda.configure do
+        access_key "my_access_key"
+        secret_key "my_secret_key"
+        api_host "api.example.com"
+        api_port 85
+      end
+    end
+
+    it "should find by the video through the association" do
+      video_json = "{\"source_url\":\"my_source_url\",\"id\":\"123\"}"
+      encoding_json = "[{\"abc\":\"efg\",\"id\":\"456\",\"video_id\":\"123\",\"cloud_id\":\"cloud1\"}]"
+
+      stub_http_request(:get, /api.example.com:85\/v2\/encodings.json/).
+        to_return(:body => encoding_json)
+      stub_http_request(:get, /api.example.com:85\/v2\/videos\/123.json/).
+        to_return(:body => video_json)
+
+      cloud = Panda::Cloud.new(:id => 'cloud1')
+      cloud.encodings.first.video.id.should == "123"
+    end
+  end
+
 end
