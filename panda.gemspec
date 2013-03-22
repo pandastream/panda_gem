@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Panda Client}
 
   s.add_dependency "ruby-hmac", ">= 0.3.2"
-  s.add_dependency "excon", ">= 0.20.0"
+  s.add_dependency "excon", ">= 0.15.0"
   s.add_dependency "multi_json", ">= 1.3.2"
 
   s.add_development_dependency "rake"
