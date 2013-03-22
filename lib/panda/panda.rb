@@ -42,14 +42,6 @@ module Panda
     @connection
   end
 
-  def default_adapter=(adapter_name)
-    @adapter = adapter_name.to_sym
-  end
-
-  def default_adapter
-    @adapter
-  end
-  
   private
 
   def configure_with_auth_params(config)
@@ -58,4 +50,5 @@ module Panda
     @clouds = {}
     @cloud = Cloud::new(:id => @connection.cloud_id)
   end
+
 end

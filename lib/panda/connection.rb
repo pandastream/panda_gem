@@ -20,28 +20,28 @@ module Panda
     end
 
     def http_client
-      Panda::HttpClient::Faraday.new(api_url)
+      Panda::HttpClient.new(api_url)
     end
     
     # Authenticated requests
     def get(request_uri, params={})
       sp = signed_params("GET", request_uri, params)
-      http_client.get(request_uri, sp)
+      http_client.get("/#{@prefix}#{request_uri}", sp)
     end
 
-    def post(request_uri, params={})
-      sp = signed_params("POST", request_uri, params)
-      http_client.post(request_uri, sp)
+    def post(request_uri, params="")
+      sp = signed_query("POST", request_uri, params)
+      http_client.post("/#{@prefix}#{request_uri}", sp)
     end
 
-    def put(request_uri, params={})
-      sp = signed_params("PUT", request_uri, params)
-      http_client.put(request_uri, sp)
+    def put(request_uri, params="")
+      sp = signed_query("PUT", request_uri, params)
+      http_client.put("/#{@prefix}#{request_uri}", sp)
     end
 
     def delete(request_uri, params={})
       sp = signed_params("DELETE", request_uri, params)
-      http_client.delete(request_uri, sp)
+      http_client.delete("/#{@prefix}#{request_uri}", sp)
     end
 
     # Signing methods
@@ -61,7 +61,7 @@ module Panda
     end
 
     def api_url
-      "#{api_scheme}://#{api_host}:#{api_port}/#{@prefix}"
+      "#{api_scheme}://#{api_host}:#{api_port}"
     end
 
     def api_scheme

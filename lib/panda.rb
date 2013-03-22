@@ -24,5 +24,5 @@ require 'panda/resources/profile'
 require 'panda/resources/video'
 
 require 'panda/panda'
-require 'panda/faraday'
+require 'panda/http_client'
 

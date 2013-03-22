@@ -223,6 +223,27 @@ describe Panda::Video do
     video.id.should == "123"
   end
   
+  it "should upload a video to panda" do
+
+    upload_json = "{\"location\":\"http://upload.api.example.com/session?id=123\"}"
+    video_json = "{\"source_url\":\"url_panda.mp4\",\"id\":\"123\"}"
+
+    stub_http_request(:post, /api.example.com:85\/v2\/videos\/upload.json/).
+      with{|r| r.body =~ /file_name=panda.mp4/ && r.body =~ /file_size=1234/}.
+        to_return(:body => upload_json)
+
+    stub_request(:put, "http://upload.api.example.com/session?id=123").
+      with(:body => "abc",
+          :headers => {'Content-Type'=>'application/octet-stream', 'Host'=>'upload.api.example.com:80'}).
+        to_return(:status => 200, :headers => {}, :body => video_json)
+
+    video = Panda::Video.create do |v|
+      v.file = OpenStruct.new(:read => "abc", :path => '/tmp/panda.mp4', :size => 1234)
+    end
+
+    video.id.should == "123"
+  end
+
   it "should return a json on attributes" do
     video = Panda::Video.new(:attr => "value")
     

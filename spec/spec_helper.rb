@@ -2,6 +2,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'panda'
 require 'rspec'
+require 'ostruct'
 
 require 'webmock/rspec'
 include WebMock::API
