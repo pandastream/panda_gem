@@ -305,7 +305,17 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     encoding = Panda::Encoding.find("4567")
     encoding.delete
     => true
-    
+
+##### Retry an encoding
+
+    encoding = Panda::Encoding.find("4567")
+    encoding.retry
+
+##### Cancel an encoding
+
+    encoding = Panda::Encoding.find("4567")
+    encoding.cancel
+
 ###  Profiles
 
 ##### Find a profile
