@@ -3,7 +3,7 @@ module Panda
   class Base
     attr_accessor :attributes, :errors
     extend Forwardable
-    
+
     include Panda::Router
     include Panda::Builders
     include Panda::Finders
@@ -46,7 +46,7 @@ module Panda
     end
 
     def to_json(*args)
-      MultiJson.dump(self.attributes)
+      Panda.dump_json(self.attributes)
     end
 
     private

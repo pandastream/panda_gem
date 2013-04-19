@@ -41,7 +41,7 @@ module Panda
       def json_response(&block)
         begin
           data = yield
-          MultiJson.load(data)
+          Panda.load_json(data)
         rescue MultiJson::DecodeError
           raise ServiceNotAvailable, data
         end

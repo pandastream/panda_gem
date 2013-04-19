@@ -1,3 +1,6 @@
+require 'multi_json'
+require 'forwardable'
+
 require 'panda/version'
 require 'panda/api_authentication'
 require 'panda/connection'
@@ -26,3 +29,14 @@ require 'panda/resources/video'
 require 'panda/panda'
 require 'panda/http_client'
 
+module Panda
+  extend Forwardable
+
+  load_name = MultiJson.respond_to?(:load) ? 'load' : 'decode'
+  def_delegator 'MultiJson', load_name, 'load_json'
+
+  dump_name = MultiJson.respond_to?(:dump) ? 'dump' : 'encode'
+  def_delegator 'MultiJson', dump_name, 'dump_json'
+
+  extend self
+end
