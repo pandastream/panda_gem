@@ -25,9 +25,9 @@ module Panda
     end
 
     def screenshots(options={})
-      default_options = {:https => false}
+      default_options = {:https => false, :size => 7}
       options = default_options.merge(options)
-      ((1..7).map{|i| get_url("#{path}_#{i}.jpg", options[:https])} if success?) || []
+      ((1..options[:size]).map{|i| get_url("#{path}_#{i}.jpg", options[:https])} if success?) || []
     end
 
     def cancel
