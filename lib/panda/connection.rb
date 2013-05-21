@@ -6,6 +6,7 @@ module Panda
   
   class Connection
     attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
+    attr_reader :prefix
 
     def initialize(auth_params={}) 
       params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(auth_params)

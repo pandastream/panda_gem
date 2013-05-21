@@ -42,6 +42,16 @@ module Panda
     @connection
   end
 
+  def to_curl(method, request_uri, params={}, headers={})
+    c = self.connection
+    method = method.upcase
+    query = c.signed_query(method, request_uri, params)
+    heads = headers.map do |kv|
+      '"-H'+kv.join(':')+'" '
+    end.join
+    "curl -X#{method} #{heads}\"#{c.api_url}/#{c.prefix}#{request_uri}?#{query}\""
+  end
+
   private
 
   def configure_with_auth_params(config)
