@@ -153,6 +153,8 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     videos = Panda::Video.all(:page => 2, :per_page => 20)
     videos.size
     => 20
+    
+    Note: maximum :per_page is 100.
 
 ##### Find all success videos
 
