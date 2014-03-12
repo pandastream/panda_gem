@@ -20,9 +20,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     You can just set the default Panda adapter if you are not happy with the current one.
 
     Panda.default_adapter = :excon
-
+    
+    For rails 4, try the net_http adapter. This fixes disable_ssl_peer_verification related errors caused by the default adapter.
+    
+    Panda.default_adapter = :net_http
+    
 ### Creating an instance of the client
-
+    
     Panda.configure do
       access_key "panda_access_key"
       secret_key "panda_secret_key"
