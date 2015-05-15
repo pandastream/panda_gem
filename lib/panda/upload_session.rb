@@ -20,7 +20,6 @@ module Panda
       params = { 
         :file_size => @file_size,
         :file_name => @file_name,
-        :profiles => "h264"
       }.merge(options)
 
       data = Panda.post("/videos/upload.json", params)
