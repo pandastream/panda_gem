@@ -506,4 +506,25 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     bundler install
     rake spec
 
+### Resumable upload
+    
+    us = Panda::UploadSession.new("panda.mp4", profiles: "webm")
+
+    retry_count = 0
+    begin
+      us.start()
+    rescue Exception => e
+      while retru_count < 5 and us.status != "success"
+        begin
+          sleep(5)
+          us.resume()
+        rescue Exception => e
+          retry_count += 1
+        end
+      end
+    end
+
+
+
+
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.
