@@ -13,6 +13,10 @@ module Panda
       connection.get("/videos/#{id}/metadata.json")
     end
 
+    def delete_source
+      connection.delete("/videos/#{id}/source.json")
+    end
+
     def preview_url(options={})
       default_options = {:https => false}
       options = default_options.merge(options)

@@ -25,4 +25,4 @@ require 'panda/resources/video'
 
 require 'panda/panda'
 require 'panda/faraday'
-
+require 'panda/upload_session'

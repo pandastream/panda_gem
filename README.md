@@ -20,9 +20,13 @@ Panda gem provides an interface to access the [Panda](http://pandastream.com) AP
     You can just set the default Panda adapter if you are not happy with the current one.
 
     Panda.default_adapter = :excon
-
+    
+    For rails 4, try the net_http adapter. This fixes disable_ssl_peer_verification related errors caused by the default adapter.
+    
+    Panda.default_adapter = :net_http
+    
 ### Creating an instance of the client
-
+    
     Panda.configure do
       access_key "panda_access_key"
       secret_key "panda_secret_key"
@@ -153,6 +157,8 @@ The name of the profile can be found in your [Panda account](http://pandastream.
     videos = Panda::Video.all(:page => 2, :per_page => 20)
     videos.size
     => 20
+    
+    Note: maximum :per_page is 100.
 
 ##### Find all success videos
 
@@ -499,5 +505,26 @@ The name of the profile can be found in your [Panda account](http://pandastream.
 
     bundler install
     rake spec
+
+### Resumable upload
+    
+    us = Panda::UploadSession.new("panda.mp4", profiles: "webm")
+
+    retry_count = 0
+    begin
+      us.start()
+    rescue Exception => e
+      while retru_count < 5 and us.status != "success"
+        begin
+          sleep(5)
+          us.resume()
+        rescue Exception => e
+          retry_count += 1
+        end
+      end
+    end
+
+
+
 
 Copyright (c) 2009-2010 New Bamboo. See LICENSE for details.
