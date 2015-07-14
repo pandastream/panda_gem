@@ -29,7 +29,7 @@ module Panda
     
     [:api_host, :api_port, 
      :access_key, :secret_key, 
-     :api_version, :cloud_id].each do |attr|
+     :api_version, :cloud_id, :token].each do |attr|
       define_method "#{attr}" do |value|
         config["#{attr.to_s}"] = value
       end
@@ -74,6 +74,9 @@ module Panda
 
     def validation_errors
       err = []
+      unless config["token"].to_s.empty?
+        return err
+      end
       if config["access_key"].to_s.empty?
         err << "access_key is missing"
       end

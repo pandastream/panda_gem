@@ -5,7 +5,7 @@ module Panda
   EU_API_HOST="api-eu.pandastream.com"
   
   class Connection
-    attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
+    attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id, :token
 
     def initialize(auth_params={}) 
       params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(auth_params)
@@ -17,12 +17,13 @@ module Panda
       @api_host   = params["api_host"]    || params[:api_host]
       @api_port   = params["api_port"]    || params[:api_port]
       @prefix     = params["prefix_url"]  || "v#{api_version}"
+      @token      = params["token"]       || params[:token]
     end
 
     def http_client
       Panda::HttpClient::Faraday.new(api_url)
     end
-    
+
     # Authenticated requests
     def get(request_uri, params={})
       sp = signed_params("GET", request_uri, params)
@@ -52,6 +53,10 @@ module Panda
     def signed_params(verb, request_uri, params = {}, timestamp_str = nil)
       auth_params = stringify_keys(params)
       auth_params['cloud_id']   = cloud_id unless request_uri =~ /^\/clouds/
+      if token
+        auth_params['token'] = token
+        return auth_params
+      end
       auth_params['access_key'] = access_key
       auth_params['timestamp']  = timestamp_str || Time.now.utc.iso8601(6)
 
@@ -81,7 +86,7 @@ module Panda
 
     def to_hash
       hash = {}
-      [:api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id].each do |a|
+      [:api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id, :token].each do |a|
         hash[a] = send(a)
       end
       hash
