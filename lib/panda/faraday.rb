@@ -4,11 +4,11 @@ require 'multi_json'
 module Panda
   module HttpClient
     class Faraday
-      
+
       def initialize(api_url)
         @api_url = api_url
       end
-      
+
       def get(request_uri, params)
         rescue_json_parsing do
           connection.get do |req|
@@ -17,14 +17,16 @@ module Panda
         end
       end
 
-      def post(request_uri, params)
+      def post(request_uri, params, options={})
         # multipart upload
         params['file'] = ::Faraday::UploadIO.new(params['file'], 'multipart/form-data') if params['file']
+        options.delete_if { |key, _| key.downcase != 'headers' }
 
         rescue_json_parsing do
           connection.post do |req|
             req.url File.join(connection.path_prefix, request_uri)
             req.body = params
+            req = req.merge(options)
           end.body
         end
       end
@@ -45,9 +47,9 @@ module Panda
           end.body
         end
       end
-      
+
       private
-      
+
       def connection
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
           builder.request :multipart
@@ -64,7 +66,7 @@ module Panda
           raise ServiceNotAvailable, data
         end
       end
-      
+
     end
   end
 end

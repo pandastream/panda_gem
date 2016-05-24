@@ -1,13 +1,13 @@
 module Panda
-  
+
   API_PORT=443
   US_API_HOST="api.pandastream.com"
   EU_API_HOST="api-eu.pandastream.com"
-  
+
   class Connection
     attr_accessor :api_host, :api_port, :access_key, :secret_key, :api_version, :cloud_id
 
-    def initialize(auth_params={}) 
+    def initialize(auth_params={})
       params = { :api_host => US_API_HOST, :api_port => API_PORT }.merge!(auth_params)
       @api_version = 2
 
@@ -22,16 +22,16 @@ module Panda
     def http_client
       Panda::HttpClient::Faraday.new(api_url)
     end
-    
+
     # Authenticated requests
     def get(request_uri, params={})
       sp = signed_params("GET", request_uri, params)
       http_client.get(request_uri, sp)
     end
 
-    def post(request_uri, params={})
+    def post(request_uri, params={}, options={})
       sp = signed_params("POST", request_uri, params)
-      http_client.post(request_uri, sp)
+      http_client.post(request_uri, sp, options)
     end
 
     def put(request_uri, params={})
@@ -67,10 +67,10 @@ module Panda
     def api_scheme
       api_port.to_i == 443 ? 'https' : 'http'
     end
-    
+
     # Shortcut to setup your bucket
     def setup_bucket(params={})
-      granting_params = { 
+      granting_params = {
         :s3_videos_bucket => params[:bucket],
         :aws_access_key => params[:access_key],
         :aws_secret_key => params[:secret_key]
@@ -98,4 +98,3 @@ module Panda
 
   end
 end
-
