@@ -25,7 +25,7 @@ module Panda
           connection.post do |req|
             req.url File.join(connection.path_prefix, request_uri)
             req.body = params
-            req.headers = req.headers.merge(options.headers) if options.headers
+            req.headers = req.headers.merge(options[:headers]) if options[:headers]
           end.body
         end
       end
