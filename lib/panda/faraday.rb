@@ -20,7 +20,7 @@ module Panda
       def post(request_uri, params, options={})
         # multipart upload
         params['file'] = ::Faraday::UploadIO.new(params['file'], 'multipart/form-data') if params['file']
-        options.delete_if { |key, _| key.downcase != 'headers' }
+        options.delete_if { |key, _| String(key).downcase != 'headers' }
 
         rescue_json_parsing do
           connection.post do |req|
