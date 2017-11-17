@@ -4,16 +4,16 @@ require 'multi_json'
 module Panda
   module HttpClient
     class Faraday
-      
+
       def initialize(api_url)
         @api_url = api_url
       end
-      
-      def get(request_uri, params)
+
+     def get(request_uri, params)
         rescue_json_parsing do
           connection.get do |req|
             req.url File.join(connection.path_prefix, request_uri), params
-          end.body
+          end
         end
       end
 
@@ -25,7 +25,7 @@ module Panda
           connection.post do |req|
             req.url File.join(connection.path_prefix, request_uri)
             req.body = params
-          end.body
+          end
         end
       end
 
@@ -34,7 +34,7 @@ module Panda
           connection.put do |req|
             req.url File.join(connection.path_prefix, request_uri)
             req.body = params
-          end.body
+          end
         end
       end
 
@@ -42,12 +42,12 @@ module Panda
         rescue_json_parsing do
           connection.delete do |req|
             req.url File.join(connection.path_prefix, request_uri), params
-          end.body
+          end
         end
       end
-      
+
       private
-      
+
       def connection
         @conn ||= ::Faraday.new(:url => @api_url) do |builder|
           builder.request :multipart
@@ -58,13 +58,24 @@ module Panda
 
       def rescue_json_parsing(&block)
         begin
-          data = yield
-          MultiJson.load(data) if data and data != ""
+          response = yield
+
+          data = MultiJson.load(response.body) unless response.body.to_s.empty?
+
+          if response.status / 100 != 2
+            if data && data['error']
+              raise ServiceNotAvailable, "#{data['error']}: #{data['message']}"
+            else
+              raise ServiceNotAvailable, "Unexpected server error (#{response.status})"
+            end
+          end
+
+          data
         rescue MultiJson::DecodeError
           raise ServiceNotAvailable, data
         end
       end
-      
+
     end
   end
 end
